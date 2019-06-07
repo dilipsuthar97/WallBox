@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">WallBox</string>
+    <string name="owner_name">Dilip Suthar</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="menu_sort_latest">Latest</string>
+    <string name="menu_sort_oldest">Oldest</string>
+    <string name="menu_sort_popular">Popular</string>
+</resources>

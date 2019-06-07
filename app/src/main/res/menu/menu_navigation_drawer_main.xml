@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group  android:id="@+id/grp_1"
+            android:checkableBehavior="single">
+
+        <item android:id="@+id/nav_wallpapers"
+              android:checked="true"
+              android:tooltipText="Home menu"
+              android:icon="@drawable/ic_nav_wallpaper"
+              android:title="Wallpapers"/>
+
+        <item android:id="@+id/nav_Favorites"
+              android:checkable="false"
+              android:icon="@drawable/ic_nav_favorite"
+              android:title="Favorites"/>
+
+        <item android:id="@+id/nav_settings"
+              android:checkable="false"
+              android:icon="@drawable/ic_nav_settings"
+              android:title="Settings"/>
+
+        <item android:id="@+id/nav_about"
+              android:checkable="false"
+              android:icon="@drawable/ic_nav_about"
+              android:title="About"/>
+
+        <item android:id="@+id/nav_share_app"
+              android:checkable="false"
+              android:icon="@drawable/ic_nav_share"
+              android:title="Share App"/>
+
+        <item android:id="@+id/nav_rate_review"
+              android:checkable="false"
+              android:icon="@drawable/ic_nav_rate_review"
+              android:title="rate &amp; Review"/>
+    </group>
+
+</menu>
