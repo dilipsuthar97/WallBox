@@ -5,15 +5,15 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragment.RecentWallFragment">
+        tools:context=".fragments.RecentWallFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textSize="32sp"
-            android:layout_gravity="center"
-            android:text="Recent"/>
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recent_wallpaper_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:scrollbarStyle="insideOverlay"
+            android:scrollbars="vertical"/>
 
 </FrameLayout>

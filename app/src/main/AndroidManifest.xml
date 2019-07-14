@@ -9,18 +9,18 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".activity.AboutActivity">
+        <activity android:name=".AboutActivity">
         </activity>
-        <activity android:name=".activity.SettingsActivity">
+        <activity android:name=".SettingsActivity">
         </activity>
-        <activity android:name=".activity.FavoritesActivity">
+        <activity android:name=".FavoritesActivity">
         </activity>
         <activity
-                android:name=".activity.HomeActivity"
+                android:name=".HomeActivity"
                 android:screenOrientation="portrait">
         </activity>
         <activity
-                android:name=".activity.MainActivity"
+                android:name=".MainActivity"
                 android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

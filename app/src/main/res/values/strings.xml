@@ -11,4 +11,9 @@
     <string name="menu_sort_latest">Latest</string>
     <string name="menu_sort_oldest">Oldest</string>
     <string name="menu_sort_popular">Popular</string>
+
+    <string name="toolbar_title_favorites">Favorites</string>
+    <string name="toolbar_title_settings">Settings</string>
+    <string name="toolbar_title_about">About</string>
+
 </resources>

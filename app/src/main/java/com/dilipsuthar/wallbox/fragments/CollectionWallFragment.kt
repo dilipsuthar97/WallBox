@@ -1,4 +1,4 @@
-package com.dilipsuthar.wallbox.fragment
+package com.dilipsuthar.wallbox.fragments
 
 
 import android.os.Bundle
@@ -13,11 +13,13 @@ import com.dilipsuthar.wallbox.R
  * A simple [Fragment] subclass.
  *
  */
-class RecentWallFragment : Fragment() {
+
+class CollectionWallFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_recent_wall, container, false)
+        return inflater.inflate(R.layout.fragment_collection_wall, container, false)
     }
+
 
 }

@@ -1,11 +1,10 @@
-package com.dilipsuthar.wallbox.activity
+package com.dilipsuthar.wallbox
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
-import com.dilipsuthar.wallbox.R
 
 class MainActivity : AppCompatActivity() {
 

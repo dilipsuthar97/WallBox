@@ -1,10 +1,12 @@
-package com.dilipsuthar.wallbox.activity
+package com.dilipsuthar.wallbox
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.PorterDuff
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -17,11 +19,11 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.viewpager.widget.ViewPager
 import butterknife.BindView
 import butterknife.ButterKnife
-import com.dilipsuthar.wallbox.R
-import com.dilipsuthar.wallbox.adapter.SectionPagerAdapter
-import com.dilipsuthar.wallbox.fragment.CollectionWallFragment
-import com.dilipsuthar.wallbox.fragment.CuratedWallFragment
-import com.dilipsuthar.wallbox.fragment.RecentWallFragment
+import com.dilipsuthar.wallbox.adapters.SectionPagerAdapter
+import com.dilipsuthar.wallbox.fragments.CollectionWallFragment
+import com.dilipsuthar.wallbox.fragments.CuratedWallFragment
+import com.dilipsuthar.wallbox.fragments.RecentWallFragment
+import com.dilipsuthar.wallbox.preferences.Preferences
 import com.dilipsuthar.wallbox.utils.Tools
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -35,6 +37,7 @@ class HomeActivity : AppCompatActivity() {
 
     companion object {
         const val TAG: String = "debug_HomeActivity"
+        lateinit var sharedPreferences: SharedPreferences
     }
 
     // Views
@@ -59,6 +62,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var collectionWallFragment: CollectionWallFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         ButterKnife.bind(this)
@@ -67,7 +71,8 @@ class HomeActivity : AppCompatActivity() {
         customizeStatusBar()
         initToolbar()
         initComponent()
-
+        initTabLayout()
+        initNavigationDrawer()
     }
 
     private fun customizeStatusBar() {
@@ -94,8 +99,9 @@ class HomeActivity : AppCompatActivity() {
         recentWallFragment = RecentWallFragment()
         curatedWallFragment = CuratedWallFragment()
         collectionWallFragment = CollectionWallFragment()
+    }
 
-        // TabLayout------
+    private fun initTabLayout() {
         // Set viewPager and link it with TabLayout
         setupViewPager(viewPager)
         tabLayout.setupWithViewPager(viewPager)
@@ -143,8 +149,9 @@ class HomeActivity : AppCompatActivity() {
         drawerToggle.isDrawerIndicatorEnabled = false
         drawerLayout.setDrawerListener(drawerToggle)
         drawerToggle.syncState()*/
+    }
 
-        // NavigationDrawer------
+    private fun initNavigationDrawer() {
         navigationView.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.nav_Favorites -> startActivity(Intent(applicationContext, FavoritesActivity::class.java))
@@ -154,9 +161,8 @@ class HomeActivity : AppCompatActivity() {
             }
 
             drawerLayout.closeDrawers()
-            true
+            return@setNavigationItemSelectedListener true
         }
-
     }
 
     private fun setupViewPager(viewPager: ViewPager) {
@@ -199,11 +205,14 @@ class HomeActivity : AppCompatActivity() {
                 sortPopupMenu.show()*/
 
                 // Create sort dialog menu
+                chckedSortItem = sharedPreferences.getInt(Preferences.SORTING_WALLPAPERS, 0)
                 val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-                builder.setTitle("Sort by:")
+                builder.setTitle("Sort wallpapers")
                 builder.setSingleChoiceItems(sortItems, chckedSortItem) {dialog, pos ->
                     chckedSortItem = pos
-                    dialog.cancel()
+                }
+                builder.setPositiveButton("OK") { dialog, which ->
+                    sharedPreferences.edit().putInt(Preferences.SORTING_WALLPAPERS, chckedSortItem).apply()
                     showSnackbar("Wallpaper sorted by ${sortItems[chckedSortItem]}", Snackbar.LENGTH_LONG)
                 }
                 builder.setNegativeButton("Cancel") { dialog, which ->
@@ -216,10 +225,6 @@ class HomeActivity : AppCompatActivity() {
         }
 
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun createWallSortDialog() {
-
     }
 
     /*var isToolbarHide = false
