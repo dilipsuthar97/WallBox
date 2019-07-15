@@ -6,7 +6,7 @@
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".HomeActivity">
+        tools:context=".activity.HomeActivity">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
@@ -24,9 +24,9 @@
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    android:background="@color/colorPrimary"
+                    android:background="?attr/colorPrimary"
                     app:titleTextAppearance="@style/TextAppearance.Large.Bold"
-                    app:titleTextColor="@color/colorSecondary"
+                    app:titleTextColor="?attr/primaryTextColor"
                     app:contentInsetStartWithNavigation="0dp"
                     app:layout_scrollFlags="scroll|enterAlways"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
@@ -36,10 +36,11 @@
                     style="@style/Widget.MaterialComponents.TabLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:tabTextColor="@color/colorSecondary"
-                    app:tabSelectedTextColor="@color/colorAccent"
+                    android:background="?attr/colorPrimary"
+                    app:tabTextColor="?attr/primaryTextColor"
+                    app:tabSelectedTextColor="?attr/tabSelectedColor"
                     app:tabGravity="fill"
-                    app:tabRippleColor="@color/colorRipple"
+                    app:tabRippleColor="?attr/colorRipple"
                     app:tabIndicatorFullWidth="false"
                     app:tabIndicator="@drawable/tab_layout_indicator"
                     app:tabTextAppearance="@style/TextAppearance.AppCompat.Medium"
@@ -62,6 +63,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="start|left"
             android:fitsSystemWindows="false"
+            android:background="?attr/colorPrimary"
             app:itemBackground="@color/navigation_drawer_background_state_list"
             app:itemTextAppearance="@style/TextAppearance.AppCompat.Subhead"
             app:itemTextColor="@color/navigation_drawer_menu_state_list"

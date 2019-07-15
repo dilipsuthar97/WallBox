@@ -1,4 +1,4 @@
-package com.dilipsuthar.wallbox
+package com.dilipsuthar.wallbox.activity
 
 import android.content.Intent
 import android.content.SharedPreferences
@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.annotation.ColorRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.Toolbar
@@ -19,11 +20,14 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.viewpager.widget.ViewPager
 import butterknife.BindView
 import butterknife.ButterKnife
+import com.dilipsuthar.wallbox.R
+import com.dilipsuthar.wallbox.WallBox
 import com.dilipsuthar.wallbox.adapters.SectionPagerAdapter
 import com.dilipsuthar.wallbox.fragments.CollectionWallFragment
 import com.dilipsuthar.wallbox.fragments.CuratedWallFragment
 import com.dilipsuthar.wallbox.fragments.RecentWallFragment
 import com.dilipsuthar.wallbox.preferences.Preferences
+import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.dilipsuthar.wallbox.utils.Tools
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -38,6 +42,8 @@ class HomeActivity : AppCompatActivity() {
     companion object {
         const val TAG: String = "debug_HomeActivity"
         lateinit var sharedPreferences: SharedPreferences
+
+        var activityRestarted = false
     }
 
     // Views
@@ -54,7 +60,7 @@ class HomeActivity : AppCompatActivity() {
 
     // For wallpaper sort menu
     private var sortItems = arrayOf<String>("Latest", "Oldest", "Popular")
-    private var chckedSortItem: Int = 0
+    private var checkedSortItem: Int = 0
 
     // Fragments
     private lateinit var recentWallFragment: RecentWallFragment
@@ -63,6 +69,12 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+
+        when(ThemeUtils.getTheme(this)) {
+            ThemeUtils.LIGHT -> setTheme(R.style.WallBox_Primary_Base_Light)
+            ThemeUtils.DARK -> setTheme(R.style.WallBox_Primary_Base_Dark)
+        }
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         ButterKnife.bind(this)
@@ -77,12 +89,16 @@ class HomeActivity : AppCompatActivity() {
 
     private fun customizeStatusBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            when(ThemeUtils.getTheme(this)) {
+                ThemeUtils.LIGHT -> window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                ThemeUtils.DARK -> window.decorView.systemUiVisibility = 0
+            }
         } else {
             window.decorView.systemUiVisibility = 0
         }
 
-        Tools.setSystemBarColor(this, R.color.colorPrimary)
+        // TODO: change these color based on Theme
+        Tools.setSystemBarColor(this, ThemeUtils.getThemeAttrColor(this, R.attr.colorPrimaryDark))
     }
 
     private fun initToolbar() {
@@ -91,7 +107,7 @@ class HomeActivity : AppCompatActivity() {
         actionBar?.title = resources.getString(R.string.app_name)
         actionBar?.setHomeAsUpIndicator(R.drawable.ic_menu)
         actionBar?.setDisplayHomeAsUpEnabled(true)
-        Tools.changeNavigationIconColor(toolbar, resources.getColor(R.color.colorAccent))
+        Tools.changeNavigationIconColor(toolbar, ThemeUtils.getThemeAttrColor(this, R.attr.colorAccent))
     }
 
     private fun initComponent() {
@@ -112,9 +128,15 @@ class HomeActivity : AppCompatActivity() {
         tabLayout.getTabAt(2)?.setIcon(R.drawable.ic_tab_collection)
 
         // Set color to TabLayout icons
-        tabLayout.getTabAt(0)?.getIcon()?.setColorFilter(resources.getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN)
-        tabLayout.getTabAt(1)?.getIcon()?.setColorFilter(resources.getColor(R.color.colorSecondary), PorterDuff.Mode.SRC_IN)
-        tabLayout.getTabAt(2)?.getIcon()?.setColorFilter(resources.getColor(R.color.colorSecondary), PorterDuff.Mode.SRC_IN)
+        tabLayout.getTabAt(0)?.icon?.setColorFilter(
+            ThemeUtils.getThemeAttrColor(this, R.attr.tabSelectedColor),
+            PorterDuff.Mode.SRC_IN)
+        tabLayout.getTabAt(1)?.icon?.setColorFilter(
+            ThemeUtils.getThemeAttrColor(this, R.attr.tabUnselectedColor),
+            PorterDuff.Mode.SRC_IN)
+        tabLayout.getTabAt(2)?.icon?.setColorFilter(
+            ThemeUtils.getThemeAttrColor(this, R.attr.tabUnselectedColor),
+            PorterDuff.Mode.SRC_IN)
 
         tabLayout.setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
             override fun onTabReselected(p0: TabLayout.Tab?) {
@@ -122,11 +144,15 @@ class HomeActivity : AppCompatActivity() {
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
-                tab?.getIcon()?.setColorFilter(resources.getColor(R.color.colorSecondary), PorterDuff.Mode.SRC_ATOP)
+                tab?.icon?.setColorFilter(
+                    ThemeUtils.getThemeAttrColor(applicationContext, R.attr.tabUnselectedColor),
+                    PorterDuff.Mode.SRC_ATOP)
             }
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                tab?.getIcon()?.setColorFilter(resources.getColor(R.color.colorAccent), PorterDuff.Mode.SRC_ATOP)
+                tab?.icon?.setColorFilter(
+                    ThemeUtils.getThemeAttrColor(applicationContext, R.attr.tabSelectedColor),
+                    PorterDuff.Mode.SRC_ATOP)
                 menuToolbar.findItem(R.id.action_sort).isVisible = tab?.position != 2
             }
 
@@ -182,7 +208,7 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_toolbar_main, menu)
         menuToolbar = menu!!
-        Tools.changeMenuIconColor(menu, resources.getColor(R.color.colorAccent))
+        Tools.changeMenuIconColor(menu, ThemeUtils.getThemeAttrColor(this, R.attr.colorAccent))
         return true
     }
 
@@ -205,15 +231,23 @@ class HomeActivity : AppCompatActivity() {
                 sortPopupMenu.show()*/
 
                 // Create sort dialog menu
-                chckedSortItem = sharedPreferences.getInt(Preferences.SORTING_WALLPAPERS, 0)
+                checkedSortItem = sharedPreferences.getInt(Preferences.SORTING_WALLPAPERS, 0)
                 val builder: AlertDialog.Builder = AlertDialog.Builder(this)
                 builder.setTitle("Sort wallpapers")
-                builder.setSingleChoiceItems(sortItems, chckedSortItem) {dialog, pos ->
-                    chckedSortItem = pos
+                builder.setSingleChoiceItems(sortItems, checkedSortItem) { dialog, pos ->
+                    checkedSortItem = pos
                 }
                 builder.setPositiveButton("OK") { dialog, which ->
-                    sharedPreferences.edit().putInt(Preferences.SORTING_WALLPAPERS, chckedSortItem).apply()
-                    showSnackbar("Wallpaper sorted by ${sortItems[chckedSortItem]}", Snackbar.LENGTH_LONG)
+                    sharedPreferences.edit().putInt(Preferences.SORTING_WALLPAPERS, checkedSortItem).apply()
+                    showSnackbar("Wallpaper sorted by ${sortItems[checkedSortItem]}", Snackbar.LENGTH_LONG)
+
+                    // For dark theme
+                    when(checkedSortItem) {
+                        0 -> sharedPreferences.edit().putString(Preferences.THEME, ThemeUtils.LIGHT).apply()
+                        1 -> sharedPreferences.edit().putString(Preferences.THEME, ThemeUtils.DARK).apply()
+                    }
+                    restartActivity()
+
                 }
                 builder.setNegativeButton("Cancel") { dialog, which ->
                     dialog.cancel()
@@ -237,5 +271,12 @@ class HomeActivity : AppCompatActivity() {
         tabLayout.animate().translationY(moveTabLytY.toFloat()).setStartDelay(100).setDuration(300).start()
 
     }*/
+
+    private fun restartActivity() {
+        val intent = this.intent
+        this.finish()
+        startActivity(intent)
+        activityRestarted = true
+    }
 
 }

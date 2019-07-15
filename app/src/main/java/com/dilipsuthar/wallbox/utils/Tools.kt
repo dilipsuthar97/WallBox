@@ -11,19 +11,21 @@ import androidx.annotation.ColorRes
 import androidx.appcompat.widget.Toolbar
 import com.google.android.material.snackbar.Snackbar
 import android.graphics.drawable.Drawable
+import android.util.TypedValue
 import android.view.Menu
+import androidx.core.content.ContextCompat
 import java.nio.file.Files.size
 
 
 
 object Tools {
 
-    fun setSystemBarColor(act: Activity, @ColorRes color: Int) {
+    fun setSystemBarColor(act: Activity, @ColorInt color: Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val window = act.window
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            window.statusBarColor =act.resources.getColor(color)
+            window.statusBarColor = color
         }
     }
 
@@ -75,6 +77,17 @@ object Tools {
     fun setSnackBarBgColor(ctx: Context, snackbar: Snackbar, color: Int) {
         val sbView = snackbar.view
         sbView.setBackgroundColor(ctx.resources.getColor(color))
+    }
+
+    fun themeAttrbuteToColor(attributeId: Int, context: Context, fallBackColor: Int): Int {
+        val typedValue = TypedValue()
+        val theme = context.theme
+        val wasResolved = theme.resolveAttribute(attributeId, typedValue, true)
+        return if (wasResolved) {
+            ContextCompat.getColor(context, typedValue.resourceId)
+        } else {
+            fallBackColor
+        }
     }
 
 }

@@ -1,11 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Light base colors -->
     <color name="colorPrimary">#FFFFFF</color>
     <color name="colorPrimaryDark">#F3F4F6</color>
-    <color name="colorSecondary">#424343</color>
-    <color name="colorSecondaryLight">#666565</color>
+    <color name="primaryTextColor">#424343</color>
+    <color name="secondaryTextColor">#656666</color>
+    <!--<color name="color_secondary_light">#666565</color>-->
     <color name="colorAccent">#6DB432</color>
-    <color name="colorAccentLight">#AED88E</color>
+    <!--<color name="color_accent_light">#AED88E</color>-->
+    <color name="windowColor">#FFFFFF</color>
+    <color name="tabSelectedColor">#6DB432</color>
+    <color name="tabUnselectedColor">#424343</color>
+
+    <!-- Dark base colors -->
+    <color name="colorPrimary_night">#121212</color> <!-- #121212 -->
+    <color name="colorPrimaryDark_night">#1F1F1F</color> <!-- #1F1F1F -->
+    <color name="primaryTextColor_night">#FFFFFF</color>
+    <color name="secondaryTextColor_night">#ACACAC</color>
+    <!--<color name="color_secondary_light_night">#666565</color>-->
+    <color name="colorAccent_night">#6DB432</color>
+    <!--<color name="color_accent_light_night">#AED88E</color>-->
+    <color name="windowColor_night">#1F1F1F</color>
+    <color name="tabSelectedColor_night">#6DB432</color>
+    <color name="tabUnselectedColor_night">#ACACAC</color>
 
     <color name="colorRipple">#256DB432</color>
 

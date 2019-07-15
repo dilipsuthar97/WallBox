@@ -1,4 +1,4 @@
-package com.dilipsuthar.wallbox
+package com.dilipsuthar.wallbox.activity
 
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -9,16 +9,23 @@ import androidx.appcompat.widget.Toolbar
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.dilipsuthar.wallbox.R
+import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.dilipsuthar.wallbox.utils.Tools
 
-class SettingsActivity : AppCompatActivity() {
+class AboutActivity : AppCompatActivity() {
 
     // View
     @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        when(ThemeUtils.getTheme(this)) {
+            ThemeUtils.LIGHT -> setTheme(R.style.WallBox_Primary_Base_Light)
+            ThemeUtils.DARK -> setTheme(R.style.WallBox_Primary_Base_Dark)
+        }
+
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
+        setContentView(R.layout.activity_about)
         ButterKnife.bind(this)
 
         customizeStatusBar()
@@ -38,7 +45,7 @@ class SettingsActivity : AppCompatActivity() {
     private fun initToolbar() {
         setSupportActionBar(toolbar)
         val actionBar = supportActionBar
-        actionBar?.title = resources.getString(R.string.toolbar_title_settings)
+        actionBar?.title = resources.getString(R.string.toolbar_title_about)
         actionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
         actionBar?.setDisplayHomeAsUpEnabled(true)
         Tools.changeNavigationIconColor(toolbar, resources.getColor(R.color.colorAccent))

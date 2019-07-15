@@ -1,14 +1,22 @@
-package com.dilipsuthar.wallbox
+package com.dilipsuthar.wallbox.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import com.dilipsuthar.wallbox.R
+import com.dilipsuthar.wallbox.utils.ThemeUtils
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        when(ThemeUtils.getTheme(this)) {
+            ThemeUtils.LIGHT -> setTheme(R.style.WallBox_Primary_Base_Light)
+            ThemeUtils.DARK -> setTheme(R.style.WallBox_Primary_Base_Dark)
+        }
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 

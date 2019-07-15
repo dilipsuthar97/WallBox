@@ -1,12 +1,34 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <!-- Light Theme -->
+    <style name="WallBox.Primary.Base.Light" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="primaryTextColor">@color/primaryTextColor</item>
+        <item name="secondaryTextColor">@color/secondaryTextColor</item>
+        <item name="tabSelectedColor">@color/tabSelectedColor</item>
+        <item name="tabUnselectedColor">@color/tabUnselectedColor</item>
+        <item name="colorRipple">@color/colorRipple</item>
+
+        <item name="android:windowBackground">@color/windowColor</item>
+        <item name="android:fontFamily">@font/google_sans_regular</item>
+    </style>
+
+    <!-- Dark Theme -->
+    <style name="WallBox.Primary.Base.Dark" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary_night</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark_night</item>
+        <item name="colorAccent">@color/colorAccent_night</item>
+        <item name="primaryTextColor">@color/primaryTextColor_night</item>
+        <item name="secondaryTextColor">@color/secondaryTextColor_night</item>
+        <item name="tabSelectedColor">@color/tabSelectedColor_night</item>
+        <item name="tabUnselectedColor">@color/tabUnselectedColor_night</item>
+        <item name="colorRipple">@color/colorRipple</item>
+
+        <item name="android:windowBackground">@color/windowColor_night</item>
         <item name="android:fontFamily">@font/google_sans_regular</item>
     </style>
 

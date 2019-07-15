@@ -2,10 +2,10 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Item checked -->
-    <item android:color="@color/colorAccent" android:state_checked="true" />
+    <item android:color="?attr/colorAccent" android:state_checked="true" />
     <!-- Item pressed -->
-    <item android:color="@color/colorAccent" android:state_pressed="true" />
+    <item android:color="?attr/colorAccent" android:state_pressed="true" />
     <!-- Item default -->
-    <item android:color="@color/colorSecondaryLight" />
+    <item android:color="#666565" />
 
 </selector>
