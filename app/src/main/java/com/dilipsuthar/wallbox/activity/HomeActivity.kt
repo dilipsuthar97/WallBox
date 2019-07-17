@@ -12,6 +12,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.annotation.ColorRes
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.Toolbar
@@ -88,13 +89,9 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun customizeStatusBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            when(ThemeUtils.getTheme(this)) {
-                ThemeUtils.LIGHT -> window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                ThemeUtils.DARK -> window.decorView.systemUiVisibility = 0
-            }
-        } else {
-            window.decorView.systemUiVisibility = 0
+        when(ThemeUtils.getTheme(this)) {
+            ThemeUtils.LIGHT -> Tools.setSystemBarLight(this)
+            ThemeUtils.DARK -> Tools.clearSystemBarLight(this)
         }
 
         // TODO: change these color based on Theme
@@ -107,7 +104,7 @@ class HomeActivity : AppCompatActivity() {
         actionBar?.title = resources.getString(R.string.app_name)
         actionBar?.setHomeAsUpIndicator(R.drawable.ic_menu)
         actionBar?.setDisplayHomeAsUpEnabled(true)
-        Tools.changeNavigationIconColor(toolbar, ThemeUtils.getThemeAttrColor(this, R.attr.colorAccent))
+        Tools.changeNavigationIconColor(toolbar, ThemeUtils.getThemeAttrColor(this, R.attr.tabUnselectedColor))
     }
 
     private fun initComponent() {
@@ -145,14 +142,14 @@ class HomeActivity : AppCompatActivity() {
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
                 tab?.icon?.setColorFilter(
-                    ThemeUtils.getThemeAttrColor(applicationContext, R.attr.tabUnselectedColor),
-                    PorterDuff.Mode.SRC_ATOP)
+                    ThemeUtils.getThemeAttrColor(this@HomeActivity, R.attr.tabUnselectedColor),
+                    PorterDuff.Mode.SRC_IN)
             }
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.icon?.setColorFilter(
-                    ThemeUtils.getThemeAttrColor(applicationContext, R.attr.tabSelectedColor),
-                    PorterDuff.Mode.SRC_ATOP)
+                    ThemeUtils.getThemeAttrColor(this@HomeActivity, R.attr.tabSelectedColor),
+                    PorterDuff.Mode.SRC_IN)
                 menuToolbar.findItem(R.id.action_sort).isVisible = tab?.position != 2
             }
 
@@ -208,7 +205,7 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_toolbar_main, menu)
         menuToolbar = menu!!
-        Tools.changeMenuIconColor(menu, ThemeUtils.getThemeAttrColor(this, R.attr.colorAccent))
+        Tools.changeMenuIconColor(menu, ThemeUtils.getThemeAttrColor(this, R.attr.tabUnselectedColor))
         return true
     }
 

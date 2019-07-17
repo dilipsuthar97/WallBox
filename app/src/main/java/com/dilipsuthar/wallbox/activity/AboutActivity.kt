@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
 import butterknife.BindView
 import butterknife.ButterKnife
@@ -33,13 +34,12 @@ class AboutActivity : AppCompatActivity() {
     }
 
     private fun customizeStatusBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        } else {
-            window.decorView.systemUiVisibility = 0
+        when(ThemeUtils.getTheme(this)) {
+            ThemeUtils.LIGHT -> Tools.setSystemBarLight(this)
+            ThemeUtils.DARK -> Tools.clearSystemBarLight(this)
         }
 
-        Tools.setSystemBarColor(this, R.color.colorPrimaryDark)
+        Tools.setSystemBarColor(this, ThemeUtils.getThemeAttrColor(this, R.attr.colorPrimaryDark))
     }
 
     private fun initToolbar() {
@@ -48,7 +48,7 @@ class AboutActivity : AppCompatActivity() {
         actionBar?.title = resources.getString(R.string.toolbar_title_about)
         actionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
         actionBar?.setDisplayHomeAsUpEnabled(true)
-        Tools.changeNavigationIconColor(toolbar, resources.getColor(R.color.colorAccent))
+        Tools.changeNavigationIconColor(toolbar, ThemeUtils.getThemeAttrColor(this, R.attr.colorAccent))
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

@@ -5,13 +5,14 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="?attr/backgroundColor"
         tools:context=".activity.SettingsActivity">
 
     <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimaryDark"
+            android:background="?attr/appBarColor"
             android:gravity="start|center_vertical"
             app:titleTextAppearance="@style/TextAppearance.Large.Bold"
             app:titleTextColor="?attr/primaryTextColor"

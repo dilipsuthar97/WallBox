@@ -14,7 +14,10 @@ import android.graphics.drawable.Drawable
 import android.util.TypedValue
 import android.view.Menu
 import androidx.core.content.ContextCompat
+import com.dilipsuthar.wallbox.R
 import java.nio.file.Files.size
+
+
 
 
 
@@ -40,6 +43,18 @@ object Tools {
             val drawable = menu.getItem(i).icon ?: continue
             drawable.mutate()
             drawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+        }
+    }
+
+    fun setSystemBarLight(act: Activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            act.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        }
+    }
+
+    fun clearSystemBarLight(act: Activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            act.window.decorView.systemUiVisibility = 0
         }
     }
 
