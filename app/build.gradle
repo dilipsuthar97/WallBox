@@ -29,23 +29,49 @@ android {
 }
 
 dependencies {
+
+    // Versions
+    def butterKnifeVersion = "10.1.0"
+    def retrofit2Version = "2.6.0"
+    def archLifecycleVersion = "1.1.1"
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.core:core-ktx:1.0.2'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'com.google.android.material:material:1.0.0'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     // Third party
     // Butter knife
-    def butterKnifeVersion = "10.1.0"
     implementation "com.jakewharton:butterknife:$butterKnifeVersion"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     kapt "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
 
     // Circle Image View
     implementation 'com.mikhaellopez:circularimageview:3.2.0'
+
+    // Picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    // Retrofit 2
+    implementation "com.squareup.retrofit2:retrofit:$retrofit2Version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit2Version"
+
+    // Android View Model -- for MVVM
+    implementation "android.arch.lifecycle:extensions:$archLifecycleVersion"
+    kapt "android.arch.lifecycle:compiler:$archLifecycleVersion"
+
+    // Fast adapter
+    implementation 'com.mikepenz:fastadapter:4.0.0'
+    implementation 'com.mikepenz:fastadapter-extensions-scroll:4.0.0'
+    implementation 'com.mikepenz:fastadapter-extensions-ui:4.0.0'
+    implementation 'com.mikepenz:fastadapter-extensions-drag:4.0.0'
+    implementation 'com.mikepenz:fastadapter-extensions-expandable:4.0.0'
+    implementation 'com.mikepenz:fastadapter-extensions-utils:4.0.0'
+    implementation 'com.mikepenz:materialize:1.2.1'
 }

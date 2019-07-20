@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
@@ -13,6 +15,7 @@ import butterknife.ButterKnife
 
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.utils.VerticalSpacingItemDecorator
+import com.dilipsuthar.wallbox.viewmodels.WallpaperListViewModel
 
 /**
  * A simple [Fragment] subclass.
@@ -20,16 +23,17 @@ import com.dilipsuthar.wallbox.utils.VerticalSpacingItemDecorator
  */
 class RecentWallFragment : Fragment() {
 
-    companion object {
-        private const val TAG = "RecentWallpaperListFragment"
-    }
+    // VARS
+    private var mWallpaperListViewModel: WallpaperListViewModel? = null
 
+    // VIEWS
     @BindView(R.id.recent_wallpaper_list) lateinit var mRecyclerView: RecyclerView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_recent_wall, container, false)
         ButterKnife.bind(view)
 
+        subscribeObservers()
         initComponent(view)
         return view
     }
@@ -39,6 +43,7 @@ class RecentWallFragment : Fragment() {
     }
 
     private fun subscribeObservers() {
+        mWallpaperListViewModel = ViewModelProviders.of(activity!!).get(WallpaperListViewModel::class.java)
 
     }
 

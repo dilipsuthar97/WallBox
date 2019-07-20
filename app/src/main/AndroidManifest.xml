@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.dilipsuthar.wallbox">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
             android:name=".WallBox"
             android:allowBackup="true"
@@ -10,6 +12,8 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/WallBox.Primary.Base.Light">
+        <activity android:name=".activity.SupportUsActivity">
+        </activity>
         <activity android:name=".activity.AboutActivity">
         </activity>
         <activity android:name=".activity.SettingsActivity">

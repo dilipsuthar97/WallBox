@@ -4,7 +4,7 @@
     <!-- Item checked -->
     <item android:color="?attr/colorAccent" android:state_checked="true" />
     <!-- Item pressed -->
-    <item android:color="?attr/colorPrimaryDark" android:state_pressed="true" />
+    <item android:color="?attr/navTabPressed" android:state_pressed="true" />
     <!-- Item default -->
     <item android:color="?attr/tabUnselectedColor" />
 

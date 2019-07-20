@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Light base colors -->
+    <!-->>>>>>>>>>>>>>> Light base colors <<<<<<<<<<<<<<<-->
     <color name="colorPrimary">#FFFFFF</color>
     <color name="colorPrimaryDark">#F3F4F6</color>
     <color name="colorAccent">#6DB432</color>
     <color name="primaryTextColor">#000000</color>
     <color name="secondaryTextColor">#424343</color>
     <!--<color name="color_secondary_light">#666565</color>-->
-    <!--<color name="color_accent_light">#AED88E</color>-->
+    <!--<color name="color_accent_light">#AED88E</color>-->y
     <color name="windowColor">#FFFFFF</color>
     <color name="tabSelectedColor">#6DB432</color>
     <color name="tabUnselectedColor">#424343</color>
+    <color name="navTabPressed">#000</color>
     <color name="statusBarColor">#FFFFFF</color>
     <color name="appBarColor">#F3F4F6</color>
-    <color name="backgroundColor">#FFFFFF</color>
+    <color name="backgroundColor">#FAFAFA</color>
+    <color name="cardDialogColor">#FFFFFF</color>
 
-    <!-- Dark base colors -->
+    <!-->>>>>>>>>>>>>>> Dark base colors <<<<<<<<<<<<<<<-->
     <color name="colorPrimary_night">#000000</color> <!-- #121212 -->
     <color name="colorPrimaryDark_night">#212121</color> <!-- #1F1F1F -->
     <color name="colorAccent_night">#6DB432</color>
@@ -26,9 +28,11 @@
     <color name="windowColor_night">#1F1F1F</color>
     <color name="tabSelectedColor_night">#6DB432</color>
     <color name="tabUnselectedColor_night">#B3FFFFFF</color>
+    <color name="navTabPressed_night">#FFF</color>
     <color name="statusBarColor_night">#000000</color>
     <color name="appBarColor_night">#212121</color>
     <color name="backgroundColor_night">#303030</color>
+    <color name="cardDialogColor_night">#424242</color>
 
     <color name="colorRipple">#256DB432</color>
 

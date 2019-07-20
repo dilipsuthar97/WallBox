@@ -70,12 +70,10 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
-
         when(ThemeUtils.getTheme(this)) {
             ThemeUtils.LIGHT -> setTheme(R.style.WallBox_Primary_Base_Light)
             ThemeUtils.DARK -> setTheme(R.style.WallBox_Primary_Base_Dark)
         }
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         ButterKnife.bind(this)
@@ -180,6 +178,7 @@ class HomeActivity : AppCompatActivity() {
                 R.id.nav_Favorites -> startActivity(Intent(applicationContext, FavoritesActivity::class.java))
                 R.id.nav_settings -> startActivity(Intent(applicationContext, SettingsActivity::class.java))
                 R.id.nav_about -> startActivity(Intent(applicationContext, AboutActivity::class.java))
+                R.id.nav_support_us -> startActivity(Intent(applicationContext, SupportUsActivity::class.java))
                 else -> showSnackbar(it.title.toString(), Snackbar.LENGTH_SHORT)
             }
 
