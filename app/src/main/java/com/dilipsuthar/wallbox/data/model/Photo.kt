@@ -1,9 +1,5 @@
 package com.dilipsuthar.wallbox.data.model
 
-import android.view.View
-import androidx.recyclerview.widget.RecyclerView
-import com.mikepenz.fastadapter.items.AbstractItem
-
 data class Photo (
 
     /**{

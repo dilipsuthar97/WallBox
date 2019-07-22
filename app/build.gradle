@@ -33,6 +33,7 @@ dependencies {
     // Versions
     def butterKnifeVersion = "10.1.0"
     def retrofit2Version = "2.6.0"
+    def glideVersion = "4.9.0"
     def archLifecycleVersion = "1.1.1"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -58,7 +59,11 @@ dependencies {
     // Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
 
-    // Retrofit 2
+    // Glide
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
+
+    // Retrofit 2 - Http client
     implementation "com.squareup.retrofit2:retrofit:$retrofit2Version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit2Version"
 
@@ -66,12 +71,14 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:$archLifecycleVersion"
     kapt "android.arch.lifecycle:compiler:$archLifecycleVersion"
 
-    // Fast adapter
+    implementation 'com.airbnb.android:lottie:3.0.1'
+
+    /*// Fast adapter
     implementation 'com.mikepenz:fastadapter:4.0.0'
     implementation 'com.mikepenz:fastadapter-extensions-scroll:4.0.0'
     implementation 'com.mikepenz:fastadapter-extensions-ui:4.0.0'
     implementation 'com.mikepenz:fastadapter-extensions-drag:4.0.0'
     implementation 'com.mikepenz:fastadapter-extensions-expandable:4.0.0'
     implementation 'com.mikepenz:fastadapter-extensions-utils:4.0.0'
-    implementation 'com.mikepenz:materialize:1.2.1'
+    implementation 'com.mikepenz:materialize:1.2.1'*/
 }

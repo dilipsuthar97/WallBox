@@ -227,14 +227,14 @@ class HomeActivity : AppCompatActivity() {
                 sortPopupMenu.show()*/
 
                 // Create sort dialog menu
-                checkedSortItem = sharedPreferences.getInt(Preferences.SORTING_WALLPAPERS, 0)
+                checkedSortItem = sharedPreferences.getInt(Preferences.SORT_DIALOG, 0)
                 val builder: AlertDialog.Builder = AlertDialog.Builder(this)
                 builder.setTitle("Sort wallpapers")
                 builder.setSingleChoiceItems(sortItems, checkedSortItem) { dialog, pos ->
                     checkedSortItem = pos
                 }
                 builder.setPositiveButton("OK") { dialog, which ->
-                    sharedPreferences.edit().putInt(Preferences.SORTING_WALLPAPERS, checkedSortItem).apply()
+                    sharedPreferences.edit().putInt(Preferences.SORT_DIALOG, checkedSortItem).apply()
                     showSnackbar("Wallpaper sorted by ${sortItems[checkedSortItem]}", Snackbar.LENGTH_LONG)
 
                     // For dark theme

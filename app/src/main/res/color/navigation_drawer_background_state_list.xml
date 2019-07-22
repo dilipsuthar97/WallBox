@@ -2,9 +2,9 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Item checked -->
-    <item android:color="?attr/colorRipple" android:state_checked="true" android:drawable="@drawable/navigation_drawer_indicator" />
+    <item android:color="?attr/colorRipple" android:state_checked="true" android:drawable="@drawable/indicator_navigation_drawer" />
     <!-- Item pressed -->
-    <item android:color="#666565" android:state_pressed="true" android:drawable="@drawable/navigation_drawer_indicator"/>
+    <item android:color="#666565" android:state_pressed="true" android:drawable="@drawable/indicator_navigation_drawer"/>
     <!-- Item default -->
     <item android:color="@android:color/transparent" android:drawable="@android:color/transparent"/>
 

@@ -8,19 +8,96 @@
         android:background="?attr/backgroundColor"
         tools:context=".fragments.RecentWallFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recent_wallpaper_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:scrollbarStyle="insideOverlay"
-            android:scrollbars="vertical"/>
+    <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/anim_lottie_box"/>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
+            android:id="@+id/network_error_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:padding="16dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+        <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:tint="@color/colorAccent"
+                android:src="@drawable/ic_cloud_off"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="You're offline"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="18sp"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="Check your connection and try again by swiping down"
+                android:textColor="?attr/secondaryTextColor"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:id="@+id/http_error_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:padding="16dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+        <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:tint="@color/colorAccent"
+                android:src="@drawable/ic_http"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Oops"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="18sp"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="You're out of http requests,\nPlease try again later."
+                android:textColor="?attr/secondaryTextColor"/>
+
+    </LinearLayout>
+    
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/recent_swipe_refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recent_wallpaper_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                android:scrollbarStyle="insideOverlay"
+                android:scrollbars="vertical"
+                android:scrollbarThumbVertical="@drawable/indicator_scroll_view"
+                android:visibility="gone"/>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </FrameLayout>

@@ -13,7 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 /** Created by Dilip on 20/07/19 */
 
 public class PhotoService {
-    private var call: Call<*>? = null
+    private var call: Call<List<Photo>>? = null
 
     public fun requestPhotos(page: Int, per_page: Int, order_by: String, listener: OnRequestPhotosListener?) {
         val requestCall = buildApi(buildClient()).getPhotos(WallBox.ACCESS_KEY, page, per_page, order_by)
@@ -27,6 +27,12 @@ public class PhotoService {
             }
         })
         call = requestCall
+    }
+
+    public fun cancel() {
+        if (call != null) {
+            call?.cancel()
+        }
     }
 
     /** build. */

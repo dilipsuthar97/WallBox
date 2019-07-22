@@ -43,7 +43,7 @@
                     app:tabGravity="fill"
                     app:tabRippleColor="?attr/colorRipple"
                     app:tabIndicatorFullWidth="false"
-                    app:tabIndicator="@drawable/tab_layout_indicator"
+                    app:tabIndicator="@drawable/indicator_tab_layout"
                     app:tabTextAppearance="@style/TextAppearance.AppCompat.Medium"
                     app:tabIndicatorHeight="3dp"
                     app:tabMode="fixed"/>

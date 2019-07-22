@@ -32,22 +32,24 @@ class WallpaperRepository {
     init {
 
         mPhotoService = PhotoService.getService()
-        mOnRequestPhotoListener = object : PhotoService.OnRequestPhotosListener {
-            override fun onRequestPhotosSuccess(call: Call<List<Photo>>, response: Response<List<Photo>>) {
-                if (response.isSuccessful) {
-                    Log.d(WallBox.TAG, response.body().toString())
-                }
-            }
-
-            override fun onRequestPhotosFailed(call: Call<List<Photo>>, t: Throwable) {
-                Log.d(WallBox.TAG, t.message)
-            }
-        }
 
         mPhotoService?.requestPhotos(PAGE++, WallBox.DEFAULT_PER_PAGE, "latest", mOnRequestPhotoListener)
     }
 
     public fun getWallpapers(): LiveData<List<Photo>> {
+        // TODO: Call listener methods here ^^
+        mOnRequestPhotoListener = object : PhotoService.OnRequestPhotosListener {
+            override fun onRequestPhotosSuccess(call: Call<List<Photo>>, response: Response<List<Photo>>) {
+
+            }
+
+            override fun onRequestPhotosFailed(call: Call<List<Photo>>, t: Throwable) {
+
+            }
+        }
+
+        mPhotoService?.requestPhotos(PAGE++, WallBox.DEFAULT_PER_PAGE, WallBox.DEDAULT_ORDER_BY, mOnRequestPhotoListener)
+
         return mWallpapers
     }
 

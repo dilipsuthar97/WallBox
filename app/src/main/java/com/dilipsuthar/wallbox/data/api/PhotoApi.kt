@@ -12,8 +12,9 @@ interface PhotoApi {
     @GET("14jmjx")
     fun getTestPhotos(): Call<List<Photo>>
 
-    @GET("photos/{client_id}/")
-    fun getPhotos(@Path("client_id") client_id: String,
+    /** Main API's */
+    @GET("photos")
+    fun getPhotos(@Query("client_id") client_id: String,
                   @Query("page") page: Int,
                   @Query("per_page") per_page: Int,
                   @Query("order_by") order_by: String): Call<List<Photo>>
