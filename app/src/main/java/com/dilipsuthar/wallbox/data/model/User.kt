@@ -54,4 +54,10 @@ data class User (
     var total_photos: Int,
     var accepted_tos: Boolean
 
-)
+) {
+    constructor() : this("", "", "", "", "",
+        "", "", "", "", "",
+        UserLinks(), ProfileImage(), "", -1, -1,
+        -1, false
+        )
+}

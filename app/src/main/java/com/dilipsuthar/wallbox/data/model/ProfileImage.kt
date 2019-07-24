@@ -14,4 +14,6 @@ data class ProfileImage (
     var medium: String,
     var large: String
 
-)
+) {
+    constructor() : this("", "", "")
+}

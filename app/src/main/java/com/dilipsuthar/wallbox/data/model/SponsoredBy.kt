@@ -54,4 +54,10 @@ data class SponsoredBy (
     var total_photos: Int,
     var accepted_tos: Boolean
 
-)
+) {
+    constructor() : this("", "", "", "", "",
+        "", "", "", "", "",
+        SponsoredLinks(), ProfileImage(), "", -1, -1,
+        -1, false
+    )
+}

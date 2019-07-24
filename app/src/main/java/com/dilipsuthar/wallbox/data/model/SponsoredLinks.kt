@@ -21,4 +21,6 @@ data class SponsoredLinks (
     var following: String,
     var followers: String
 
-)
+) {
+    constructor() : this ("", "", "", "", "", "", "")
+}

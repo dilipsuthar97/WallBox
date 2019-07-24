@@ -42,6 +42,7 @@
         <item name="android:navigationBarColor">#303030</item>
     </style>
 
+    <!-- Text styles theme -->
     <style name="TextAppearance.Subhead.Bold" parent="@style/TextAppearance.AppCompat.Subhead">
         <item name="android:textStyle">bold</item>
     </style>
@@ -52,6 +53,11 @@
 
     <style name="TextAppearance.Large.Bold" parent="@style/TextAppearance.AppCompat.Large">
         <item name="android:textStyle">bold</item>
+    </style>
+    
+    <!-- Photo preview theme -->
+    <style name="PhotoPreviewTheme">
+        <item name="android:windowIsFloating">false</item>
     </style>
 
 </resources>

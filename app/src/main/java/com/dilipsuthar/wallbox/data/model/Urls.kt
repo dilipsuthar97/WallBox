@@ -16,4 +16,6 @@ data class Urls(
     var regular: String,
     var small: String,
     var thumb: String
-)
+) {
+    constructor() : this("", "", "", "", "")
+}

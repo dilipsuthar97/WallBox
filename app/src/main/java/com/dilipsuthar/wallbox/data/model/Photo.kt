@@ -83,4 +83,10 @@ data class Photo (
     //var current_user_collections: ?
     var user: User
 
-)
+) {
+    constructor() : this("", "", "", -1, -1,
+        "", "", "", Urls(), PhotoLinks(),
+        emptyList(), false, SponsoredBy(), "", -1,
+        false, User()
+        )
+}

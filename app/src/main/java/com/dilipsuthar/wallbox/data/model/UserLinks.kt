@@ -21,4 +21,6 @@ data class UserLinks (
     var following: String,
     var followers: String
 
-)
+) {
+    constructor() : this("", "", "", "", "", "", "")
+}

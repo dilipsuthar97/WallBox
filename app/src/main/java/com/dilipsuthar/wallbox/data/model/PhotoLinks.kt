@@ -14,4 +14,6 @@ data class PhotoLinks(
     var html: String,
     var download: String,
     var download_location: String
-)
+) {
+    constructor() : this("", "", "", "")
+}

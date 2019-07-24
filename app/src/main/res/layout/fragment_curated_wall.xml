@@ -7,11 +7,11 @@
              tools:context=".fragments.CuratedWallFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <com.google.android.material.button.MaterialButton
+            android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="32sp"
             android:layout_gravity="center"
             android:text="Curated"/>
 
