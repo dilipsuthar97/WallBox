@@ -6,8 +6,6 @@
     <color name="colorAccent">#6DB432</color>
     <color name="primaryTextColor">#000000</color>
     <color name="secondaryTextColor">#424343</color>
-    <!--<color name="color_secondary_light">#666565</color>-->
-    <!--<color name="color_accent_light">#AED88E</color>-->y
     <color name="windowColor">#FFFFFF</color>
     <color name="tabSelectedColor">#6DB432</color>
     <color name="tabUnselectedColor">#424343</color>
@@ -23,8 +21,6 @@
     <color name="colorAccent_night">#6DB432</color>
     <color name="primaryTextColor_night">#FFFFFF</color>
     <color name="secondaryTextColor_night">#B3FFFFFF</color>
-    <!--<color name="color_secondary_light_night">#666565</color>-->
-    <!--<color name="color_accent_light_night">#AED88E</color>-->
     <color name="windowColor_night">#1F1F1F</color>
     <color name="tabSelectedColor_night">#6DB432</color>
     <color name="tabUnselectedColor_night">#B3FFFFFF</color>
@@ -34,10 +30,12 @@
     <color name="backgroundColor_night">#303030</color>
     <color name="cardDialogColor_night">#424242</color>
 
+    <!-- Others -->
     <color name="colorRipple">#256DB432</color>
-
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
+
+    <color name="red_500">#f44336</color>
 
     <!-- COLOR For Rebuild -->
     <color name="overlay_dark_10">#1A000000</color>

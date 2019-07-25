@@ -5,9 +5,11 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -15,6 +17,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.data.model.Photo
 import com.dilipsuthar.wallbox.utils.Tools
+import com.google.android.material.card.MaterialCardView
+import com.mikhaellopez.circularimageview.CircularImageView
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import org.w3c.dom.Text
@@ -57,26 +61,26 @@ class PhotoAdapter
 
         if (holder is PhotoViewHolder) {
 
-            photo?.let { photo ->
-                holder.rootView.setBackgroundColor(Color.parseColor(photo.color))
-                if (photo.description != null || photo.alt_description != null) {
-                    holder.textDescription.text = if (photo.description != null) photo.description else photo.alt_description
-                    Tools.visibleViews(holder.textDescription)
-                }
-                holder.textPhotoBy.text = "By, ${photo.user.first_name} ${photo.user.last_name}"
+            photo?.let {
+                holder.rootView.setBackgroundColor(Color.parseColor(it.color))
+                holder.textPhotoBy.text = "By, ${it.user.first_name} ${it.user.last_name}"
+                holder.textLikes.text = "${it.likes}"
+                holder.btnDownload.setOnClickListener {
 
-                /*Glide.with(context!!)
-                    .load(photo.urls.regular)
-                    .centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)   //Load imaged from cache
-                    .into(holder.imagePhoto)*/
+                }
 
                 Picasso.get()
-                    .load(photo.urls.regular)
+                    .load(it.urls.regular)
                     .into(holder.imagePhoto)
 
+                Picasso.get()
+                    .load(it.user.profile_image.small)
+                    .placeholder(R.drawable.placeholder_profile)
+                    .error(R.drawable.placeholder_profile)
+                    .into(holder.imageUserProfile)
+
                 holder.rootView.setOnLongClickListener { view ->
-                    listener?.onItemLongClick(photo, view!!, position, holder.imagePhoto)
+                    listener?.onItemLongClick(it, view!!, position, holder.imagePhoto)
                     true
                 }
             }
@@ -86,12 +90,15 @@ class PhotoAdapter
         }
     }
 
+    /** view holders */
     class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         var imagePhoto: ImageView = itemView.findViewById(R.id.image_photo)
-        val textDescription: TextView = itemView.findViewById(R.id.text_description)
+        var imageUserProfile: CircularImageView = itemView.findViewById(R.id.image_user_profile)
         val textPhotoBy: TextView = itemView.findViewById(R.id.text_photo_by)
+        val textLikes: TextView = itemView.findViewById(R.id.text_likes)
         val rootView: ConstraintLayout = itemView.findViewById(R.id.root_view)
+        val btnDownload: ImageButton = itemView.findViewById(R.id.btn_download)
     }
 
     class LoadingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -99,22 +106,23 @@ class PhotoAdapter
     }
 
     /** methods */
-    public fun addAll(photos: ArrayList<Photo>) {
+    fun addAll(photos: ArrayList<Photo>) {
         mPhotoList?.addAll(photos)
         notifyItemInserted(mPhotoList?.size!!)
     }
 
-    public fun addLoader() {
+    fun addLoader() {
         mPhotoList?.add(Photo())
         notifyItemInserted(mPhotoList?.size!!.minus(1))
     }
 
-    public fun removeLoader() {
+    fun removeLoader() {
        if (mPhotoList?.size != 0) {
            mPhotoList?.removeAt(mPhotoList?.size!!.minus(1))
        }
     }
 
+    /** methods */
 
 
     /** interface */

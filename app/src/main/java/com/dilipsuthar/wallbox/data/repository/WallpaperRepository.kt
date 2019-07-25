@@ -1,6 +1,5 @@
 package com.dilipsuthar.wallbox.data.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.dilipsuthar.wallbox.WallBox
@@ -48,7 +47,7 @@ class WallpaperRepository {
             }
         }
 
-        mPhotoService?.requestPhotos(PAGE++, WallBox.DEFAULT_PER_PAGE, WallBox.DEDAULT_ORDER_BY, mOnRequestPhotoListener)
+        mPhotoService?.requestPhotos(PAGE++, WallBox.DEFAULT_PER_PAGE, WallBox.DEFAULT_ORDER_BY, mOnRequestPhotoListener)
 
         return mWallpapers
     }

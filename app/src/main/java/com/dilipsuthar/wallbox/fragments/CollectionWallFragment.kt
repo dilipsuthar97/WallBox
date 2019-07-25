@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.dilipsuthar.wallbox.R
+import com.dilipsuthar.wallbox.preferences.Preferences
 
 /**
  * A simple [Fragment] subclass.
@@ -16,8 +17,20 @@ import com.dilipsuthar.wallbox.R
 
 class CollectionWallFragment : Fragment() {
 
+    companion object {
+        fun newInstance(sort: String): CollectionWallFragment {
+            val fragment = CollectionWallFragment()
+
+            val args = Bundle()
+            args.putString(Preferences.SORT, sort)
+            fragment.arguments = args
+
+            return fragment
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
+        retainInstance = true
         return inflater.inflate(R.layout.fragment_collection_wall, container, false)
     }
 

@@ -14,6 +14,7 @@ import butterknife.BindView
 import butterknife.ButterKnife
 
 import com.dilipsuthar.wallbox.R
+import com.dilipsuthar.wallbox.preferences.Preferences
 import com.google.android.material.button.MaterialButton
 
 /**
@@ -22,10 +23,23 @@ import com.google.android.material.button.MaterialButton
  */
 class CuratedWallFragment : Fragment() {
 
+    companion object {
+        fun newInstance(sort: String): CuratedWallFragment {
+            val fragment = CuratedWallFragment()
+
+            val args = Bundle()
+            args.putString(Preferences.SORT, sort)
+            fragment.arguments = args
+
+            return fragment
+        }
+    }
+
     // VIEWS
     @BindView(R.id.button) lateinit var button: MaterialButton
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        retainInstance = true
         val view = inflater.inflate(R.layout.fragment_curated_wall, container, false)
         ButterKnife.bind(this, view)
 

@@ -1,16 +1,9 @@
 package com.dilipsuthar.wallbox.fragments
 
-
-import android.app.AlertDialog
 import android.app.Dialog
-import android.content.Context
-import android.content.SharedPreferences
 import android.graphics.Color
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.preference.PreferenceManager
-import android.text.BoringLayout
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -18,18 +11,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
 import android.widget.Toast
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.airbnb.lottie.LottieAnimationView
-import com.bumptech.glide.Glide
 
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.WallBox
@@ -38,10 +26,8 @@ import com.dilipsuthar.wallbox.data.model.Photo
 import com.dilipsuthar.wallbox.data.service.PhotoService
 import com.dilipsuthar.wallbox.preferences.Preferences
 import com.dilipsuthar.wallbox.utils.Tools
-import com.dilipsuthar.wallbox.utils.VerticalSpacingItemDecorator
 import com.dilipsuthar.wallbox.viewmodels.WallpaperListViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.mikhaellopez.circularimageview.CircularImageView
 import com.mlsdev.animatedrv.AnimatedRecyclerView
 import retrofit2.Call
 import retrofit2.Response
@@ -50,6 +36,18 @@ import retrofit2.Response
  * Modified by Dilip
  */
 class RecentWallFragment : Fragment() {
+
+    companion object {
+        fun newInstance(sort: String): RecentWallFragment {
+            val fragment = RecentWallFragment()
+
+            val args = Bundle()
+            args.putString(Preferences.SORT, sort)
+            fragment.arguments = args
+
+            return fragment
+        }
+    }
 
     // VARS
     private var mWallpaperListViewModel: WallpaperListViewModel? = null
@@ -61,7 +59,7 @@ class RecentWallFragment : Fragment() {
     private var mPhotosList: ArrayList<Photo> = ArrayList()
     private var mPhotoAdapter: PhotoAdapter? = null
     private var mOnItemClickListener: PhotoAdapter.OnItemClickListener? = null
-    private var dialog: Dialog? = null
+    private var mDialog: Dialog? = null
     private var loadMore: Boolean = false
 
 
@@ -76,8 +74,8 @@ class RecentWallFragment : Fragment() {
     // MAIN FUNCTIONS
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WallBox.getInstance())
-        mSort = sharedPreferences.getString(Preferences.SORT, "latest")
+        //val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WallBox.getInstance())
+        mSort = arguments?.getString(Preferences.SORT, "latest")
 
         // SERVICES / API
         mService = PhotoService.getService()
@@ -94,7 +92,6 @@ class RecentWallFragment : Fragment() {
                     mPhotosList.addAll(ArrayList(response.body()!!))
                     mPhotoAdapter?.removeLoader()
                     updateAdapter(mPhotosList)
-                    //mRecyclerView.adapter = mPhotoAdapter
                     Tools.inVisibleViews(mProgressView as View, mNetworkErrorView, mHttpErrorView, type = 1)
                     Tools.visibleViews(mRecyclerView)
                 } else {
@@ -127,9 +124,7 @@ class RecentWallFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
         retainInstance = true
-
         val view = inflater.inflate(R.layout.fragment_recent_wall, container, false)
         ButterKnife.bind(this, view)
 
@@ -141,29 +136,12 @@ class RecentWallFragment : Fragment() {
         return view
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d(WallBox.TAG, "onDestroy")
-        if (mService != null)
-            mService?.cancel()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d(WallBox.TAG, "onPause")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.d(WallBox.TAG, "onResume")
-    }
-
     // METHODS
     private fun initComponent() {
         // Recycler View
         mRecyclerView.layoutManager = LinearLayoutManager(context)
-        mRecyclerView.setOnTouchListener { view, motionEvent -> false }
         mRecyclerView.setItemViewCacheSize(5)
+        //mRecyclerView.addItemDecoration(VerticalSpacingItemDecorator(5))
         mRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
             var verticalOffset: Int = 0
@@ -182,7 +160,7 @@ class RecentWallFragment : Fragment() {
                 if (atTopReached)
                     mFabScrollToTop.hide()
 
-                val endHasBeenReached = lastVisible?.plus(3)!! >= totalItem!!   // Load more photos on last item
+                val endHasBeenReached = lastVisible?.plus(2)!! >= totalItem!!   // Load more photos on last item
                 if (totalItem > 0 && endHasBeenReached && !loadMore) {
                     loadMore = true
                     //Toast.makeText(context!!, "Reached end", Toast.LENGTH_SHORT).show()
@@ -224,6 +202,7 @@ class RecentWallFragment : Fragment() {
     }
 
     private fun load() {
+        Toast.makeText(context!!, "Load called", Toast.LENGTH_SHORT).show()
         Tools.visibleViews(mProgressView)
         Tools.inVisibleViews(mRecyclerView, mNetworkErrorView, mHttpErrorView, type = 1)
         mService?.requestPhotos(mPage++, WallBox.DEFAULT_PER_PAGE, mSort!!, mOnRequestPhotosListener)
@@ -268,12 +247,12 @@ class RecentWallFragment : Fragment() {
         val userName = dialogView.findViewById<TextView>(R.id.text_user_name)
         val userProfile = dialogView.findViewById<CircularImageView>(R.id.image_user_profile)*/
 
-        dialog = Dialog(context!!)
-        dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog?.setContentView(R.layout.dialog_photo_viewer)
-        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog?.setCancelable(true)
-        dialog?.show()
+        mDialog = Dialog(context!!)
+        mDialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        mDialog?.setContentView(R.layout.dialog_photo_viewer)
+        mDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        mDialog?.setCancelable(true)
+        mDialog?.show()
 
         /*imagePreview.setImageDrawable(source.drawable.constantState!!.newDrawable())
         userName.text = photo.user.username

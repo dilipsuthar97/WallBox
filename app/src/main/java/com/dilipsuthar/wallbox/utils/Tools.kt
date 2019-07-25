@@ -94,15 +94,5 @@ object Tools {
         sbView.setBackgroundColor(ctx.resources.getColor(color))
     }
 
-    fun themeAttrbuteToColor(attributeId: Int, context: Context, fallBackColor: Int): Int {
-        val typedValue = TypedValue()
-        val theme = context.theme
-        val wasResolved = theme.resolveAttribute(attributeId, typedValue, true)
-        return if (wasResolved) {
-            ContextCompat.getColor(context, typedValue.resourceId)
-        } else {
-            fallBackColor
-        }
-    }
 
 }

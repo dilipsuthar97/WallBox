@@ -15,10 +15,10 @@ class WallBox : Application() {
         public const val ACCESS_KEY = "2c467aac622ac33ed62b11c0d3150ec6aa4ee97e4e8e8bdd8b7535fb7ca857ce"
 
         public const val DEFAULT_PER_PAGE = 30
-        public const val DEDAULT_ORDER_BY = "latest"
+        public const val DEFAULT_ORDER_BY = "latest"
 
         public const val DATE_FORMAT = "yyyy/MM/dd"
-        public const val DOWNLOAD_PATH = "/Pictures/Resplash/"
+        public const val DOWNLOAD_PATH = "/Pictures/WallBox/"
         public const val DOWNLOAD_PHOTO_FORMAT = ".jpg"
 
         // Permission code

@@ -19,4 +19,10 @@ interface PhotoApi {
                   @Query("per_page") per_page: Int,
                   @Query("order_by") order_by: String): Call<List<Photo>>
 
+    @GET("photos/curated")
+    fun getCuratedPhotos(@Query("client_id") client_id: String,
+                         @Query("page") page: Int,
+                         @Query("per_page") per_page: Int,
+                         @Query("order_by") order_by: String): Call<List<Photo>>
+
 }
