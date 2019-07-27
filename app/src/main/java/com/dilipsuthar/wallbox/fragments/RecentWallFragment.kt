@@ -1,15 +1,12 @@
 package com.dilipsuthar.wallbox.fragments
 
 import android.app.Dialog
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
+import android.view.*
+import android.widget.ImageButton
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.Window
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,16 +22,19 @@ import com.dilipsuthar.wallbox.adapters.PhotoAdapter
 import com.dilipsuthar.wallbox.data.model.Photo
 import com.dilipsuthar.wallbox.data.service.PhotoService
 import com.dilipsuthar.wallbox.preferences.Preferences
+import com.dilipsuthar.wallbox.utils.Popup
 import com.dilipsuthar.wallbox.utils.Tools
 import com.dilipsuthar.wallbox.viewmodels.WallpaperListViewModel
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mlsdev.animatedrv.AnimatedRecyclerView
 import retrofit2.Call
 import retrofit2.Response
 
 /**
- * Modified by Dilip
+ * Created by Dilip on 23/07/19
  */
+
 class RecentWallFragment : Fragment() {
 
     companion object {
@@ -50,6 +50,8 @@ class RecentWallFragment : Fragment() {
     }
 
     // VARS
+    private val NETWORK_ERROR = 0
+    private val HTTP_ERROR = 1
     private var mWallpaperListViewModel: WallpaperListViewModel? = null
 
     private var mService: PhotoService? = null
@@ -64,10 +66,8 @@ class RecentWallFragment : Fragment() {
 
 
     // VIEWS
-    @BindView(R.id.recent_wallpaper_list) lateinit var mRecyclerView: AnimatedRecyclerView
+    @BindView(R.id.recent_wallpaper_list) lateinit var mRecyclerView: RecyclerView
     @BindView(R.id.progress) lateinit var mProgressView: LottieAnimationView
-    @BindView(R.id.network_error_layout) lateinit var mNetworkErrorView: View
-    @BindView(R.id.http_error_layout) lateinit var mHttpErrorView: View
     @BindView(R.id.recent_swipe_refresh_layout) lateinit var mSwipRefreshView: SwipeRefreshLayout
     @BindView(R.id.fab_scroll_to_top) lateinit var mFabScrollToTop: FloatingActionButton
 
@@ -84,38 +84,40 @@ class RecentWallFragment : Fragment() {
                 Log.d(WallBox.TAG, response.code().toString())
                 if (mSwipRefreshView.isRefreshing) {
                     mSwipRefreshView.isRefreshing = false
-                    Toast.makeText(context, "Updated photos", Toast.LENGTH_SHORT).show()
+                    Popup.showToast(context, "Updated photos", Toast.LENGTH_SHORT)
                 }
                 if (response.isSuccessful) {
                     loadMore = false
+                    mPhotoAdapter?.removeFooter()
                     mPhotosList.clear()
                     mPhotosList.addAll(ArrayList(response.body()!!))
-                    mPhotoAdapter?.removeLoader()
                     updateAdapter(mPhotosList)
-                    Tools.inVisibleViews(mProgressView as View, mNetworkErrorView, mHttpErrorView, type = 1)
+                    Tools.inVisibleViews(mProgressView as View, type = 1)
                     Tools.visibleViews(mRecyclerView)
                 } else {
-                    Tools.inVisibleViews(mRecyclerView, mNetworkErrorView, mProgressView, type = 1)
-                    Tools.visibleViews(mHttpErrorView)
+                    //mPhotoAdapter?.removeFooter()
+                    Tools.inVisibleViews( mProgressView as View, type = 1)
+                    showErrorDialog(HTTP_ERROR)
                 }
             }
 
             override fun onRequestPhotosFailed(call: Call<List<Photo>>, t: Throwable) {
                 Log.d(WallBox.TAG, t.message)
                 mSwipRefreshView.isRefreshing = false
-                Tools.visibleViews(mNetworkErrorView)
-                Tools.inVisibleViews(mRecyclerView, mHttpErrorView, mProgressView, type = 1)
+                //mPhotoAdapter?.removeFooter()
+                showErrorDialog(NETWORK_ERROR)
+                Tools.inVisibleViews(mProgressView as View, type = 1)
             }
         }
 
-        // ADAPTER LISTENER
+        // ADAPTER LISTENERS
         mOnItemClickListener = object : PhotoAdapter.OnItemClickListener {
             override fun onItemClick(photo: Photo, view: View, pos: Int) {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
             override fun onItemLongClick(photo: Photo, view: View, pos: Int, imageView: ImageView) {
-                Toast.makeText(context, "$pos", Toast.LENGTH_SHORT).show()
+                Popup.showToast(context, "$pos", Toast.LENGTH_SHORT)
                 Log.d(WallBox.TAG, "mOnItemClickListener: onItemLongClick")
                 //showImagePreviewDialog(photo, imageView)
             }
@@ -163,8 +165,7 @@ class RecentWallFragment : Fragment() {
                 val endHasBeenReached = lastVisible?.plus(2)!! >= totalItem!!   // Load more photos on last item
                 if (totalItem > 0 && endHasBeenReached && !loadMore) {
                     loadMore = true
-                    //Toast.makeText(context!!, "Reached end", Toast.LENGTH_SHORT).show()
-                    mPhotoAdapter?.addLoader()
+                    mPhotoAdapter?.addFooter()
                     loadMore()
                 }
 
@@ -202,9 +203,8 @@ class RecentWallFragment : Fragment() {
     }
 
     private fun load() {
-        Toast.makeText(context!!, "Load called", Toast.LENGTH_SHORT).show()
         Tools.visibleViews(mProgressView)
-        Tools.inVisibleViews(mRecyclerView, mNetworkErrorView, mHttpErrorView, type = 1)
+        //Tools.inVisibleViews(mRecyclerView, mNetworkErrorView, mHttpErrorView, type = 1)
         mService?.requestPhotos(mPage++, WallBox.DEFAULT_PER_PAGE, mSort!!, mOnRequestPhotosListener)
         mPhotoAdapter = PhotoAdapter(ArrayList(), context!!, mOnItemClickListener)
         mRecyclerView.adapter = mPhotoAdapter
@@ -234,32 +234,35 @@ class RecentWallFragment : Fragment() {
 
     }*/
 
+    private fun showErrorDialog(error_type: Int) {
+        val dialog = Dialog(context!!)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
+        when (error_type) {
+            0 -> dialog.setContentView(R.layout.dialog_network_error)
+            1 -> dialog.setContentView(R.layout.dialog_http_error)
+        }
+        dialog.setCancelable(false)
 
-    // TODO( This function is not working): Solve this
-    private fun showImagePreviewDialog(photo: Photo, source: ImageView) {
+        val lp = WindowManager.LayoutParams()
+        lp.copyFrom(dialog.window?.attributes)
+        lp.width = WindowManager.LayoutParams.WRAP_CONTENT
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT
+        dialog.window?.attributes = lp
 
-        //val background: BitmapDrawable
-//        val inflater = context?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-//
-//        val dialogView = inflater.inflate(R.layout.dialog_photo_viewer, null) as View
+        (dialog.findViewById<ImageButton>(R.id.btn_dismiss)).setOnClickListener {
+            dialog.cancel()
+        }
 
-        /*val imagePreview = dialogView.findViewById<ImageView>(R.id.image_photo)
-        val userName = dialogView.findViewById<TextView>(R.id.text_user_name)
-        val userProfile = dialogView.findViewById<CircularImageView>(R.id.image_user_profile)*/
+        (dialog.findViewById<MaterialButton>(R.id.btn_retry)).setOnClickListener {
+            dialog.cancel()
+            if (mPhotosList.isEmpty())
+                load()
+            else
+                loadMore()
+        }
 
-        mDialog = Dialog(context!!)
-        mDialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        mDialog?.setContentView(R.layout.dialog_photo_viewer)
-        mDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        mDialog?.setCancelable(true)
-        mDialog?.show()
-
-        /*imagePreview.setImageDrawable(source.drawable.constantState!!.newDrawable())
-        userName.text = photo.user.username
-        Glide.with(context!!)
-            .load(photo.user.profile_image.medium)
-            .into(userProfile)*/
-
+        dialog.show()
     }
 
 }

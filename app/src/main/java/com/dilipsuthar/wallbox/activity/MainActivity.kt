@@ -8,15 +8,9 @@ import android.view.View
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.utils.ThemeUtils
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-        when(ThemeUtils.getTheme(this)) {
-            ThemeUtils.LIGHT -> setTheme(R.style.WallBox_Primary_Base_Light)
-            ThemeUtils.DARK -> setTheme(R.style.WallBox_Primary_Base_Dark)
-        }
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 

@@ -9,8 +9,10 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentTransaction
@@ -23,6 +25,7 @@ import com.dilipsuthar.wallbox.fragments.CollectionWallFragment
 import com.dilipsuthar.wallbox.fragments.CuratedWallFragment
 import com.dilipsuthar.wallbox.fragments.RecentWallFragment
 import com.dilipsuthar.wallbox.preferences.Preferences
+import com.dilipsuthar.wallbox.utils.Popup
 import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.dilipsuthar.wallbox.utils.Tools
 import com.google.android.material.navigation.NavigationView
@@ -43,41 +46,38 @@ class HomeActivity : BaseActivity() {
         var activityRestarted = false
     }
 
-    // Views
+    // VIEWS
     @BindView(R.id.toolbar) lateinit var mToolbar: Toolbar
     @BindView(R.id.tab_layout) lateinit var mTabLayout: TabLayout
     @BindView(R.id.view_pager) lateinit var mViewPager: ViewPager
     @BindView(R.id.nav_view) lateinit var mNavigationView: NavigationView
     @BindView(R.id.drawer_layout) lateinit var mDrawerLayout: DrawerLayout
+    @BindView(R.id.root_coordinator_layout) lateinit var mRootView: CoordinatorLayout
 
-    // Others
-    lateinit var rootView: View
-    lateinit var menuToolbar: Menu
+    // VARS
     private var mViewPagerAdapter: SectionPagerAdapter? = null
 
     // For wallpaper sort menu
     private var mSortMenuList = arrayOf<String>("Latest", "Oldest", "Popular")
     private var mCheckedSortItem: Int = 0
-
-    // Fragments
-    private lateinit var recentWallFragment: RecentWallFragment
-    private lateinit var curatedWallFragment: CuratedWallFragment
-    private lateinit var collectionWallFragment: CollectionWallFragment
+    private var mSortRecentLatest: MenuItem? = null
+    private var mSortRecentOldest: MenuItem? = null
+    private var mSortRecentPopular: MenuItem? = null
+    private var mSortCuratedLatest: MenuItem? = null
+    private var mSortCuratedOldest: MenuItem? = null
+    private var mSortCuratedPopular: MenuItem? = null
+    private var mSortCollectionAll: MenuItem? = null
+    private var mSortCollectionFeatured: MenuItem? = null
+    private var mSortCollectionCurated: MenuItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
-        /*when(ThemeUtils.getTheme(this)) {
-            ThemeUtils.LIGHT -> setTheme(R.style.WallBox_Primary_Base_Light)
-            ThemeUtils.DARK -> setTheme(R.style.WallBox_Primary_Base_Dark)
-        }*/
+        //sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         ButterKnife.bind(this)
-        rootView = window.decorView.rootView    // Get rootView from activity
 
         customizeStatusBar()
         initToolbar()
-        initComponent()
         initTabLayout()
         initNavigationDrawer()
     }
@@ -97,13 +97,6 @@ class HomeActivity : BaseActivity() {
         actionBar?.setHomeAsUpIndicator(R.drawable.ic_menu)
         actionBar?.setDisplayHomeAsUpEnabled(true)
         Tools.changeNavigationIconColor(mToolbar, ThemeUtils.getThemeAttrColor(this, R.attr.tabUnselectedColor))
-    }
-
-    private fun initComponent() {
-        Log.d(TAG, "initComponent: called")
-        recentWallFragment = RecentWallFragment()
-        curatedWallFragment = CuratedWallFragment()
-        collectionWallFragment = CollectionWallFragment()
     }
 
     private fun initTabLayout() {
@@ -194,49 +187,17 @@ class HomeActivity : BaseActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_toolbar_main, menu)
-        menuToolbar = menu!!
-        Tools.changeMenuIconColor(menu, ThemeUtils.getThemeAttrColor(this, R.attr.tabUnselectedColor))
+        Tools.changeMenuIconColor(menu!!, ThemeUtils.getThemeAttrColor(this, R.attr.tabUnselectedColor))
+        mSortRecentLatest = menu.findItem(R.id.menu_sort_recent_latest)
+        mSortRecentOldest = menu.findItem(R.id.menu_sort_recent_oldest)
+        mSortRecentPopular = menu.findItem(R.id.menu_sort_recent_popular)
+        mSortCuratedLatest = menu.findItem(R.id.menu_sort_curated_latest)
+        mSortCuratedOldest = menu.findItem(R.id.menu_sort_curated_oldest)
+        mSortCuratedPopular = menu.findItem(R.id.menu_sort_curated_popular)
+        mSortCollectionAll = menu.findItem(R.id.menu_sort_collection_all)
+        mSortCollectionFeatured = menu.findItem(R.id.menu_sort_collection_featured)
+        mSortCollectionCurated = menu.findItem(R.id.menu_sort_collection_curated)
         return true
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        // TODO: This is not working ->> make this work
-        when (mViewPager.currentItem) {
-            0 -> {
-                menu?.findItem(R.id.menu_sort_recent_latest)?.isVisible = true
-                menu?.findItem(R.id.menu_sort_recent_oldest)?.isVisible = true
-                menu?.findItem(R.id.menu_sort_recent_popular)?.isVisible = true
-                menu?.findItem(R.id.menu_sort_curated_latest)?.isVisible = false
-                menu?.findItem(R.id.menu_sort_curated_oldest)?.isVisible = false
-                menu?.findItem(R.id.menu_sort_curated_popular)?.isVisible = false
-                menu?.findItem(R.id.menu_sort_collection_all)?.isVisible = false
-                menu?.findItem(R.id.menu_sort_collection_featured)?.isVisible = false
-                menu?.findItem(R.id.menu_sort_collection_curated)?.isVisible = false
-            }
-            1 -> {
-                menu?.findItem(R.id.menu_sort_recent_latest)?.isVisible = false
-                menu?.findItem(R.id.menu_sort_recent_oldest)?.isVisible = false
-                menu?.findItem(R.id.menu_sort_recent_popular)?.isVisible = false
-                menu?.findItem(R.id.menu_sort_curated_latest)?.isVisible = true
-                menu?.findItem(R.id.menu_sort_curated_oldest)?.isVisible = true
-                menu?.findItem(R.id.menu_sort_curated_popular)?.isVisible = true
-                menu?.findItem(R.id.menu_sort_collection_all)?.isVisible = false
-                menu?.findItem(R.id.menu_sort_collection_featured)?.isVisible = false
-                menu?.findItem(R.id.menu_sort_collection_curated)?.isVisible = false
-            }
-            2 -> {
-                menu?.findItem(R.id.menu_sort_recent_latest)?.isVisible = false
-                menu?.findItem(R.id.menu_sort_recent_oldest)?.isVisible = false
-                menu?.findItem(R.id.menu_sort_recent_popular)?.isVisible = false
-                menu?.findItem(R.id.menu_sort_curated_latest)?.isVisible = false
-                menu?.findItem(R.id.menu_sort_curated_oldest)?.isVisible = false
-                menu?.findItem(R.id.menu_sort_curated_popular)?.isVisible = false
-                menu?.findItem(R.id.menu_sort_collection_all)?.isVisible = true
-                menu?.findItem(R.id.menu_sort_collection_featured)?.isVisible = true
-                menu?.findItem(R.id.menu_sort_collection_curated)?.isVisible = true
-            }
-        }
-        return super.onPrepareOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -244,7 +205,13 @@ class HomeActivity : BaseActivity() {
 
         when (item?.itemId) {
             R.id.action_search -> showSnackBar(item.title.toString(), Snackbar.LENGTH_SHORT)
-            R.id.action_sort -> {}
+            R.id.action_sort -> {
+                when (mViewPager.currentItem) {
+                    0 -> handleSortMenuItems(true,true,true,false,false,false,false,false,false)
+                    1 -> handleSortMenuItems(false,false,false,true,true,true,false,false,false)
+                    2 -> handleSortMenuItems(false,false,false,false,false,false,true,true,true)
+                }
+            }
             R.id.menu_sort_recent_latest -> {
                 transaction.replace(R.id.recent_container, RecentWallFragment.newInstance("latest")).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
                 showSnackBar("Wallpaper sorted by latest", Snackbar.LENGTH_SHORT)
@@ -270,18 +237,18 @@ class HomeActivity : BaseActivity() {
         activityRestarted = true
     }
 
-    private fun handleSortMenuItems(vararg value: Boolean, menu: Menu?) {
+    private fun handleSortMenuItems(vararg value: Boolean) {
         for ((i, v) in value.withIndex()) {
             when (i) {
-                0 -> menu?.findItem(R.id.menu_sort_recent_latest)?.isVisible = v
-                1 -> menu?.findItem(R.id.menu_sort_recent_oldest)?.isVisible = v
-                2 -> menu?.findItem(R.id.menu_sort_recent_popular)?.isVisible = v
-                3 -> menu?.findItem(R.id.menu_sort_curated_latest)?.isVisible = v
-                4 -> menu?.findItem(R.id.menu_sort_curated_oldest)?.isVisible = v
-                5 -> menu?.findItem(R.id.menu_sort_curated_popular)?.isVisible = v
-                6 -> menu?.findItem(R.id.menu_sort_collection_all)?.isVisible = v
-                7 -> menu?.findItem(R.id.menu_sort_collection_featured)?.isVisible = v
-                8 -> menu?.findItem(R.id.menu_sort_collection_curated)?.isVisible = v
+                0 -> mSortRecentLatest?.isVisible = v
+                1 -> mSortRecentOldest?.isVisible = v
+                2 -> mSortRecentPopular?.isVisible = v
+                3 -> mSortCuratedLatest?.isVisible = v
+                4 -> mSortCuratedOldest?.isVisible = v
+                5 -> mSortCuratedPopular?.isVisible = v
+                6 -> mSortCollectionAll?.isVisible = v
+                7 -> mSortCollectionFeatured?.isVisible = v
+                8 -> mSortCollectionCurated?.isVisible = v
             }
         }
     }

@@ -13,7 +13,7 @@ import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.dilipsuthar.wallbox.utils.Tools
 
-class AboutActivity : AppCompatActivity() {
+class AboutActivity : BaseActivity() {
 
     // View
     @BindView(R.id.toolbar) lateinit var toolbar: Toolbar

@@ -13,7 +13,7 @@
         <attr name="appBarColor" format="color"/>
         <attr name="backgroundColor" format="color"/>
         <attr name="cardDialogColor" format="color"/>
-        <attr name="navigationBarColor" format="color"/>
+        <attr name="toastSnackBarColor" format="color"/>
         <attr name="colorRipple" format="color"/>
     </declare-styleable>
 </resources>

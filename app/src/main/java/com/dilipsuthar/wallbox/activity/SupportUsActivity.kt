@@ -10,17 +10,12 @@ import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.dilipsuthar.wallbox.utils.Tools
 
-class SupportUsActivity : AppCompatActivity() {
+class SupportUsActivity : BaseActivity() {
 
     // View
     @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Set theme mode
-        when(ThemeUtils.getTheme(this)) {
-            ThemeUtils.LIGHT -> setTheme(R.style.WallBox_Primary_Base_Light)
-            ThemeUtils.DARK -> setTheme(R.style.WallBox_Primary_Base_Dark)
-        }
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_support_us)
         ButterKnife.bind(this)

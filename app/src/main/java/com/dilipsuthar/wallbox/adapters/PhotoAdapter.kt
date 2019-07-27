@@ -74,7 +74,7 @@ class PhotoAdapter
                     .into(holder.imagePhoto)
 
                 Picasso.get()
-                    .load(it.user.profile_image.small)
+                    .load(it.user.profile_image.medium)
                     .placeholder(R.drawable.placeholder_profile)
                     .error(R.drawable.placeholder_profile)
                     .into(holder.imageUserProfile)
@@ -108,18 +108,25 @@ class PhotoAdapter
     /** methods */
     fun addAll(photos: ArrayList<Photo>) {
         mPhotoList?.addAll(photos)
-        notifyItemInserted(mPhotoList?.size!!)
+        notifyItemInserted(mPhotoList?.size!!.minus(28))
     }
 
-    fun addLoader() {
+    fun addFooter() {
         mPhotoList?.add(Photo())
         notifyItemInserted(mPhotoList?.size!!.minus(1))
     }
 
-    fun removeLoader() {
-       if (mPhotoList?.size != 0) {
-           mPhotoList?.removeAt(mPhotoList?.size!!.minus(1))
-       }
+    fun removeFooter() {
+
+        /*if (mPhotoList?.size != 0) {
+            if (mPhotoList?.size!! % 3 != 0) {
+
+            }
+        }*/
+
+        if (mPhotoList?.size!! >= 1) {
+            mPhotoList?.removeAt(mPhotoList?.size!!.minus(1))
+        }
     }
 
     /** methods */

@@ -15,6 +15,8 @@
         <item name="statusBarColor">@color/statusBarColor</item>
         <item name="appBarColor">@color/appBarColor</item>
         <item name="backgroundColor">@color/backgroundColor</item>
+        <item name="cardDialogColor">@color/cardDialogColor</item>
+        <item name="toastSnackBarColor">@color/toastSnackBarColor</item>
         <item name="colorRipple">@color/colorRipple</item>
 
         <item name="android:windowBackground">@color/windowColor</item>
@@ -35,6 +37,8 @@
         <item name="statusBarColor">@color/statusBarColor_night</item>
         <item name="appBarColor">@color/appBarColor_night</item>
         <item name="backgroundColor">@color/backgroundColor_night</item>
+        <item name="cardDialogColor">@color/cardDialogColor_night</item>
+        <item name="toastSnackBarColor">@color/toastSnackBarColor_night</item>
         <item name="colorRipple">@color/colorRipple</item>
 
         <item name="android:windowBackground">@color/windowColor_night</item>

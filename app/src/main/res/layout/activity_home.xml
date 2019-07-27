@@ -9,6 +9,7 @@
         tools:context=".activity.HomeActivity">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/root_coordinator_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -30,7 +31,7 @@
                     app:titleTextColor="?attr/primaryTextColor"
                     app:contentInsetStartWithNavigation="0dp"
                     app:layout_scrollFlags="scroll|enterAlways"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+                    app:popupTheme="@style/ThemeOverlay.MaterialComponents"/>
 
             <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tab_layout"

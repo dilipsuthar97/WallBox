@@ -26,4 +26,8 @@
     <string name="toolbar_title_about">About</string>
     <string name="toolbar_title_support_us">Support Us</string>
 
+    <!-- -->
+    <string name="retry">Retry</string>
+    <string name="cancel">Cancel</string>
+
 </resources>

@@ -14,6 +14,7 @@
     <color name="appBarColor">#F3F4F6</color>
     <color name="backgroundColor">#FAFAFA</color>
     <color name="cardDialogColor">#FFFFFF</color>
+    <color name="toastSnackBarColor">#212121</color>
 
     <!-->>>>>>>>>>>>>>> Dark base colors <<<<<<<<<<<<<<<-->
     <color name="colorPrimary_night">#000000</color> <!-- #121212 -->
@@ -29,6 +30,7 @@
     <color name="appBarColor_night">#212121</color>
     <color name="backgroundColor_night">#303030</color>
     <color name="cardDialogColor_night">#424242</color>
+    <color name="toastSnackBarColor_night">#FFF</color>
 
     <!-- Others -->
     <color name="colorRipple">#256DB432</color>
