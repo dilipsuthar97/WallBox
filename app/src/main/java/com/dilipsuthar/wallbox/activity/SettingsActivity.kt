@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.Switch
 import androidx.appcompat.widget.Toolbar
 import butterknife.BindView
 import butterknife.ButterKnife
@@ -16,23 +17,22 @@ class SettingsActivity : BaseActivity() {
 
     // View
     @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
+    @BindView(R.id.switch_theme) lateinit var mSwitchTheme: Switch
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
         ButterKnife.bind(this)
 
-        customizeStatusBar()
         initToolbar()
-    }
 
-    private fun customizeStatusBar() {
-        when(ThemeUtils.getTheme(this)) {
-            ThemeUtils.LIGHT -> Tools.setSystemBarLight(this)
-            ThemeUtils.DARK -> Tools.clearSystemBarLight(this)
+        if (ThemeUtils.getTheme(this) == ThemeUtils.DARK) {
+            mSwitchTheme.isChecked = true
         }
 
-        Tools.setSystemBarColor(this, ThemeUtils.getThemeAttrColor(this, R.attr.colorPrimaryDark))
+        mSwitchTheme.setOnCheckedChangeListener { compoundButton, b ->
+
+        }
     }
 
     private fun initToolbar() {

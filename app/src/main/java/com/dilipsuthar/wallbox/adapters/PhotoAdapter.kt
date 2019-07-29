@@ -24,7 +24,6 @@ import com.squareup.picasso.Picasso
 import org.w3c.dom.Text
 import java.lang.NullPointerException
 
-
 /**
  * Created by Dilip on 22/07/19
  */
@@ -37,7 +36,7 @@ class PhotoAdapter
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        var view: View? = null
+        val view: View?
 
         return if (viewType == TYPE_PHOTO) {
             view = LayoutInflater.from(parent.context).inflate(R.layout.item_photo, parent, false)
@@ -62,8 +61,12 @@ class PhotoAdapter
         if (holder is PhotoViewHolder) {
 
             photo?.let {
+
+                val photoBy = it.user.first_name
+                if (it.user.last_name != null) photoBy.plus(it.user.last_name)
+
                 holder.rootView.setBackgroundColor(Color.parseColor(it.color))
-                holder.textPhotoBy.text = "By, ${it.user.first_name} ${it.user.last_name}"
+                holder.textPhotoBy.text = "By, $photoBy"
                 holder.textLikes.text = "${it.likes}"
                 holder.btnDownload.setOnClickListener {
 
@@ -82,6 +85,10 @@ class PhotoAdapter
                 holder.rootView.setOnLongClickListener { view ->
                     listener?.onItemLongClick(it, view!!, position, holder.imagePhoto)
                     true
+                }
+
+                holder.rootView.setOnClickListener { view ->
+                    listener?.onItemClick(it, view, position, holder.imagePhoto)
                 }
             }
 
@@ -129,12 +136,9 @@ class PhotoAdapter
         }
     }
 
-    /** methods */
-
-
     /** interface */
     interface OnItemClickListener {
-        fun onItemClick(photo: Photo, view: View, pos: Int)
+        fun onItemClick(photo: Photo, view: View, pos: Int, imageView: ImageView)
         fun onItemLongClick(photo: Photo, view: View, pos: Int, imageView: ImageView)
     }
 

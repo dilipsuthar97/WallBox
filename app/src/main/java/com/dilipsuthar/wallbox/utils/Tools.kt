@@ -23,6 +23,9 @@ import java.nio.file.Files.size
 
 object Tools {
 
+    const val GONE = 0
+    const val INVISIBLE = 1
+
     fun setSystemBarColor(act: Activity, @ColorInt color: Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val window = act.window
@@ -78,7 +81,7 @@ object Tools {
 
     fun inVisibleViews(vararg views: View, type: Int) {
 
-        if (type == 0) {
+        if (type == INVISIBLE) {
             for (v in views) {
                 v.visibility = View.INVISIBLE
             }

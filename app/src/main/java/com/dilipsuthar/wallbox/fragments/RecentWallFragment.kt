@@ -1,14 +1,15 @@
 package com.dilipsuthar.wallbox.fragments
 
-import android.app.Dialog
-import android.graphics.drawable.ColorDrawable
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -18,16 +19,17 @@ import com.airbnb.lottie.LottieAnimationView
 
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.WallBox
+import com.dilipsuthar.wallbox.activity.PhotoDetailActivity
 import com.dilipsuthar.wallbox.adapters.PhotoAdapter
 import com.dilipsuthar.wallbox.data.model.Photo
-import com.dilipsuthar.wallbox.data.service.PhotoService
+import com.dilipsuthar.wallbox.data.service.Services
 import com.dilipsuthar.wallbox.preferences.Preferences
+import com.dilipsuthar.wallbox.utils.Dialog
 import com.dilipsuthar.wallbox.utils.Popup
 import com.dilipsuthar.wallbox.utils.Tools
 import com.dilipsuthar.wallbox.viewmodels.WallpaperListViewModel
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.mlsdev.animatedrv.AnimatedRecyclerView
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Response
 
@@ -50,40 +52,35 @@ class RecentWallFragment : Fragment() {
     }
 
     // VARS
-    private val NETWORK_ERROR = 0
-    private val HTTP_ERROR = 1
-    private var mWallpaperListViewModel: WallpaperListViewModel? = null
-
-    private var mService: PhotoService? = null
-    private var mOnRequestPhotosListener: PhotoService.OnRequestPhotosListener? = null
+    private var mService: Services? = null
+    private var mOnRequestPhotosListener: Services.OnRequestPhotosListener? = null
     private var mPage: Int = 0
     private var mSort: String? = null
     private var mPhotosList: ArrayList<Photo> = ArrayList()
     private var mPhotoAdapter: PhotoAdapter? = null
     private var mOnItemClickListener: PhotoAdapter.OnItemClickListener? = null
-    private var mDialog: Dialog? = null
     private var loadMore: Boolean = false
 
 
     // VIEWS
     @BindView(R.id.recent_wallpaper_list) lateinit var mRecyclerView: RecyclerView
     @BindView(R.id.progress) lateinit var mProgressView: LottieAnimationView
-    @BindView(R.id.recent_swipe_refresh_layout) lateinit var mSwipRefreshView: SwipeRefreshLayout
+    @BindView(R.id.recent_swipe_refresh_layout) lateinit var mSwipeRefreshView: SwipeRefreshLayout
     @BindView(R.id.fab_scroll_to_top) lateinit var mFabScrollToTop: FloatingActionButton
 
-    // MAIN FUNCTIONS
+    /** Main */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WallBox.getInstance())
         mSort = arguments?.getString(Preferences.SORT, "latest")
 
         // SERVICES / API
-        mService = PhotoService.getService()
-        mOnRequestPhotosListener = object : PhotoService.OnRequestPhotosListener {
+        mService = Services.getService()
+        mOnRequestPhotosListener = object : Services.OnRequestPhotosListener {
             override fun onRequestPhotosSuccess(call: Call<List<Photo>>, response: Response<List<Photo>>) {
                 Log.d(WallBox.TAG, response.code().toString())
-                if (mSwipRefreshView.isRefreshing) {
-                    mSwipRefreshView.isRefreshing = false
+                if (mSwipeRefreshView.isRefreshing) {
+                    mSwipeRefreshView.isRefreshing = false
                     Popup.showToast(context, "Updated photos", Toast.LENGTH_SHORT)
                 }
                 if (response.isSuccessful) {
@@ -92,28 +89,33 @@ class RecentWallFragment : Fragment() {
                     mPhotosList.clear()
                     mPhotosList.addAll(ArrayList(response.body()!!))
                     updateAdapter(mPhotosList)
-                    Tools.inVisibleViews(mProgressView as View, type = 1)
+                    Tools.inVisibleViews(mProgressView as View, type = Tools.GONE)
                     Tools.visibleViews(mRecyclerView)
                 } else {
                     //mPhotoAdapter?.removeFooter()
-                    Tools.inVisibleViews( mProgressView as View, type = 1)
-                    showErrorDialog(HTTP_ERROR)
+                    Tools.inVisibleViews( mProgressView as View, type = Tools.GONE)
+                    //showErrorDialog(HTTP_ERROR)
+                    Dialog.showErrorDialog(context, Dialog.HTTP_ERROR, mPhotosList, ::load, ::loadMore)
                 }
             }
 
             override fun onRequestPhotosFailed(call: Call<List<Photo>>, t: Throwable) {
                 Log.d(WallBox.TAG, t.message)
-                mSwipRefreshView.isRefreshing = false
+                mSwipeRefreshView.isRefreshing = false
                 //mPhotoAdapter?.removeFooter()
-                showErrorDialog(NETWORK_ERROR)
-                Tools.inVisibleViews(mProgressView as View, type = 1)
+                //showErrorDialog(NETWORK_ERROR)
+                Dialog.showErrorDialog(context, Dialog.NETWORK_ERROR, mPhotosList, ::load, ::loadMore)
+                Tools.inVisibleViews(mProgressView as View, type = Tools.GONE)
             }
         }
 
         // ADAPTER LISTENERS
         mOnItemClickListener = object : PhotoAdapter.OnItemClickListener {
-            override fun onItemClick(photo: Photo, view: View, pos: Int) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            override fun onItemClick(photo: Photo, view: View, pos: Int, imageView: ImageView) {
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity!!, imageView, ViewCompat.getTransitionName(imageView)!!)
+                val intent = Intent(activity, PhotoDetailActivity::class.java)
+                intent.putExtra("PHOTO", Gson().toJson(photo))
+                startActivity(intent, options.toBundle())
             }
 
             override fun onItemLongClick(photo: Photo, view: View, pos: Int, imageView: ImageView) {
@@ -138,7 +140,7 @@ class RecentWallFragment : Fragment() {
         return view
     }
 
-    // METHODS
+    /** Methods */
     private fun initComponent() {
         // Recycler View
         mRecyclerView.layoutManager = LinearLayoutManager(context)
@@ -190,7 +192,7 @@ class RecentWallFragment : Fragment() {
 
 
         // Swipe Refresh Layout
-        mSwipRefreshView.setOnRefreshListener {
+        mSwipeRefreshView.setOnRefreshListener {
             mPage = 1
             mPhotosList.clear()
             load()
@@ -233,36 +235,5 @@ class RecentWallFragment : Fragment() {
         mWallpaperListViewModel = ViewModelProviders.of(activity!!).get(WallpaperListViewModel::class.java)
 
     }*/
-
-    private fun showErrorDialog(error_type: Int) {
-        val dialog = Dialog(context!!)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
-        when (error_type) {
-            0 -> dialog.setContentView(R.layout.dialog_network_error)
-            1 -> dialog.setContentView(R.layout.dialog_http_error)
-        }
-        dialog.setCancelable(false)
-
-        val lp = WindowManager.LayoutParams()
-        lp.copyFrom(dialog.window?.attributes)
-        lp.width = WindowManager.LayoutParams.WRAP_CONTENT
-        lp.height = WindowManager.LayoutParams.WRAP_CONTENT
-        dialog.window?.attributes = lp
-
-        (dialog.findViewById<ImageButton>(R.id.btn_dismiss)).setOnClickListener {
-            dialog.cancel()
-        }
-
-        (dialog.findViewById<MaterialButton>(R.id.btn_retry)).setOnClickListener {
-            dialog.cancel()
-            if (mPhotosList.isEmpty())
-                load()
-            else
-                loadMore()
-        }
-
-        dialog.show()
-    }
 
 }

@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.utils.ThemeUtils
+import com.dilipsuthar.wallbox.utils.Tools
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -16,7 +17,16 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         ThemeUtils.setRecentAppsHeaderColor(this)
+        customizeStatusBar()
 
     }
 
+    private fun customizeStatusBar() {
+        when(ThemeUtils.getTheme(this)) {
+            ThemeUtils.LIGHT -> Tools.setSystemBarLight(this)
+            ThemeUtils.DARK -> Tools.clearSystemBarLight(this)
+        }
+
+        Tools.setSystemBarColor(this, ThemeUtils.getThemeAttrColor(this, R.attr.colorPrimaryDark))
+    }
 }

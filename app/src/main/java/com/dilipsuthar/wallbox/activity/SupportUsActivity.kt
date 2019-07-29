@@ -20,17 +20,7 @@ class SupportUsActivity : BaseActivity() {
         setContentView(R.layout.activity_support_us)
         ButterKnife.bind(this)
 
-        customizeStatusBar()
         initToolbar()
-    }
-
-    private fun customizeStatusBar() {
-        when(ThemeUtils.getTheme(this)) {
-            ThemeUtils.LIGHT -> Tools.setSystemBarLight(this)
-            ThemeUtils.DARK -> Tools.clearSystemBarLight(this)
-        }
-
-        Tools.setSystemBarColor(this, ThemeUtils.getThemeAttrColor(this, R.attr.colorPrimaryDark))
     }
 
     private fun initToolbar() {

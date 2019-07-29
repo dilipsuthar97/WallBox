@@ -76,18 +76,9 @@ class HomeActivity : BaseActivity() {
         setContentView(R.layout.activity_home)
         ButterKnife.bind(this)
 
-        customizeStatusBar()
         initToolbar()
         initTabLayout()
         initNavigationDrawer()
-    }
-
-    private fun customizeStatusBar() {
-        when(ThemeUtils.getTheme(this)) {
-            ThemeUtils.LIGHT -> Tools.setSystemBarLight(this)
-            ThemeUtils.DARK -> Tools.clearSystemBarLight(this)
-        }
-        Tools.setSystemBarColor(this, ThemeUtils.getThemeAttrColor(this, R.attr.colorPrimaryDark))
     }
 
     private fun initToolbar() {
@@ -103,7 +94,7 @@ class HomeActivity : BaseActivity() {
         // Set mViewPager and link it with TabLayout
         mViewPagerAdapter = SectionPagerAdapter(supportFragmentManager)
         mViewPagerAdapter?.let {
-            it.addFragment(RecentWallFragment.newInstance("latest"), "Recent")
+            it.addFragment(RecentWallFragment.newInstance("latest"), "Fresh")
             it.addFragment(CuratedWallFragment.newInstance("latest"), "Curated")
             it.addFragment(CollectionWallFragment.newInstance("featured"), "Collections")
             mViewPager.adapter = it
@@ -214,15 +205,39 @@ class HomeActivity : BaseActivity() {
             }
             R.id.menu_sort_recent_latest -> {
                 transaction.replace(R.id.recent_container, RecentWallFragment.newInstance("latest")).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
-                showSnackBar("Wallpaper sorted by latest", Snackbar.LENGTH_SHORT)
+                showSnackBar("Wallpaper sorted by Latest", Snackbar.LENGTH_SHORT)
             }
             R.id.menu_sort_recent_oldest -> {
                 transaction.replace(R.id.recent_container, RecentWallFragment.newInstance("oldest")).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
-                showSnackBar("Wallpaper sorted by oldest", Snackbar.LENGTH_SHORT)
+                showSnackBar("Wallpaper sorted by Oldest", Snackbar.LENGTH_SHORT)
             }
             R.id.menu_sort_recent_popular -> {
-                transaction.replace(R.id.recent_container, RecentWallFragment.newInstance("popular")).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit()
-                showSnackBar("Wallpaper sorted by popular", Snackbar.LENGTH_SHORT)
+                transaction.replace(R.id.recent_container, RecentWallFragment.newInstance("popular")).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
+                showSnackBar("Wallpaper sorted by Popular", Snackbar.LENGTH_SHORT)
+            }
+            R.id.menu_sort_curated_latest -> {
+                transaction.replace(R.id.curated_container, CuratedWallFragment.newInstance("latest")).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
+                showSnackBar("Wallpaper sorted by Latest", Snackbar.LENGTH_SHORT)
+            }
+            R.id.menu_sort_curated_oldest -> {
+                transaction.replace(R.id.curated_container, CuratedWallFragment.newInstance("oldest")).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
+                showSnackBar("Wallpaper sorted by Oldest", Snackbar.LENGTH_SHORT)
+            }
+            R.id.menu_sort_curated_popular -> {
+                transaction.replace(R.id.curated_container, CuratedWallFragment.newInstance("popular")).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
+                showSnackBar("Wallpaper sorted by Popular", Snackbar.LENGTH_SHORT)
+            }
+            R.id.menu_sort_collection_all -> {
+                transaction.replace(R.id.collections_container, CuratedWallFragment.newInstance("all")).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
+                showSnackBar("Collections sorted by All", Snackbar.LENGTH_SHORT)
+            }
+            R.id.menu_sort_collection_featured -> {
+                transaction.replace(R.id.collections_container, CuratedWallFragment.newInstance("featured")).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
+                showSnackBar("Collections sorted by All", Snackbar.LENGTH_SHORT)
+            }
+            R.id.menu_sort_collection_curated -> {
+                transaction.replace(R.id.collections_container, CuratedWallFragment.newInstance("curated")).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
+                showSnackBar("Collections sorted by All", Snackbar.LENGTH_SHORT)
             }
             else -> mDrawerLayout.openDrawer(GravityCompat.START)
         }

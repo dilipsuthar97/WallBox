@@ -12,11 +12,25 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 /** Created by Dilip on 20/07/19 */
 
-public class PhotoService {
+public class Services {
     private var call: Call<List<Photo>>? = null
 
     public fun requestPhotos(page: Int, per_page: Int, order_by: String, listener: OnRequestPhotosListener?) {
         val requestCall = buildApi(buildClient()).getPhotos(WallBox.ACCESS_KEY, page, per_page, order_by)
+        requestCall.enqueue(object : Callback<List<Photo>> {
+            override fun onResponse(call: Call<List<Photo>>, response: Response<List<Photo>>) {
+                listener?.onRequestPhotosSuccess(call, response)
+            }
+
+            override fun onFailure(call: Call<List<Photo>>, t: Throwable) {
+                listener?.onRequestPhotosFailed(call, t)
+            }
+        })
+        call = requestCall
+    }
+
+    public fun requestCuratedPhotos(page: Int, per_page: Int, order_by: String, listener: OnRequestPhotosListener?) {
+        val requestCall = buildApi(buildClient()).getCuratedPhotos(WallBox.ACCESS_KEY, page, per_page, order_by)
         requestCall.enqueue(object : Callback<List<Photo>> {
             override fun onResponse(call: Call<List<Photo>>, response: Response<List<Photo>>) {
                 listener?.onRequestPhotosSuccess(call, response)
@@ -71,13 +85,13 @@ public class PhotoService {
 
     /** Singleton pattern */
     companion object {
-        private var instance: PhotoService? = null
+        private var instance: Services? = null
 
-        fun getService(): PhotoService {
+        fun getService(): Services {
             if (instance == null)
-                instance = PhotoService()
+                instance = Services()
 
-            return instance as PhotoService
+            return instance as Services
         }
     }
 

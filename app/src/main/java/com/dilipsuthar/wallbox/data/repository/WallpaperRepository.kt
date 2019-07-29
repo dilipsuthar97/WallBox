@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.dilipsuthar.wallbox.WallBox
 import com.dilipsuthar.wallbox.data.model.Photo
-import com.dilipsuthar.wallbox.data.service.PhotoService
+import com.dilipsuthar.wallbox.data.service.Services
 import retrofit2.Call
 import retrofit2.Response
 
@@ -12,8 +12,8 @@ class WallpaperRepository {
 
     // VARS
     private var PAGE: Int = 0
-    private var mPhotoService: PhotoService? = null
-    private var mOnRequestPhotoListener: PhotoService.OnRequestPhotosListener? = null
+    private var mServices: Services? = null
+    private var mOnRequestPhotoListener: Services.OnRequestPhotosListener? = null
 
     private var mWallpapers: MutableLiveData<List<Photo>> = MutableLiveData()
 
@@ -30,14 +30,14 @@ class WallpaperRepository {
 
     init {
 
-        mPhotoService = PhotoService.getService()
+        mServices = Services.getService()
 
-        mPhotoService?.requestPhotos(PAGE++, WallBox.DEFAULT_PER_PAGE, "latest", mOnRequestPhotoListener)
+        mServices?.requestPhotos(PAGE++, WallBox.DEFAULT_PER_PAGE, "latest", mOnRequestPhotoListener)
     }
 
     public fun getWallpapers(): LiveData<List<Photo>> {
         // TODO: Call listener methods here ^^
-        mOnRequestPhotoListener = object : PhotoService.OnRequestPhotosListener {
+        mOnRequestPhotoListener = object : Services.OnRequestPhotosListener {
             override fun onRequestPhotosSuccess(call: Call<List<Photo>>, response: Response<List<Photo>>) {
 
             }
@@ -47,7 +47,7 @@ class WallpaperRepository {
             }
         }
 
-        mPhotoService?.requestPhotos(PAGE++, WallBox.DEFAULT_PER_PAGE, WallBox.DEFAULT_ORDER_BY, mOnRequestPhotoListener)
+        mServices?.requestPhotos(PAGE++, WallBox.DEFAULT_PER_PAGE, WallBox.DEFAULT_ORDER_BY, mOnRequestPhotoListener)
 
         return mWallpapers
     }
