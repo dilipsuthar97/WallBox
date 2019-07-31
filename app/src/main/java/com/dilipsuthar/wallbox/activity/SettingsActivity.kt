@@ -1,8 +1,10 @@
 package com.dilipsuthar.wallbox.activity
 
+import android.content.SharedPreferences
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.MenuItem
 import android.view.View
 import android.widget.Switch
@@ -15,11 +17,16 @@ import com.dilipsuthar.wallbox.utils.Tools
 
 class SettingsActivity : BaseActivity() {
 
-    // View
+    // Vars
+    private var activityRestarted = false
+    private lateinit var sharedPreferences: SharedPreferences
+
+    // Views
     @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
     @BindView(R.id.switch_theme) lateinit var mSwitchTheme: Switch
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
         ButterKnife.bind(this)
@@ -30,8 +37,13 @@ class SettingsActivity : BaseActivity() {
             mSwitchTheme.isChecked = true
         }
 
-        mSwitchTheme.setOnCheckedChangeListener { compoundButton, b ->
+        mSwitchTheme.setOnCheckedChangeListener { compoundButton, value ->
+            if (value)
+                ThemeUtils.setTheme(this, ThemeUtils.DARK)
+            else
+                ThemeUtils.setTheme(this, ThemeUtils.LIGHT)
 
+            restartActivity()
         }
     }
 
@@ -49,6 +61,13 @@ class SettingsActivity : BaseActivity() {
             finish()
 
         return true
+    }
+
+    private fun restartActivity() {
+        val intent = this.intent
+        this.finish()
+        startActivity(intent)
+        activityRestarted = true
     }
 
 }

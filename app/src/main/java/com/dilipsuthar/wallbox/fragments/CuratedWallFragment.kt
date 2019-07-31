@@ -26,6 +26,7 @@ import com.airbnb.lottie.LottieAnimationView
 
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.WallBox
+import com.dilipsuthar.wallbox.activity.HomeActivity
 import com.dilipsuthar.wallbox.activity.PhotoDetailActivity
 import com.dilipsuthar.wallbox.adapters.PhotoAdapter
 import com.dilipsuthar.wallbox.data.model.Photo
@@ -71,7 +72,6 @@ class CuratedWallFragment : Fragment() {
     @BindView(R.id.curated_wallpaper_list) lateinit var mRecyclerView: RecyclerView
     @BindView(R.id.progress) lateinit var mProgressView: LottieAnimationView
     @BindView(R.id.curated_swipe_refresh_layout) lateinit var mSwipeRefreshView: SwipeRefreshLayout
-    @BindView(R.id.fab_scroll_to_top) lateinit var mFabScrollToTop: FloatingActionButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -162,8 +162,9 @@ class CuratedWallFragment : Fragment() {
                 val firstVisible = layoutManager?.findFirstCompletelyVisibleItemPosition()
 
                 val atTopReached = firstVisible?.minus(1)!! <= 0    // Hide fab on first item
-                if (atTopReached)
-                    mFabScrollToTop.hide()
+                if (atTopReached) {
+                    HomeActivity.fabScrollUp?.hide()
+                }
 
                 val endHasBeenReached = lastVisible?.plus(2)!! >= totalItem!!   // Load more photos on last item
                 if (totalItem > 0 && endHasBeenReached && !loadMore) {
@@ -182,9 +183,9 @@ class CuratedWallFragment : Fragment() {
 
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     if (scrollingUp) {
-                        mFabScrollToTop.show()
+                        HomeActivity.fabScrollUp?.hide()
                     } else {
-                        mFabScrollToTop.hide()
+                        HomeActivity.fabScrollUp?.show()
                     }
                 }
             }
@@ -199,10 +200,6 @@ class CuratedWallFragment : Fragment() {
             load()
         }
 
-        // Fab
-        mFabScrollToTop.setOnClickListener {
-            scrollToTop()
-        }
     }
 
     private fun load() {
@@ -220,7 +217,7 @@ class CuratedWallFragment : Fragment() {
         mPhotoAdapter?.addAll(photos)
     }
 
-    private fun scrollToTop() {
+    fun scrollToTop() {
         val layoutManager = mRecyclerView.layoutManager as LinearLayoutManager
         if (mRecyclerView != null) {
             if (layoutManager != null && layoutManager.findFirstVisibleItemPosition() > 5) {

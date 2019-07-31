@@ -15,6 +15,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.viewpager.widget.ViewPager
 import butterknife.BindView
@@ -28,6 +29,7 @@ import com.dilipsuthar.wallbox.preferences.Preferences
 import com.dilipsuthar.wallbox.utils.Popup
 import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.dilipsuthar.wallbox.utils.Tools
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
@@ -41,9 +43,7 @@ class HomeActivity : BaseActivity() {
 
     companion object {
         const val TAG: String = "debug_HomeActivity"
-        lateinit var sharedPreferences: SharedPreferences
-
-        var activityRestarted = false
+        var fabScrollUp: FloatingActionButton? = null
     }
 
     // VIEWS
@@ -53,6 +53,7 @@ class HomeActivity : BaseActivity() {
     @BindView(R.id.nav_view) lateinit var mNavigationView: NavigationView
     @BindView(R.id.drawer_layout) lateinit var mDrawerLayout: DrawerLayout
     @BindView(R.id.root_coordinator_layout) lateinit var mRootView: CoordinatorLayout
+//    @BindView(R.id.fab_scroll_to_top) lateinit var mFabScrollUp: FloatingActionButton
 
     // VARS
     private var mViewPagerAdapter: SectionPagerAdapter? = null
@@ -75,10 +76,23 @@ class HomeActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         ButterKnife.bind(this)
+//        fabScrollUp = mFabScrollUp
 
         initToolbar()
         initTabLayout()
         initNavigationDrawer()
+
+        /**  */
+        /*mFabScrollUp.setOnClickListener {
+            val fragment: Fragment?
+            when (mViewPager.currentItem) {
+                0 -> {
+                    fragment = mViewPagerAdapter?.getItem(0)
+                    if (fragment is RecentWallFragment)
+                        (fragment as RecentWallFragment).scrollToTop()
+                }
+            }
+        }*/
     }
 
     private fun initToolbar() {
@@ -228,28 +242,21 @@ class HomeActivity : BaseActivity() {
                 showSnackBar("Wallpaper sorted by Popular", Snackbar.LENGTH_SHORT)
             }
             R.id.menu_sort_collection_all -> {
-                transaction.replace(R.id.collections_container, CuratedWallFragment.newInstance("all")).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
+                transaction.replace(R.id.collections_container, CollectionWallFragment.newInstance("all")).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
                 showSnackBar("Collections sorted by All", Snackbar.LENGTH_SHORT)
             }
             R.id.menu_sort_collection_featured -> {
-                transaction.replace(R.id.collections_container, CuratedWallFragment.newInstance("featured")).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
+                transaction.replace(R.id.collections_container, CollectionWallFragment.newInstance("featured")).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
                 showSnackBar("Collections sorted by All", Snackbar.LENGTH_SHORT)
             }
             R.id.menu_sort_collection_curated -> {
-                transaction.replace(R.id.collections_container, CuratedWallFragment.newInstance("curated")).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
+                transaction.replace(R.id.collections_container, CollectionWallFragment.newInstance("curated")).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
                 showSnackBar("Collections sorted by All", Snackbar.LENGTH_SHORT)
             }
             else -> mDrawerLayout.openDrawer(GravityCompat.START)
         }
 
         return super.onOptionsItemSelected(item!!)
-    }
-
-    private fun restartActivity() {
-        val intent = this.intent
-        this.finish()
-        startActivity(intent)
-        activityRestarted = true
     }
 
     private fun handleSortMenuItems(vararg value: Boolean) {

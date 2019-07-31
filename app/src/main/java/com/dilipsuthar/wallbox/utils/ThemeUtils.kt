@@ -24,6 +24,14 @@ object ThemeUtils {
         return sharedPreferences?.getString(Preferences.THEME, LIGHT)!!
     }
 
+    fun setTheme(context: Context, theme: String) {
+        val sharedPreferences: SharedPreferences? = PreferenceManager.getDefaultSharedPreferences(context)
+        when (theme) {
+            LIGHT -> sharedPreferences?.edit()?.putString(Preferences.THEME, LIGHT)?.apply()
+            else -> sharedPreferences?.edit()?.putString(Preferences.THEME, DARK)?.apply()
+        }
+    }
+
     @ColorInt
     fun getThemeAttrColor(context: Context, @AttrRes colorAttr: Int): Int {
         val array = context.obtainStyledAttributes(null, intArrayOf(colorAttr))

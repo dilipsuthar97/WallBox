@@ -8,20 +8,6 @@
              android:background="?attr/backgroundColor"
              tools:context=".fragments.CuratedWallFragment">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_scroll_to_top"
-            style="@style/Widget.MaterialComponents.FloatingActionButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="16dp"
-            android:tooltipText="Scroll up"
-            app:elevation="4dp"
-            app:hoveredFocusedTranslationZ="10dp"
-            app:srcCompat="@drawable/ic_arrow_upward"
-            app:tint="@color/white"
-            app:rippleColor="?attr/colorPrimary"/>
-
     <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/progress"
             android:layout_width="wrap_content"
