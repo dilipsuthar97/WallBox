@@ -1,20 +1,15 @@
 package com.dilipsuthar.wallbox.fragments
 
 
-import android.app.Dialog
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import butterknife.BindView
 import butterknife.ButterKnife
-import com.airbnb.lottie.LottieAnimationView
 
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.WallBox
@@ -32,6 +26,7 @@ import com.dilipsuthar.wallbox.adapters.PhotoAdapter
 import com.dilipsuthar.wallbox.data.model.Photo
 import com.dilipsuthar.wallbox.data.service.Services
 import com.dilipsuthar.wallbox.preferences.Preferences
+import com.dilipsuthar.wallbox.utils.Dialog
 import com.dilipsuthar.wallbox.utils.Popup
 import com.dilipsuthar.wallbox.utils.Tools
 import com.google.android.material.button.MaterialButton
@@ -70,14 +65,14 @@ class CuratedWallFragment : Fragment() {
 
     // VIEWS
     @BindView(R.id.curated_wallpaper_list) lateinit var mRecyclerView: RecyclerView
-    @BindView(R.id.progress) lateinit var mProgressView: LottieAnimationView
     @BindView(R.id.curated_swipe_refresh_layout) lateinit var mSwipeRefreshView: SwipeRefreshLayout
 
+    /** MAIN METHOD */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mSort = arguments?.getString(Preferences.SORT, "latest")
 
-        // SERVICES / API
+            /** SERVICES / API */
         mService = Services.getService()
         mOnRequestPhotosListener = object : Services.OnRequestPhotosListener {
             override fun onRequestPhotosSuccess(call: Call<List<Photo>>, response: Response<List<Photo>>) {
@@ -92,27 +87,26 @@ class CuratedWallFragment : Fragment() {
                     mPhotosList.clear()
                     mPhotosList.addAll(ArrayList(response.body()!!))
                     updateAdapter(mPhotosList)
-                    Tools.inVisibleViews(mProgressView as View, type = Tools.GONE)
+                    //Tools.inVisibleViews(mProgressView as View, type = Tools.GONE)
                     Tools.visibleViews(mRecyclerView)
                 } else {
                     //mPhotoAdapter?.removeFooter()
-                    Tools.inVisibleViews( mProgressView as View, type = Tools.GONE)
-                    //showErrorDialog(HTTP_ERROR)
-                    com.dilipsuthar.wallbox.utils.Dialog.showErrorDialog(context, com.dilipsuthar.wallbox.utils.Dialog.HTTP_ERROR, mPhotosList, ::load, ::loadMore)
+                    //Tools.inVisibleViews( mProgressView as View, type = Tools.GONE)
+                    Dialog.showErrorDialog(context, Dialog.HTTP_ERROR, mPhotosList, ::load, ::loadMore)
                 }
             }
 
             override fun onRequestPhotosFailed(call: Call<List<Photo>>, t: Throwable) {
                 Log.d(WallBox.TAG, t.message)
-                mSwipeRefreshView.isRefreshing = false
+                if (mSwipeRefreshView.isRefreshing)
+                    mSwipeRefreshView.isRefreshing = false
                 //mPhotoAdapter?.removeFooter()
-                //showErrorDialog(NETWORK_ERROR)
-                com.dilipsuthar.wallbox.utils.Dialog.showErrorDialog(context, com.dilipsuthar.wallbox.utils.Dialog.NETWORK_ERROR, mPhotosList, ::load, ::loadMore)
-                Tools.inVisibleViews(mProgressView as View, type = Tools.GONE)
+                Dialog.showErrorDialog(context, Dialog.NETWORK_ERROR, mPhotosList, ::load, ::loadMore)
+                //Tools.inVisibleViews(mProgressView as View, type = Tools.GONE)
             }
         }
 
-        // ADAPTER LISTENERS
+        /** ADAPTER LISTENERS */
         mOnItemClickListener = object : PhotoAdapter.OnItemClickListener {
             override fun onItemClick(photo: Photo, view: View, pos: Int, imageView: ImageView) {
                 val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity!!, imageView, ViewCompat.getTransitionName(imageView)!!)
@@ -144,7 +138,7 @@ class CuratedWallFragment : Fragment() {
 
     /** Methods */
     private fun initComponent() {
-        // Recycler View
+        /** Recycler View */
         mRecyclerView.layoutManager = LinearLayoutManager(context)
         mRecyclerView.setItemViewCacheSize(5)
         mRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -193,7 +187,7 @@ class CuratedWallFragment : Fragment() {
         })
 
 
-        // Swipe Refresh Layout
+        /** Swipe Refresh Layout */
         mSwipeRefreshView.setOnRefreshListener {
             mPage = 1
             mPhotosList.clear()
@@ -203,7 +197,7 @@ class CuratedWallFragment : Fragment() {
     }
 
     private fun load() {
-        Tools.visibleViews(mProgressView)
+        mSwipeRefreshView.isRefreshing = true
         mService?.requestCuratedPhotos(mPage++, WallBox.DEFAULT_PER_PAGE, mSort!!, mOnRequestPhotosListener)
         mPhotoAdapter = PhotoAdapter(ArrayList(), context!!, mOnItemClickListener)
         mRecyclerView.adapter = mPhotoAdapter

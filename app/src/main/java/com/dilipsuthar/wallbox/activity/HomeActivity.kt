@@ -58,9 +58,7 @@ class HomeActivity : BaseActivity() {
     // VARS
     private var mViewPagerAdapter: SectionPagerAdapter? = null
 
-    // For wallpaper sort menu
-    private var mSortMenuList = arrayOf<String>("Latest", "Oldest", "Popular")
-    private var mCheckedSortItem: Int = 0
+    // Wallpaper sort menu
     private var mSortRecentLatest: MenuItem? = null
     private var mSortRecentOldest: MenuItem? = null
     private var mSortRecentPopular: MenuItem? = null
@@ -72,7 +70,6 @@ class HomeActivity : BaseActivity() {
     private var mSortCollectionCurated: MenuItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        //sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         ButterKnife.bind(this)
@@ -82,7 +79,7 @@ class HomeActivity : BaseActivity() {
         initTabLayout()
         initNavigationDrawer()
 
-        /**  */
+        /** Fab scrollToUp listener */
         /*mFabScrollUp.setOnClickListener {
             val fragment: Fragment?
             when (mViewPager.currentItem) {
@@ -105,7 +102,7 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun initTabLayout() {
-        // Set mViewPager and link it with TabLayout
+        /** Set mViewPager and link it with TabLayout */
         mViewPagerAdapter = SectionPagerAdapter(supportFragmentManager)
         mViewPagerAdapter?.let {
             it.addFragment(RecentWallFragment.newInstance("latest"), "Fresh")
@@ -116,12 +113,12 @@ class HomeActivity : BaseActivity() {
         mViewPager.offscreenPageLimit = 2
         mTabLayout.setupWithViewPager(mViewPager)
 
-        // Add icons to TabLayout
+        /** Add icons to TabLayout */
         mTabLayout.getTabAt(0)?.setIcon(R.drawable.ic_tab_recent)
         mTabLayout.getTabAt(1)?.setIcon(R.drawable.ic_tab_curated)
         mTabLayout.getTabAt(2)?.setIcon(R.drawable.ic_tab_collection)
 
-        // Set color to TabLayout icons
+        /** Set color to TabLayout icons */
         mTabLayout.getTabAt(0)?.icon?.setColorFilter(
             ThemeUtils.getThemeAttrColor(this, R.attr.tabSelectedColor),
             PorterDuff.Mode.SRC_IN)
@@ -147,7 +144,6 @@ class HomeActivity : BaseActivity() {
                 tab?.icon?.setColorFilter(
                     ThemeUtils.getThemeAttrColor(this@HomeActivity, R.attr.tabSelectedColor),
                     PorterDuff.Mode.SRC_IN)
-                //menuToolbar.findItem(R.id.action_sort).isVisible = tab?.position != 2
             }
 
         })

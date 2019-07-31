@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityOptionsCompat
@@ -65,16 +66,14 @@ class RecentWallFragment : Fragment() {
 
     // VIEWS
     @BindView(R.id.recent_wallpaper_list) lateinit var mRecyclerView: RecyclerView
-    @BindView(R.id.progress) lateinit var mProgressView: LottieAnimationView
     @BindView(R.id.recent_swipe_refresh_layout) lateinit var mSwipeRefreshView: SwipeRefreshLayout
 
-    /** Main */
+    /** MAIN METHOD */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(WallBox.getInstance())
         mSort = arguments?.getString(Preferences.SORT, "latest")
 
-        // SERVICES / API
+        /** SERVICES / API */
         mService = Services.getService()
         mOnRequestPhotosListener = object : Services.OnRequestPhotosListener {
             override fun onRequestPhotosSuccess(call: Call<List<Photo>>, response: Response<List<Photo>>) {
@@ -89,27 +88,26 @@ class RecentWallFragment : Fragment() {
                     mPhotosList.clear()
                     mPhotosList.addAll(ArrayList(response.body()!!))
                     updateAdapter(mPhotosList)
-                    Tools.inVisibleViews(mProgressView as View, type = Tools.GONE)
+                    //Tools.inVisibleViews(mProgressView as View, type = Tools.GONE)
                     Tools.visibleViews(mRecyclerView)
                 } else {
                     //mPhotoAdapter?.removeFooter()
-                    Tools.inVisibleViews( mProgressView as View, type = Tools.GONE)
-                    //showErrorDialog(HTTP_ERROR)
+                    //Tools.inVisibleViews( mProgressView as View, type = Tools.GONE)
                     Dialog.showErrorDialog(context, Dialog.HTTP_ERROR, mPhotosList, ::load, ::loadMore)
                 }
             }
 
             override fun onRequestPhotosFailed(call: Call<List<Photo>>, t: Throwable) {
                 Log.d(WallBox.TAG, t.message)
-                mSwipeRefreshView.isRefreshing = false
+                if (mSwipeRefreshView.isRefreshing)
+                    mSwipeRefreshView.isRefreshing = false
                 //mPhotoAdapter?.removeFooter()
-                //showErrorDialog(NETWORK_ERROR)
                 Dialog.showErrorDialog(context, Dialog.NETWORK_ERROR, mPhotosList, ::load, ::loadMore)
-                Tools.inVisibleViews(mProgressView as View, type = Tools.GONE)
+                //Tools.inVisibleViews(mProgressView as View, type = Tools.GONE)
             }
         }
 
-        // ADAPTER LISTENERS
+        /** ADAPTER LISTENERS */
         mOnItemClickListener = object : PhotoAdapter.OnItemClickListener {
             override fun onItemClick(photo: Photo, view: View, pos: Int, imageView: ImageView) {
                 val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity!!, imageView, ViewCompat.getTransitionName(imageView)!!)
@@ -142,10 +140,9 @@ class RecentWallFragment : Fragment() {
 
     /** Methods */
     private fun initComponent() {
-        // Recycler View
+        /** Recycler View */
         mRecyclerView.layoutManager = LinearLayoutManager(context)
         mRecyclerView.setItemViewCacheSize(5)
-        //mRecyclerView.addItemDecoration(VerticalSpacingItemDecorator(5))
         mRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
             var verticalOffset: Int = 0
@@ -192,7 +189,7 @@ class RecentWallFragment : Fragment() {
         })
 
 
-        // Swipe Refresh Layout
+        /** Swipe Refresh Layout */
         mSwipeRefreshView.setOnRefreshListener {
             mPage = 1
             mPhotosList.clear()
@@ -202,8 +199,7 @@ class RecentWallFragment : Fragment() {
     }
 
     private fun load() {
-        Tools.visibleViews(mProgressView)
-        //Tools.inVisibleViews(mRecyclerView, mNetworkErrorView, mHttpErrorView, type = 1)
+        mSwipeRefreshView.isRefreshing = true
         mService?.requestPhotos(mPage++, WallBox.DEFAULT_PER_PAGE, mSort!!, mOnRequestPhotosListener)
         mPhotoAdapter = PhotoAdapter(ArrayList(), context!!, mOnItemClickListener)
         mRecyclerView.adapter = mPhotoAdapter
