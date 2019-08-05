@@ -17,14 +17,21 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-//    buildTypes.each {
-//        it.buildConfigField('String', 'UNSPLASH_CLIENT_ID', )
-//    }
+    buildTypes.each {
+        it.buildConfigField('String', 'WALLBOX_ACCESS_KEY', WALLBOX_ACCESS_KEY)
+        it.buildConfigField('String', 'WALLBOX_SECRET_KEY', WALLBOX_SECRET_KEY)
+    }
+    dataBinding {
+        enabled true
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -54,7 +61,7 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    // Third party
+    // Third party------------------------------------------------------------
     // Butter knife
     implementation "com.jakewharton:butterknife:$butterKnifeVersion"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
@@ -77,8 +84,8 @@ dependencies {
     // Lottie animation
     implementation 'com.airbnb.android:lottie:3.0.1'
 
-    // RecyclerView animated
-    implementation "com.mlsdev.animatedrv:library:2.0.0"
+    // PhotoView
+    implementation 'com.github.chrisbanes:PhotoView:2.2.0'
 
     /*// Fast adapter
     implementation 'com.mikepenz:fastadapter:4.0.0'

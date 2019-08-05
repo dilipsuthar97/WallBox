@@ -11,6 +11,8 @@ import androidx.annotation.ColorRes
 import androidx.appcompat.widget.Toolbar
 import com.google.android.material.snackbar.Snackbar
 import android.graphics.drawable.Drawable
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.util.TypedValue
 import android.view.Menu
 import androidx.core.content.ContextCompat
@@ -97,5 +99,13 @@ object Tools {
         sbView.setBackgroundColor(ctx.resources.getColor(color))
     }
 
+    fun hasNetwork(ctx: Context?): Boolean? {
+        var isConnected: Boolean? = false
+        val connectivityManager = ctx?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
+        if (activeNetwork != null && activeNetwork.isConnected)
+            isConnected = true
+        return isConnected
+    }
 
 }

@@ -1,8 +1,11 @@
 package com.dilipsuthar.wallbox.data.service
 
+import android.content.Context
+import com.dilipsuthar.wallbox.BuildConfig
 import com.dilipsuthar.wallbox.WallBox
 import com.dilipsuthar.wallbox.data.api.PhotoApi
 import com.dilipsuthar.wallbox.data.model.Photo
+import okhttp3.Cache
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -12,11 +15,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 /** Created by Dilip on 20/07/19 */
 
-public class Services {
+public class Services() {
+
     private var call: Call<List<Photo>>? = null
 
     public fun requestPhotos(page: Int, per_page: Int, order_by: String, listener: OnRequestPhotosListener?) {
-        val requestCall = buildApi(buildClient()).getPhotos(WallBox.ACCESS_KEY, page, per_page, order_by)
+        val requestCall = buildApi(buildClient()).getPhotos(BuildConfig.WALLBOX_ACCESS_KEY, page, per_page, order_by)
         requestCall.enqueue(object : Callback<List<Photo>> {
             override fun onResponse(call: Call<List<Photo>>, response: Response<List<Photo>>) {
                 listener?.onRequestPhotosSuccess(call, response)
@@ -30,7 +34,7 @@ public class Services {
     }
 
     public fun requestCuratedPhotos(page: Int, per_page: Int, order_by: String, listener: OnRequestPhotosListener?) {
-        val requestCall = buildApi(buildClient()).getCuratedPhotos(WallBox.ACCESS_KEY, page, per_page, order_by)
+        val requestCall = buildApi(buildClient()).getCuratedPhotos(BuildConfig.WALLBOX_ACCESS_KEY, page, per_page, order_by)
         requestCall.enqueue(object : Callback<List<Photo>> {
             override fun onResponse(call: Call<List<Photo>>, response: Response<List<Photo>>) {
                 listener?.onRequestPhotosSuccess(call, response)

@@ -1,5 +1,7 @@
 package com.dilipsuthar.wallbox.data.repository
 
+import android.annotation.SuppressLint
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.dilipsuthar.wallbox.WallBox
@@ -8,7 +10,7 @@ import com.dilipsuthar.wallbox.data.service.Services
 import retrofit2.Call
 import retrofit2.Response
 
-class WallpaperRepository {
+class WallpaperRepository(val context: Context?) {
 
     // VARS
     private var PAGE: Int = 0
@@ -18,11 +20,12 @@ class WallpaperRepository {
     private var mWallpapers: MutableLiveData<List<Photo>> = MutableLiveData()
 
     companion object {
+        @SuppressLint("StaticFieldLeak")
         private var instance: WallpaperRepository? = null
 
-        fun getInstance(): WallpaperRepository {
+        fun getInstance(context: Context?): WallpaperRepository {
             if (instance == null)
-                instance = WallpaperRepository()
+                instance = WallpaperRepository(context)
 
             return instance as WallpaperRepository
         }

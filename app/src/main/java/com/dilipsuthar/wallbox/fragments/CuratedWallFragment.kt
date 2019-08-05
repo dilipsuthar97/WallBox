@@ -91,7 +91,6 @@ class CuratedWallFragment : Fragment() {
                     Tools.visibleViews(mRecyclerView)
                 } else {
                     //mPhotoAdapter?.removeFooter()
-                    //Tools.inVisibleViews( mProgressView as View, type = Tools.GONE)
                     Dialog.showErrorDialog(context, Dialog.HTTP_ERROR, mPhotosList, ::load, ::loadMore)
                 }
             }

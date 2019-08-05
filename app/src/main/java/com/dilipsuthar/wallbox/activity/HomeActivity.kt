@@ -52,7 +52,7 @@ class HomeActivity : BaseActivity() {
     @BindView(R.id.view_pager) lateinit var mViewPager: ViewPager
     @BindView(R.id.nav_view) lateinit var mNavigationView: NavigationView
     @BindView(R.id.drawer_layout) lateinit var mDrawerLayout: DrawerLayout
-    @BindView(R.id.root_coordinator_layout) lateinit var mRootView: CoordinatorLayout
+    @BindView(R.id.root_coordinator_layout) lateinit var mRootView: View
 //    @BindView(R.id.fab_scroll_to_top) lateinit var mFabScrollUp: FloatingActionButton
 
     // VARS

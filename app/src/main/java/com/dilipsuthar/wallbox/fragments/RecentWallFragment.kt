@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.ViewCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -77,6 +78,7 @@ class RecentWallFragment : Fragment() {
         mService = Services.getService()
         mOnRequestPhotosListener = object : Services.OnRequestPhotosListener {
             override fun onRequestPhotosSuccess(call: Call<List<Photo>>, response: Response<List<Photo>>) {
+
                 Log.d(WallBox.TAG, response.code().toString())
                 if (mSwipeRefreshView.isRefreshing) {
                     mSwipeRefreshView.isRefreshing = false
@@ -92,7 +94,6 @@ class RecentWallFragment : Fragment() {
                     Tools.visibleViews(mRecyclerView)
                 } else {
                     //mPhotoAdapter?.removeFooter()
-                    //Tools.inVisibleViews( mProgressView as View, type = Tools.GONE)
                     Dialog.showErrorDialog(context, Dialog.HTTP_ERROR, mPhotosList, ::load, ::loadMore)
                 }
             }
