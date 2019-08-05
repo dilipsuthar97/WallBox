@@ -20,7 +20,7 @@ object ThemeUtils {
     const val DARK = "dark"
 
     fun getTheme(context: Context): String {
-        val sharedPreferences: SharedPreferences? = PreferenceManager.getDefaultSharedPreferences(context)
+        val sharedPreferences: SharedPreferences? = context.getSharedPreferences(Preferences.PREF, Context.MODE_PRIVATE)
         return sharedPreferences?.getString(Preferences.THEME, LIGHT)!!
     }
 
