@@ -1,5 +1,6 @@
 package com.dilipsuthar.wallbox.utils
 
+import android.view.View
 import android.widget.ImageView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.squareup.picasso.Picasso
@@ -22,3 +23,5 @@ infix fun SwipeRefreshLayout.setRefresh(refreshing: Boolean) {
     if (refreshing) this.isRefreshing = refreshing
     else if (this.isRefreshing) this.isRefreshing = refreshing
 }
+
+//fun View.margin()

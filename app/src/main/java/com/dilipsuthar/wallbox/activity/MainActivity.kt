@@ -7,14 +7,16 @@ import android.os.Handler
 import android.view.View
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.utils.ThemeUtils
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         hideStatusBar()
+
+        txt_bottom_msg.text = "Made from ${Character.toChars(0x2764)} by, Dilip Suthar"
 
         // Start HomeActivity after 800 millisec
         Handler().postDelayed(

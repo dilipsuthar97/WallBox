@@ -75,7 +75,7 @@ class PhotoAdapter
 
                 /*Picasso.get()
                     .load(photo.urls.regular)
-                    .into(holder.imagePhoto)*/
+                    .into(holder.mImagePhoto)*/
                 holder.imagePhoto.loadUrl(photo.urls.regular)
 
                 /*Picasso.get()

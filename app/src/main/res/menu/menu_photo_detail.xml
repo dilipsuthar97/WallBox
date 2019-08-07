@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:id="@+id/group_scale_type"
-            android:checkableBehavior="single">
-        <item android:id="@+id/action_center_crop"
-              android:title="Center Crop"/>
-        <item android:id="@+id/action_center"
-              android:title="Center"/>
-    </group>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/action_scale_type"
+          android:title="Scale type"
+          android:tooltipText="Scale type"
+          app:showAsAction="always"
+          android:icon="@drawable/ic_scale_type">
+        <menu>
+            <group android:checkableBehavior="none">
+                <item android:id="@+id/scale_center_crop"
+                      android:title="CenterCrop"/>
+                <item android:id="@+id/scale_center"
+                      android:title="Center"/>
+                <item android:id="@+id/scale_fit_ceter"
+                      android:title="FitCenter"/>
+                <item android:id="@+id/scale_fit_xy"
+                      android:title="FitScreen"/>
+            </group>
+        </menu>
+    </item>
 </menu>

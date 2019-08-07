@@ -16,8 +16,8 @@
             android:background="@drawable/gradient_overlay_toolbar"
             android:elevation="1dp"
             app:contentInsetStartWithNavigation="0dp"
-            app:layout_collapseMode="pin"
-            app:layout_scrollFlags="scroll|enterAlways"/>
+            android:theme="@style/ThemeOverlay.MaterialComponents"
+            app:popupTheme="@style/ThemeOverlay.MaterialComponents"/>
 
     <com.github.chrisbanes.photoview.PhotoView
             android:id="@+id/image_photo"
