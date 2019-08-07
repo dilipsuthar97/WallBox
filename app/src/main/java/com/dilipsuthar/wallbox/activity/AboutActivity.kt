@@ -1,22 +1,18 @@
 package com.dilipsuthar.wallbox.activity
 
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
-import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
+import androidx.databinding.DataBindingUtil
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.dilipsuthar.wallbox.R
+import com.dilipsuthar.wallbox.databinding.ActivityAboutBinding
 import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.dilipsuthar.wallbox.utils.Tools
+import kotlinx.android.synthetic.main.activity_about.*
 
 class AboutActivity : BaseActivity() {
-
-    // View
-    @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -27,8 +23,6 @@ class AboutActivity : BaseActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_about)
-        ButterKnife.bind(this)
-
         initToolbar()
     }
 

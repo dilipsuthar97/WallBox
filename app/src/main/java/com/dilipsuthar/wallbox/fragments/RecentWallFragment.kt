@@ -30,6 +30,7 @@ import com.dilipsuthar.wallbox.preferences.Preferences
 import com.dilipsuthar.wallbox.utils.Dialog
 import com.dilipsuthar.wallbox.utils.Popup
 import com.dilipsuthar.wallbox.utils.Tools
+import com.dilipsuthar.wallbox.utils.setRefresh
 import com.dilipsuthar.wallbox.viewmodels.WallpaperListViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
@@ -37,7 +38,7 @@ import retrofit2.Call
 import retrofit2.Response
 
 /**
- * Created by Dilip on 23/07/19
+ * Created by DILIP SUTHAR on 23/07/19
  */
 
 class RecentWallFragment : Fragment() {
@@ -72,7 +73,7 @@ class RecentWallFragment : Fragment() {
     /** MAIN METHOD */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mSort = arguments?.getString(Preferences.SORT, "latest")
+        mSort = arguments?.getString(Preferences.SORT, Preferences.SORT_DEFAULT)
 
         /** SERVICES / API */
         mService = Services.getService()
@@ -80,31 +81,23 @@ class RecentWallFragment : Fragment() {
             override fun onRequestPhotosSuccess(call: Call<List<Photo>>, response: Response<List<Photo>>) {
 
                 Log.d(WallBox.TAG, response.code().toString())
-                if (mSwipeRefreshView.isRefreshing) {
-                    mSwipeRefreshView.isRefreshing = false
-                    Popup.showToast(context, "Updated photos", Toast.LENGTH_SHORT)
-                }
+                mSwipeRefreshView setRefresh false
+                if (!loadMore) Popup.showToast(context, "Updated photos", Toast.LENGTH_SHORT)
                 if (response.isSuccessful) {
                     loadMore = false
-                    mPhotoAdapter?.removeFooter()
                     mPhotosList.clear()
                     mPhotosList.addAll(ArrayList(response.body()!!))
                     updateAdapter(mPhotosList)
-                    //Tools.inVisibleViews(mProgressView as View, type = Tools.GONE)
                     Tools.visibleViews(mRecyclerView)
                 } else {
-                    //mPhotoAdapter?.removeFooter()
                     Dialog.showErrorDialog(context, Dialog.HTTP_ERROR, mPhotosList, ::load, ::loadMore)
                 }
             }
 
             override fun onRequestPhotosFailed(call: Call<List<Photo>>, t: Throwable) {
                 Log.d(WallBox.TAG, t.message)
-                if (mSwipeRefreshView.isRefreshing)
-                    mSwipeRefreshView.isRefreshing = false
-                //mPhotoAdapter?.removeFooter()
+                mSwipeRefreshView setRefresh false
                 Dialog.showErrorDialog(context, Dialog.NETWORK_ERROR, mPhotosList, ::load, ::loadMore)
-                //Tools.inVisibleViews(mProgressView as View, type = Tools.GONE)
             }
         }
 
@@ -120,7 +113,6 @@ class RecentWallFragment : Fragment() {
             override fun onItemLongClick(photo: Photo, view: View, pos: Int, imageView: ImageView) {
                 Popup.showToast(context, "$pos", Toast.LENGTH_SHORT)
                 Log.d(WallBox.TAG, "mOnItemClickListener: onItemLongClick")
-                //showImagePreviewDialog(photo, imageView)
             }
         }
 
@@ -159,18 +151,18 @@ class RecentWallFragment : Fragment() {
                 val firstVisible = layoutManager?.findFirstCompletelyVisibleItemPosition()
 
                 val atTopReached = firstVisible?.minus(1)!! <= 0    // Hide fab on first item
-                if (atTopReached) {
-                    HomeActivity.fabScrollUp?.hide()
+                if (atTopReached) run {
+                    // TODO: hide fabScrollUp here
                 }
 
-                val endHasBeenReached = lastVisible?.plus(2)!! >= totalItem!!   // Load more photos on last item
+                val endHasBeenReached = lastVisible?.plus(1)!! >= totalItem!!   // Load more photos on last item
                 if (totalItem > 0 && endHasBeenReached && !loadMore) {
                     loadMore = true
-                    mPhotoAdapter?.addFooter()
+                    mSwipeRefreshView setRefresh true
                     loadMore()
                 }
 
-                verticalOffset.plus(dy)
+                verticalOffset += dy
                 scrollingUp = dy > 0
 
             }
@@ -180,9 +172,9 @@ class RecentWallFragment : Fragment() {
 
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     if (scrollingUp) {
-                        HomeActivity.fabScrollUp?.hide()
+                        // TODO: hide fabScrollUp here
                     } else {
-                        HomeActivity.fabScrollUp?.show()
+                        // TODO: show fabScrollUp here
                     }
                 }
             }
@@ -200,7 +192,7 @@ class RecentWallFragment : Fragment() {
     }
 
     private fun load() {
-        mSwipeRefreshView.isRefreshing = true
+        mSwipeRefreshView setRefresh true
         mService?.requestPhotos(mPage++, WallBox.DEFAULT_PER_PAGE, mSort!!, mOnRequestPhotosListener)
         mPhotoAdapter = PhotoAdapter(ArrayList(), context!!, mOnItemClickListener)
         mRecyclerView.adapter = mPhotoAdapter
@@ -214,7 +206,7 @@ class RecentWallFragment : Fragment() {
         mPhotoAdapter?.addAll(photos)
     }
 
-    fun scrollToTop() {
+    /*fun scrollToTop() {
         val layoutManager = mRecyclerView.layoutManager as LinearLayoutManager
         if (mRecyclerView != null) {
             if (layoutManager != null && layoutManager.findFirstVisibleItemPosition() > 5) {
@@ -223,7 +215,7 @@ class RecentWallFragment : Fragment() {
             mRecyclerView.smoothScrollToPosition(0)
         }
 
-    }
+    }*/
 
     /*private fun subscribeObservers() {
         mWallpaperListViewModel = ViewModelProviders.of(activity!!).get(WallpaperListViewModel::class.java)

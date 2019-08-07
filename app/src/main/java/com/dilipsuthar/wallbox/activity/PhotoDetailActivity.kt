@@ -1,11 +1,15 @@
 package com.dilipsuthar.wallbox.activity
 
 import android.graphics.Color
+import android.graphics.Rect
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
+import androidx.core.view.marginTop
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.bumptech.glide.Glide
@@ -15,6 +19,7 @@ import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.data.model.Photo
 import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.dilipsuthar.wallbox.utils.Tools
+import com.dilipsuthar.wallbox.utils.loadUrl
 import com.github.chrisbanes.photoview.PhotoView
 import com.google.gson.Gson
 import com.squareup.picasso.Callback
@@ -42,25 +47,32 @@ class PhotoDetailActivity : BaseActivity() {
             .into(imagePhoto)*/
 
         imagePhoto.setBackgroundColor(Color.parseColor(photo.color))
-        Picasso.get()
-            .load(photo.urls.regular)
-            .placeholder(R.drawable.gradient_overlay_dark)
-            .error(R.drawable.gradient_overlay_dark)
-            .into(imagePhoto)
+        imagePhoto.loadUrl(photo.urls.regular)
 
         window.decorView.systemUiVisibility =
-            View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
 
+        Tools.setSystemBarColor(this, ContextCompat.getColor(this, R.color.overlay_dark_20))
        initToolbar()
     }
 
     private fun initToolbar() {
+        val rectangle = Rect()
+        window.decorView.getWindowVisibleDisplayFrame(rectangle)
+        val statusBarHeight = rectangle.top
+        toolbar.marginTop.plus(statusBarHeight)
+
         setSupportActionBar(toolbar)
         val actionBar = supportActionBar
         actionBar?.title = ""
         actionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
         actionBar?.setDisplayHomeAsUpEnabled(true)
         Tools.changeNavigationIconColor(toolbar, resources.getColor(R.color.white))
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_photo_detail, menu)
+        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

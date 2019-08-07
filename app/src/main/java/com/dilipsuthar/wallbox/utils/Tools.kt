@@ -99,13 +99,23 @@ object Tools {
         sbView.setBackgroundColor(ctx.resources.getColor(color))
     }
 
-    fun hasNetwork(ctx: Context?): Boolean? {
+    /*fun hasNetwork(ctx: Context?): Boolean? {
         var isConnected: Boolean? = false
         val connectivityManager = ctx?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
         if (activeNetwork != null && activeNetwork.isConnected)
             isConnected = true
         return isConnected
+    }*/
+
+    val hasActiveNetwork: (Context) -> Boolean? = { ctx ->
+        var isConnected: Boolean? = false
+        val connectivityManager = ctx?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = connectivityManager.activeNetworkInfo
+        if (networkInfo != null && networkInfo.isConnected)
+            isConnected = true
+        isConnected
     }
+
 
 }

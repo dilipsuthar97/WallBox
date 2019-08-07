@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/group_scale_type"
+            android:checkableBehavior="single">
+        <item android:id="@+id/action_center_crop"
+              android:title="Center Crop"/>
+        <item android:id="@+id/action_center"
+              android:title="Center"/>
+    </group>
+</menu>

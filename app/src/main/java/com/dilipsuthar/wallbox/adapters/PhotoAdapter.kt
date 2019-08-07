@@ -17,6 +17,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.data.model.Photo
 import com.dilipsuthar.wallbox.utils.Tools
+import com.dilipsuthar.wallbox.utils.loadUrl
 import com.google.android.material.card.MaterialCardView
 import com.mikhaellopez.circularimageview.CircularImageView
 import com.squareup.picasso.NetworkPolicy
@@ -31,7 +32,7 @@ import java.lang.NullPointerException
 class PhotoAdapter
     constructor(
         private var mPhotoList: ArrayList<Photo>?,
-        private var context: Context?,
+        private var ctx: Context?,
         private var listener: OnItemClickListener?
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -60,35 +61,41 @@ class PhotoAdapter
 
         if (holder is PhotoViewHolder) {
 
-            photo?.let {
+            photo?.let { photo ->
 
-                val photoBy = it.user.first_name
-                if (it.user.last_name != null) photoBy.plus(it.user.last_name)
+                val txtPhotoBy = photo.user.first_name
+                if (photo.user.last_name != null) txtPhotoBy + " ${photo.user.last_name}"
 
-                holder.rootView.setBackgroundColor(Color.parseColor(it.color))
-                holder.textPhotoBy.text = "By, $photoBy"
-                holder.textLikes.text = "${it.likes}"
+                holder.rootView.setBackgroundColor(Color.parseColor(photo.color))
+                holder.textPhotoBy.text = "By, $txtPhotoBy"
+                holder.textLikes.text = "${photo.likes}"
                 holder.btnDownload.setOnClickListener {
 
                 }
 
-                Picasso.get()
-                    .load(it.urls.regular)
-                    .into(holder.imagePhoto)
+                /*Picasso.get()
+                    .load(photo.urls.regular)
+                    .into(holder.imagePhoto)*/
+                holder.imagePhoto.loadUrl(photo.urls.regular)
 
-                Picasso.get()
-                    .load(it.user.profile_image.medium)
+                /*Picasso.get()
+                    .load(photo.user.profile_image.medium)
                     .placeholder(R.drawable.placeholder_profile)
                     .error(R.drawable.placeholder_profile)
-                    .into(holder.imageUserProfile)
+                    .into(holder.imageUserProfile)*/
+
+                holder.imageUserProfile.loadUrl(
+                    photo.user.profile_image.medium,
+                    R.drawable.placeholder_profile,
+                    R.drawable.placeholder_profile)
 
                 holder.rootView.setOnLongClickListener { view ->
-                    listener?.onItemLongClick(it, view!!, position, holder.imagePhoto)
+                    listener?.onItemLongClick(photo, view!!, position, holder.imagePhoto)
                     true
                 }
 
                 holder.rootView.setOnClickListener { view ->
-                    listener?.onItemClick(it, view, position, holder.imagePhoto)
+                    listener?.onItemClick(photo, view, position, holder.imagePhoto)
                 }
             }
 
@@ -124,13 +131,6 @@ class PhotoAdapter
     }
 
     fun removeFooter() {
-
-        /*if (mPhotoList?.size != 0) {
-            if (mPhotoList?.size!! % 3 != 0) {
-
-            }
-        }*/
-
         if (mPhotoList?.size!! >= 1) {
             mPhotoList?.removeAt(mPhotoList?.size!!.minus(1))
         }

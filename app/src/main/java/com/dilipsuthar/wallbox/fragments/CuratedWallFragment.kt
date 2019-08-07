@@ -29,6 +29,7 @@ import com.dilipsuthar.wallbox.preferences.Preferences
 import com.dilipsuthar.wallbox.utils.Dialog
 import com.dilipsuthar.wallbox.utils.Popup
 import com.dilipsuthar.wallbox.utils.Tools
+import com.dilipsuthar.wallbox.utils.setRefresh
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
@@ -77,31 +78,23 @@ class CuratedWallFragment : Fragment() {
         mOnRequestPhotosListener = object : Services.OnRequestPhotosListener {
             override fun onRequestPhotosSuccess(call: Call<List<Photo>>, response: Response<List<Photo>>) {
                 Log.d(WallBox.TAG, response.code().toString())
-                if (mSwipeRefreshView.isRefreshing) {
-                    mSwipeRefreshView.isRefreshing = false
-                    Popup.showToast(context, "Updated photos", Toast.LENGTH_SHORT)
-                }
+                mSwipeRefreshView setRefresh false
+                if (!loadMore)  Popup.showToast(context, "Updated photos", Toast.LENGTH_SHORT)
                 if (response.isSuccessful) {
                     loadMore = false
-                    mPhotoAdapter?.removeFooter()
                     mPhotosList.clear()
                     mPhotosList.addAll(ArrayList(response.body()!!))
                     updateAdapter(mPhotosList)
-                    //Tools.inVisibleViews(mProgressView as View, type = Tools.GONE)
                     Tools.visibleViews(mRecyclerView)
                 } else {
-                    //mPhotoAdapter?.removeFooter()
                     Dialog.showErrorDialog(context, Dialog.HTTP_ERROR, mPhotosList, ::load, ::loadMore)
                 }
             }
 
             override fun onRequestPhotosFailed(call: Call<List<Photo>>, t: Throwable) {
                 Log.d(WallBox.TAG, t.message)
-                if (mSwipeRefreshView.isRefreshing)
-                    mSwipeRefreshView.isRefreshing = false
-                //mPhotoAdapter?.removeFooter()
+                mSwipeRefreshView setRefresh false
                 Dialog.showErrorDialog(context, Dialog.NETWORK_ERROR, mPhotosList, ::load, ::loadMore)
-                //Tools.inVisibleViews(mProgressView as View, type = Tools.GONE)
             }
         }
 
@@ -117,7 +110,6 @@ class CuratedWallFragment : Fragment() {
             override fun onItemLongClick(photo: Photo, view: View, pos: Int, imageView: ImageView) {
                 Popup.showToast(context, "$pos", Toast.LENGTH_SHORT)
                 Log.d(WallBox.TAG, "mOnItemClickListener: onItemLongClick")
-                //showImagePreviewDialog(photo, imageView)
             }
         }
     }
@@ -156,13 +148,13 @@ class CuratedWallFragment : Fragment() {
 
                 val atTopReached = firstVisible?.minus(1)!! <= 0    // Hide fab on first item
                 if (atTopReached) {
-                    HomeActivity.fabScrollUp?.hide()
+                    // TODO: hide fabScrollUp here
                 }
 
                 val endHasBeenReached = lastVisible?.plus(2)!! >= totalItem!!   // Load more photos on last item
                 if (totalItem > 0 && endHasBeenReached && !loadMore) {
                     loadMore = true
-                    mPhotoAdapter?.addFooter()
+                    mSwipeRefreshView setRefresh true
                     loadMore()
                 }
 
@@ -176,9 +168,9 @@ class CuratedWallFragment : Fragment() {
 
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     if (scrollingUp) {
-                        HomeActivity.fabScrollUp?.hide()
+                        // TODO: hide fabScrollUp here
                     } else {
-                        HomeActivity.fabScrollUp?.show()
+                        // TODO: show fabScrollUp here
                     }
                 }
             }
@@ -196,7 +188,7 @@ class CuratedWallFragment : Fragment() {
     }
 
     private fun load() {
-        mSwipeRefreshView.isRefreshing = true
+        mSwipeRefreshView setRefresh true
         mService?.requestCuratedPhotos(mPage++, WallBox.DEFAULT_PER_PAGE, mSort!!, mOnRequestPhotosListener)
         mPhotoAdapter = PhotoAdapter(ArrayList(), context!!, mOnItemClickListener)
         mRecyclerView.adapter = mPhotoAdapter

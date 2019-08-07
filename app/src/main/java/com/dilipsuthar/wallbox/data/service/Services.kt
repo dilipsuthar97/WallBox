@@ -15,7 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 /** Created by Dilip on 20/07/19 */
 
-public class Services() {
+public class Services {
 
     private var call: Call<List<Photo>>? = null
 
@@ -54,7 +54,6 @@ public class Services() {
     }
 
     /** build. */
-
     // Create/build okHttp client and return it ---->>>
     private fun buildClient(): OkHttpClient {
         return OkHttpClient

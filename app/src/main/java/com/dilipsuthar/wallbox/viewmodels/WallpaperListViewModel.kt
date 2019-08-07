@@ -10,17 +10,16 @@ import com.dilipsuthar.wallbox.WallBox
 import com.dilipsuthar.wallbox.data.model.Photo
 import com.dilipsuthar.wallbox.data.repository.WallpaperRepository
 
-class WallpaperListViewModel(application: Application, context: Context?) : AndroidViewModel(application) {
+class WallpaperListViewModel(context: Context?) : ViewModel() {
 
     private var wallpaperRepository: WallpaperRepository? = null
-    private var mWallpapers: MutableLiveData<List<Photo>> = MutableLiveData()
 
     init {
-        wallpaperRepository = WallpaperRepository.getInstance(context)
+        wallpaperRepository = WallpaperRepository.newInstance()
     }
 
-    public fun getWallpapers() : LiveData<List<Photo>> {
-        return mWallpapers
+    fun getWallpapers() : LiveData<List<Photo>>? {
+        return wallpaperRepository?.getWallpapers()
     }
 
 }

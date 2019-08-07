@@ -7,21 +7,20 @@ class WallBox : Application() {
 
     companion object {
 
-        public const val TAG = "WallBox.debug"
+        const val TAG = "WallBox.debug"
 
         // Unsplash URL
-        public const val UNSPLASH_API_BASE_URL = "https://api.unsplash.com/"
-        public const val UNSPLASH_URL = "https://unsplash.com/"
+        const val UNSPLASH_API_BASE_URL = "https://api.unsplash.com/"
+        const val UNSPLASH_URL = "https://unsplash.com/"
 
-        public const val DEFAULT_PER_PAGE = 30
-        public const val DEFAULT_ORDER_BY = "latest"
+        const val DEFAULT_PER_PAGE = 30
 
-        public const val DATE_FORMAT = "yyyy/MM/dd"
-        public const val DOWNLOAD_PATH = "/Pictures/WallBox/"
-        public const val DOWNLOAD_PHOTO_FORMAT = ".jpg"
+        const val DATE_FORMAT = "yyyy/MM/dd"
+        const val DOWNLOAD_PATH = "/Pictures/WallBox/"
+        const val DOWNLOAD_PHOTO_FORMAT = ".jpg"
 
         // Permission code
-        public const val WRITE_EXTERNAL_STORAGE = 100
+        const val WRITE_EXTERNAL_STORAGE = 100
 
         private lateinit var instance: WallBox
 
@@ -36,10 +35,9 @@ class WallBox : Application() {
             ThemeUtils.DARK -> setTheme(R.style.WallBox_Primary_Base_Dark)
         }
         super.onCreate()
-        initialize()
     }
 
-    private fun initialize() {
+    init {
         instance = this
     }
 
