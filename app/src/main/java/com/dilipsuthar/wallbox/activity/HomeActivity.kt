@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -17,10 +16,9 @@ import butterknife.ButterKnife
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.adapters.SectionPagerAdapter
 import com.dilipsuthar.wallbox.data.service.Services
-import com.dilipsuthar.wallbox.fragments.CollectionWallFragment
+import com.dilipsuthar.wallbox.fragments.CollectionsFragment
 import com.dilipsuthar.wallbox.fragments.CuratedWallFragment
 import com.dilipsuthar.wallbox.fragments.RecentWallFragment
-import com.dilipsuthar.wallbox.utils.Popup
 import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.dilipsuthar.wallbox.utils.Tools
 import com.google.android.material.navigation.NavigationView
@@ -84,10 +82,6 @@ class HomeActivity : BaseActivity() {
     }
 
     override fun onResume() {
-        when(ThemeUtils.getTheme(this)) {
-            ThemeUtils.LIGHT -> setTheme(R.style.WallBox_Primary_Base_Light)
-            ThemeUtils.DARK -> setTheme(R.style.WallBox_Primary_Base_Dark)
-        }
         super.onResume()
     }
 
@@ -111,7 +105,7 @@ class HomeActivity : BaseActivity() {
         mViewPagerAdapter?.let {
             it.addFragment(RecentWallFragment.newInstance("latest"), "Fresh")
             it.addFragment(CuratedWallFragment.newInstance("latest"), "Curated")
-            it.addFragment(CollectionWallFragment.newInstance("featured"), "Collections")
+            it.addFragment(CollectionsFragment.newInstance("featured"), "Collections")
             mViewPager.adapter = it
         }
         mViewPager.offscreenPageLimit = 2
@@ -242,15 +236,15 @@ class HomeActivity : BaseActivity() {
                 showSnackBar("Wallpaper sorted by Popular", Snackbar.LENGTH_SHORT)
             }
             R.id.menu_sort_collection_all -> {
-                transaction.replace(R.id.collections_container, CollectionWallFragment.newInstance("all")).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
+                transaction.replace(R.id.collections_container, CollectionsFragment.newInstance("all")).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
                 showSnackBar("Collections sorted by All", Snackbar.LENGTH_SHORT)
             }
             R.id.menu_sort_collection_featured -> {
-                transaction.replace(R.id.collections_container, CollectionWallFragment.newInstance("featured")).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
+                transaction.replace(R.id.collections_container, CollectionsFragment.newInstance("featured")).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
                 showSnackBar("Collections sorted by All", Snackbar.LENGTH_SHORT)
             }
             R.id.menu_sort_collection_curated -> {
-                transaction.replace(R.id.collections_container, CollectionWallFragment.newInstance("curated")).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
+                transaction.replace(R.id.collections_container, CollectionsFragment.newInstance("curated")).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
                 showSnackBar("Collections sorted by All", Snackbar.LENGTH_SHORT)
             }
             else -> mDrawerLayout.openDrawer(GravityCompat.START)

@@ -25,4 +25,7 @@ interface PhotoApi {
                          @Query("per_page") per_page: Int,
                          @Query("order_by") order_by: String): Call<List<Photo>>
 
+    @GET("photos/{id}")
+    fun getPhoto(@Path("id") id: String,
+                 @Query("client_id") client_id: String): Call<Photo>
 }

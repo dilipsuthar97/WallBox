@@ -33,4 +33,7 @@
     <string name="powered_by">powered by </string>
     <string name="unsplash">Unsplash</string>
 
+    <!-- lorem ipsum -->
+    <string name="dummy_description">Proin eget tortor risus. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.</string>
+
 </resources>

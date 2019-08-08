@@ -18,12 +18,9 @@ import butterknife.ButterKnife
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.WallBox
 import com.dilipsuthar.wallbox.adapters.CollectionAdapter
-import com.dilipsuthar.wallbox.adapters.PhotoAdapter
 import com.dilipsuthar.wallbox.data.model.Collection
-import com.dilipsuthar.wallbox.data.model.Photo
 import com.dilipsuthar.wallbox.data.service.Services
 import com.dilipsuthar.wallbox.preferences.Preferences
-import com.dilipsuthar.wallbox.utils.Dialog
 import com.dilipsuthar.wallbox.utils.Popup
 import com.dilipsuthar.wallbox.utils.Tools
 import com.dilipsuthar.wallbox.utils.setRefresh
@@ -31,17 +28,16 @@ import retrofit2.Call
 import retrofit2.Response
 
 /**
- * A simple [Fragment] subclass.
- *
- */
+* Created by DILIP SUTHAR on 28/07/19
+*/
 
-class CollectionWallFragment : Fragment() {
+class CollectionsFragment : Fragment() {
 
     companion object {
-        const val TAG = "WallBox.CollectionWallFragment"
+        const val TAG = "WallBox.CollectionsFragment"
 
-        fun newInstance(sort: String): CollectionWallFragment {
-            val fragment = CollectionWallFragment()
+        fun newInstance(sort: String): CollectionsFragment {
+            val fragment = CollectionsFragment()
 
             val args = Bundle()
             args.putString(Preferences.SORT, sort)
@@ -122,9 +118,6 @@ class CollectionWallFragment : Fragment() {
         // RecyclerView listener
         mRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
-            var verticalOffset: Int = 0
-            var scrollingUp: Boolean = false
-
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
@@ -138,9 +131,6 @@ class CollectionWallFragment : Fragment() {
                     mSwipeRefreshView setRefresh true
                     loadMore()
                 }
-
-                verticalOffset.plus(dy)
-                scrollingUp = dy > 0
             }
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -148,7 +138,7 @@ class CollectionWallFragment : Fragment() {
             }
         })
 
-        // Swipe Listener
+        // Swipe listener
         mSwipeRefreshView.setOnRefreshListener {
             mPage = 1
             mCollectionList.clear()

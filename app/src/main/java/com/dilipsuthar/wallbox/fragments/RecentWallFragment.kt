@@ -2,6 +2,7 @@ package com.dilipsuthar.wallbox.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -90,7 +91,9 @@ class RecentWallFragment : Fragment() {
                     updateAdapter(mPhotosList)
                     Tools.visibleViews(mRecyclerView)
                 } else {
+                    mSwipeRefreshView setRefresh false
                     Dialog.showErrorDialog(context, Dialog.HTTP_ERROR, mPhotosList, ::load, ::loadMore)
+                    loadMore = false
                 }
             }
 
@@ -98,6 +101,7 @@ class RecentWallFragment : Fragment() {
                 Log.d(WallBox.TAG, t.message)
                 mSwipeRefreshView setRefresh false
                 Dialog.showErrorDialog(context, Dialog.NETWORK_ERROR, mPhotosList, ::load, ::loadMore)
+                loadMore = false
             }
         }
 
@@ -123,19 +127,16 @@ class RecentWallFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_recent_wall, container, false)
         ButterKnife.bind(this, view)
 
-        initComponent()
+        /** Recycler View */
+        mRecyclerView.layoutManager = GridLayoutManager(context, 2)
+        mRecyclerView.setHasFixedSize(true)
+        mRecyclerView.setItemViewCacheSize(5)
 
         mPage = 1
         load()
 
-        return view
-    }
-
-    /** Methods */
-    private fun initComponent() {
-        /** Recycler View */
-        mRecyclerView.layoutManager = LinearLayoutManager(context)
-        mRecyclerView.setItemViewCacheSize(5)
+        /** Listeners */
+        // RecyclerView listener
         mRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
             var verticalOffset: Int = 0
@@ -182,15 +183,17 @@ class RecentWallFragment : Fragment() {
         })
 
 
-        /** Swipe Refresh Layout */
+        // Swipe listener
         mSwipeRefreshView.setOnRefreshListener {
             mPage = 1
             mPhotosList.clear()
             load()
         }
 
+        return view
     }
 
+    /** Methods */
     private fun load() {
         mSwipeRefreshView setRefresh true
         mService?.requestPhotos(mPage++, WallBox.DEFAULT_PER_PAGE, mSort!!, mOnRequestPhotosListener)

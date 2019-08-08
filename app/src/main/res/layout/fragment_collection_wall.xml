@@ -6,7 +6,7 @@
              xmlns:app="http://schemas.android.com/apk/res-auto"
              android:id="@+id/collections_container"
              android:background="?attr/backgroundColor"
-             tools:context=".fragments.CollectionWallFragment">
+             tools:context=".fragments.CollectionsFragment">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/collections_swipe_refresh_layout"

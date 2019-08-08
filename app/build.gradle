@@ -52,6 +52,7 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.emoji:emoji:1.0.0'
     implementation 'androidx.emoji:emoji-bundled:1.0.0'
+    implementation 'androidx.palette:palette:1.0.0'
     // Android View Model -- for MVVM
     implementation "android.arch.lifecycle:extensions:$archLifecycleVersion"
     kapt "android.arch.lifecycle:compiler:$archLifecycleVersion"
@@ -73,8 +74,8 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
 
     // Glide
-    implementation "com.github.bumptech.glide:glide:$glideVersion"
-    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
+    /*implementation "com.github.bumptech.glide:glide:$glideVersion"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"*/
 
     // Retrofit 2 - Http client
     implementation "com.squareup.retrofit2:retrofit:$retrofit2Version"
@@ -85,6 +86,9 @@ dependencies {
 
     // PhotoView
     implementation 'com.github.chrisbanes:PhotoView:2.2.0'
+
+    // Blurry
+    implementation 'jp.wasabeef:blurry:3.0.0'
 
     /*// Fast adapter
     implementation 'com.mikepenz:fastadapter:4.0.0'

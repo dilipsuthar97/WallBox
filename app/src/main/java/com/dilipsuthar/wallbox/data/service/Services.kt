@@ -1,32 +1,30 @@
 package com.dilipsuthar.wallbox.data.service
 
-import android.content.Context
 import android.os.AsyncTask
 import com.dilipsuthar.wallbox.BuildConfig
 import com.dilipsuthar.wallbox.WallBox
 import com.dilipsuthar.wallbox.data.api.PhotoApi
 import com.dilipsuthar.wallbox.data.model.Photo
-import okhttp3.Cache
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import android.widget.Toast
-import android.R
 import android.util.Log
-import com.bumptech.glide.Glide
 import com.dilipsuthar.wallbox.data.api.CollectionApi
 import com.dilipsuthar.wallbox.data.model.Collection
 
-
-/** Created by Dilip on 20/07/19 */
+/**
+ * Created by DILIP SUTHAR on 20/07/19
+ * */
 
 class Services {
 
-    private var call: Call<List<Photo>>? = null
+    private var photosCall: Call<List<Photo>>? = null
+    private var collectionsCall: Call<List<Collection>>? = null
 
+    /** Photo services */
     fun requestPhotos(page: Int, per_page: Int, order_by: String, listener: OnRequestPhotosListener?) {
         val requestCall = buildApi(buildClient(), PhotoApi::class.java).getPhotos(BuildConfig.WALLBOX_ACCESS_KEY, page, per_page, order_by)
         requestCall.enqueue(object : Callback<List<Photo>> {
@@ -38,7 +36,7 @@ class Services {
                 listener?.onRequestPhotosFailed(call, t)
             }
         })
-        call = requestCall
+        photosCall = requestCall
     }
 
     fun requestCuratedPhotos(page: Int, per_page: Int, order_by: String, listener: OnRequestPhotosListener?) {
@@ -52,9 +50,23 @@ class Services {
                 listener?.onRequestPhotosFailed(call, t)
             }
         })
-        call = requestCall
+        photosCall = requestCall
     }
 
+    fun requestPhoto(id: String, listener: OnRequestPhotoListener?) {
+        val request = buildApi(buildClient(), PhotoApi::class.java).getPhoto(id, BuildConfig.WALLBOX_ACCESS_KEY)
+        request.enqueue(object : Callback<Photo> {
+            override fun onResponse(call: Call<Photo>, response: Response<Photo>) {
+                listener?.onRequestPhotoSuccess(call, response)
+            }
+
+            override fun onFailure(call: Call<Photo>, t: Throwable) {
+                listener?.onRequestPhotoFailed(call, t)
+            }
+        })
+    }
+
+    /** Collection services*/
     fun requestCollections(page: Int, per_page: Int, listener: OnRequestCollectionsListener?) {
         Log.d(TAG, "requestCollections: called >>>>>>>>>> Services")
 
@@ -68,6 +80,7 @@ class Services {
                 listener?.onRequestCollectionsFailed(call, t)
             }
         })
+        collectionsCall = requestCall
     }
 
     fun requestFeaturedCollections(page: Int, per_page: Int, listener: OnRequestCollectionsListener?) {
@@ -83,6 +96,7 @@ class Services {
                 listener?.onRequestCollectionsFailed(call, t)
             }
         })
+        collectionsCall = requestCall
     }
 
     fun requestCuratedCollections(page: Int, per_page: Int, listener: OnRequestCollectionsListener?) {
@@ -98,12 +112,14 @@ class Services {
                 listener?.onRequestCollectionsFailed(call, t)
             }
         })
+        collectionsCall = requestCall
     }
 
+    /** TODO: Authorization service */
+
     fun cancel() {
-        if (call != null) {
-            call?.cancel()
-        }
+        if (photosCall != null) photosCall?.cancel()
+        if (collectionsCall != null) collectionsCall?.cancel()
     }
 
     /** build. */
@@ -124,6 +140,7 @@ class Services {
             .create(Api)
     }
 
+    // Text API builder ---->>>>
     private fun buildTestApi(okHttpClient: OkHttpClient): PhotoApi {
         return Retrofit.Builder()
             .baseUrl("https://api.myjson.com/bins/")
@@ -138,6 +155,10 @@ class Services {
     interface OnRequestPhotosListener {
         fun onRequestPhotosSuccess(call: Call<List<Photo>>, response: Response<List<Photo>>)
         fun onRequestPhotosFailed(call: Call<List<Photo>>, t: Throwable)
+    }
+    interface OnRequestPhotoListener {
+        fun onRequestPhotoSuccess(call: Call<Photo>, response: Response<Photo>)
+        fun onRequestPhotoFailed(call: Call<Photo>, t: Throwable)
     }
 
     // Collection listener

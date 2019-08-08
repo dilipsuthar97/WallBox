@@ -72,6 +72,10 @@ data class Photo (
     var color: String,
     var description: String,
     var alt_description: String,
+    var exif: Exif,
+    var location: Location,
+    var tags: List<Tag>,
+    var current_user_collections: List<Collection>,
     var urls: Urls,
     var links: PhotoLinks,
     var categories: List<Category>,
@@ -85,7 +89,8 @@ data class Photo (
 
 ) {
     constructor() : this("", "", "", -1, -1,
-        "", "", "", Urls(), PhotoLinks(),
+        "", "", "", Exif(),
+        Location(), emptyList(), emptyList(), Urls(), PhotoLinks(),
         emptyList(), false, SponsoredBy(), "", -1,
         false, User()
         )

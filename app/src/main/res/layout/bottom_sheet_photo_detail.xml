@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/root_view"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/container_bottom_sheet"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="40dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+        <View
+                android:layout_width="40dp"
+                android:layout_height="5dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/swipe_up_handle"/>
+    </RelativeLayout>
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:padding="16dp"
+            android:layout_height="wrap_content">
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:text="Info"
+                android:textColor="@color/primaryTextColor"/>
+        <TextView
+                android:id="@+id/txt_info"
+                android:text="@string/dummy_description"
+                android:textColor="@color/secondaryTextColor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="false"/>
+    </LinearLayout>
+
+</LinearLayout>

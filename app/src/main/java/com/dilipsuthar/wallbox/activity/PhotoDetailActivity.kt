@@ -2,6 +2,7 @@ package com.dilipsuthar.wallbox.activity
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -12,12 +13,19 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.data.model.Photo
+import com.dilipsuthar.wallbox.data.service.Services
 import com.dilipsuthar.wallbox.utils.Tools
 import com.dilipsuthar.wallbox.utils.loadUrl
 import com.github.chrisbanes.photoview.PhotoView
 import com.google.gson.Gson
+import retrofit2.Call
+import retrofit2.Response
 
 class PhotoDetailActivity : BaseActivity() {
+    private val TAG = "WallBox.PhotoDetailActivity"
+
+    private var mService: Services? = null
+    private var mOnRequestPhotoListener: Services.OnRequestPhotoListener? = null
 
     @BindView(R.id.image_photo) lateinit var mImagePhoto: PhotoView
     @BindView(R.id.toolbar) lateinit var mToolbar: Toolbar
@@ -27,18 +35,25 @@ class PhotoDetailActivity : BaseActivity() {
         setContentView(R.layout.activity_photo_detail)
         ButterKnife.bind(this)
 
-        val photo: Photo = Gson().fromJson(intent.getStringExtra("PHOTO"), Photo::class.java)
+        var photo: Photo = Gson().fromJson(intent.getStringExtra("PHOTO"), Photo::class.java)
 
-        /*Glide.with(this)
-            .load(photo.urls.regular)
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .placeholder(R.drawable.gradient_overlay_dark)
-            .error(R.drawable.gradient_overlay_dark)
-            .transition(DrawableTransitionOptions().crossFade())
-            .into(mImagePhoto)*/
-
-        mImagePhoto.setBackgroundColor(Color.parseColor(photo.color))
+        mImagePhoto.setBackgroundColor(Color.parseColor("#000000"))
         mImagePhoto.loadUrl(photo.urls.regular)
+
+        /** Service / API request */
+        mService = Services.getService()
+        mOnRequestPhotoListener = object : Services.OnRequestPhotoListener {
+            override fun onRequestPhotoSuccess(call: Call<Photo>, response: Response<Photo>) {
+                Log.d(TAG, Gson().toJson(response.body()))
+                if (response.isSuccessful) photo = response.body()!!
+            }
+
+            override fun onRequestPhotoFailed(call: Call<Photo>, t: Throwable) {
+                Log.d(TAG, t.message!!)
+            }
+        }
+
+        mService?.requestPhoto(photo.id, mOnRequestPhotoListener)
 
        /* window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                 or View.SYSTEM_UI_FLAG_LAYOUT_STABLE

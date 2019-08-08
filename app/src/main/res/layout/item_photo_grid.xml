@@ -10,7 +10,7 @@
     <ImageView
             android:id="@+id/image_photo"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="250dp"
             android:scaleType="centerCrop"
             android:transitionName="photo"
             app:layout_constraintEnd_toEndOf="parent"
@@ -37,7 +37,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginTop="16dp"/>
+                android:visibility="gone"/>
 
         <TextView
                 android:id="@+id/text_photo_by"
@@ -46,11 +46,11 @@
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 tools:text="By, beccatapert"
-                android:layout_marginTop="16dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/image_user_profile"
-                android:layout_marginStart="8dp"/>
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"/>
 
         <ImageButton
                 android:id="@+id/btn_download"
@@ -62,7 +62,8 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_download"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintVertical_bias="1.0"/>
+                app:layout_constraintVertical_bias="1.0"
+                android:layout_marginTop="8dp"/>
 
         <ImageView
                 android:layout_width="24dp"
@@ -72,9 +73,9 @@
                 android:id="@+id/imageView"
                 app:layout_constraintEnd_toStartOf="@+id/text_likes"
                 android:layout_marginEnd="8dp"
-                android:layout_marginTop="16dp"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:visibility="gone"/>
 
         <TextView
                 android:layout_width="wrap_content"
@@ -84,9 +85,9 @@
                 android:id="@+id/text_likes"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="16dp"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:visibility="gone"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
