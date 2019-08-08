@@ -1,5 +1,6 @@
 package com.dilipsuthar.wallbox.activity
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -18,7 +19,7 @@ import com.dilipsuthar.wallbox.utils.Tools
 class SettingsActivity : BaseActivity() {
 
     // Vars
-    private var activityRestarted = false
+        private var activityRestarted = false
     private lateinit var sharedPreferences: SharedPreferences
 
     // Views
@@ -38,10 +39,8 @@ class SettingsActivity : BaseActivity() {
         }
 
         mSwitchTheme.setOnCheckedChangeListener { compoundButton, value ->
-            if (value)
-                ThemeUtils.setTheme(this, ThemeUtils.DARK)
-            else
-                ThemeUtils.setTheme(this, ThemeUtils.LIGHT)
+            if (value) ThemeUtils.setTheme(this, ThemeUtils.DARK)
+            else ThemeUtils.setTheme(this, ThemeUtils.LIGHT)
 
             restartActivity()
         }
@@ -64,9 +63,9 @@ class SettingsActivity : BaseActivity() {
     }
 
     private fun restartActivity() {
-        val intent = this.intent
-        this.finish()
+        val intent = Intent(this@SettingsActivity, SettingsActivity::class.java)
         startActivity(intent)
+        finish()
         activityRestarted = true
     }
 

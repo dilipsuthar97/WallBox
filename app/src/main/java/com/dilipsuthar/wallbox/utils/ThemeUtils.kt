@@ -25,7 +25,7 @@ object ThemeUtils {
     }
 
     fun setTheme(context: Context, theme: String) {
-        val sharedPreferences: SharedPreferences? = PreferenceManager.getDefaultSharedPreferences(context)
+        val sharedPreferences: SharedPreferences? = context.getSharedPreferences(Preferences.PREF, Context.MODE_PRIVATE)
         when (theme) {
             LIGHT -> sharedPreferences?.edit()?.putString(Preferences.THEME, LIGHT)?.apply()
             else -> sharedPreferences?.edit()?.putString(Preferences.THEME, DARK)?.apply()

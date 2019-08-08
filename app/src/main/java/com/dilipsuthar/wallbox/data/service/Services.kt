@@ -1,6 +1,7 @@
 package com.dilipsuthar.wallbox.data.service
 
 import android.content.Context
+import android.os.AsyncTask
 import com.dilipsuthar.wallbox.BuildConfig
 import com.dilipsuthar.wallbox.WallBox
 import com.dilipsuthar.wallbox.data.api.PhotoApi
@@ -12,15 +13,22 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import android.widget.Toast
+import android.R
+import android.util.Log
+import com.bumptech.glide.Glide
+import com.dilipsuthar.wallbox.data.api.CollectionApi
+import com.dilipsuthar.wallbox.data.model.Collection
+
 
 /** Created by Dilip on 20/07/19 */
 
-public class Services {
+class Services {
 
     private var call: Call<List<Photo>>? = null
 
-    public fun requestPhotos(page: Int, per_page: Int, order_by: String, listener: OnRequestPhotosListener?) {
-        val requestCall = buildApi(buildClient()).getPhotos(BuildConfig.WALLBOX_ACCESS_KEY, page, per_page, order_by)
+    fun requestPhotos(page: Int, per_page: Int, order_by: String, listener: OnRequestPhotosListener?) {
+        val requestCall = buildApi(buildClient(), PhotoApi::class.java).getPhotos(BuildConfig.WALLBOX_ACCESS_KEY, page, per_page, order_by)
         requestCall.enqueue(object : Callback<List<Photo>> {
             override fun onResponse(call: Call<List<Photo>>, response: Response<List<Photo>>) {
                 listener?.onRequestPhotosSuccess(call, response)
@@ -33,8 +41,8 @@ public class Services {
         call = requestCall
     }
 
-    public fun requestCuratedPhotos(page: Int, per_page: Int, order_by: String, listener: OnRequestPhotosListener?) {
-        val requestCall = buildApi(buildClient()).getCuratedPhotos(BuildConfig.WALLBOX_ACCESS_KEY, page, per_page, order_by)
+    fun requestCuratedPhotos(page: Int, per_page: Int, order_by: String, listener: OnRequestPhotosListener?) {
+        val requestCall = buildApi(buildClient(), PhotoApi::class.java).getCuratedPhotos(BuildConfig.WALLBOX_ACCESS_KEY, page, per_page, order_by)
         requestCall.enqueue(object : Callback<List<Photo>> {
             override fun onResponse(call: Call<List<Photo>>, response: Response<List<Photo>>) {
                 listener?.onRequestPhotosSuccess(call, response)
@@ -47,7 +55,52 @@ public class Services {
         call = requestCall
     }
 
-    public fun cancel() {
+    fun requestCollections(page: Int, per_page: Int, listener: OnRequestCollectionsListener?) {
+        Log.d(TAG, "requestCollections: called >>>>>>>>>> Services")
+
+        val requestCall = buildApi(buildClient(), CollectionApi::class.java).getCollections(BuildConfig.WALLBOX_ACCESS_KEY, page, per_page)
+        requestCall.enqueue(object : Callback<List<Collection>> {
+            override fun onResponse(call: Call<List<Collection>>, response: Response<List<Collection>>) {
+                listener?.onRequestCollectionsSuccess(call, response)
+            }
+
+            override fun onFailure(call: Call<List<Collection>>, t: Throwable) {
+                listener?.onRequestCollectionsFailed(call, t)
+            }
+        })
+    }
+
+    fun requestFeaturedCollections(page: Int, per_page: Int, listener: OnRequestCollectionsListener?) {
+        Log.d(TAG, "requestFeaturedCollections: called >>>>>>>>>> Services")
+
+        val requestCall = buildApi(buildClient(), CollectionApi::class.java).getFeaturedCollections(BuildConfig.WALLBOX_ACCESS_KEY, page, per_page)
+        requestCall.enqueue(object : Callback<List<Collection>> {
+            override fun onResponse(call: Call<List<Collection>>, response: Response<List<Collection>>) {
+                listener?.onRequestCollectionsSuccess(call, response)
+            }
+
+            override fun onFailure(call: Call<List<Collection>>, t: Throwable) {
+                listener?.onRequestCollectionsFailed(call, t)
+            }
+        })
+    }
+
+    fun requestCuratedCollections(page: Int, per_page: Int, listener: OnRequestCollectionsListener?) {
+        Log.d(TAG, "requestCuratedCollections: called >>>>>>>>>> Services")
+
+        val requestCall = buildApi(buildClient(), CollectionApi::class.java).getCuratedCollections(BuildConfig.WALLBOX_ACCESS_KEY, page, per_page)
+        requestCall.enqueue(object : Callback<List<Collection>> {
+            override fun onResponse(call: Call<List<Collection>>, response: Response<List<Collection>>) {
+                listener?.onRequestCollectionsSuccess(call, response)
+            }
+
+            override fun onFailure(call: Call<List<Collection>>, t: Throwable) {
+                listener?.onRequestCollectionsFailed(call, t)
+            }
+        })
+    }
+
+    fun cancel() {
         if (call != null) {
             call?.cancel()
         }
@@ -62,13 +115,13 @@ public class Services {
     }
 
     // Create/build Retrofit API client and return it ---->>>
-    private fun buildApi(okHttpClient: OkHttpClient): PhotoApi {
+    private fun <T> buildApi(okHttpClient: OkHttpClient, Api: Class<T>): T {
         return Retrofit.Builder()
             .baseUrl(WallBox.UNSPLASH_API_BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(PhotoApi::class.java)
+            .create(Api)
     }
 
     private fun buildTestApi(okHttpClient: OkHttpClient): PhotoApi {
@@ -81,13 +134,21 @@ public class Services {
     }
 
     /** interface */
+    // Photo listener
     interface OnRequestPhotosListener {
         fun onRequestPhotosSuccess(call: Call<List<Photo>>, response: Response<List<Photo>>)
         fun onRequestPhotosFailed(call: Call<List<Photo>>, t: Throwable)
     }
 
+    // Collection listener
+    interface OnRequestCollectionsListener {
+        fun onRequestCollectionsSuccess(call: Call<List<Collection>>, response: Response<List<Collection>>)
+        fun onRequestCollectionsFailed(call: Call<List<Collection>>, t: Throwable)
+    }
+
     /** Singleton pattern */
     companion object {
+        const val TAG = "WallBox.Services"
         private var instance: Services? = null
 
         fun getService(): Services {
@@ -95,6 +156,15 @@ public class Services {
                 instance = Services()
 
             return instance as Services
+        }
+
+    }
+
+    /** AsyncTask class */
+    class doAsync(private val handler: () -> Unit) : AsyncTask<Void, Void, Void>() {
+        override fun doInBackground(vararg p0: Void?): Void? {
+            handler
+            return null
         }
     }
 

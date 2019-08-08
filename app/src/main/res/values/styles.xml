@@ -22,7 +22,8 @@
         <item name="android:windowBackground">@color/windowColor</item>
         <item name="android:fontFamily">@font/google_sans_regular</item>
         <item name="android:navigationBarColor">#424242</item>
-        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowContentTransitions">true</item> <!-- For view transition between activities -->
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
     </style>
 
     <!-- Dark Theme -->
@@ -45,7 +46,8 @@
         <item name="android:windowBackground">@color/windowColor_night</item>
         <item name="android:fontFamily">@font/google_sans_regular</item>
         <item name="android:navigationBarColor">#303030</item>
-        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowContentTransitions">true</item> <!-- For view transition between activities -->
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
     </style>
 
     <!-- Text styles theme -->
@@ -59,6 +61,12 @@
 
     <style name="TextAppearance.Large.Bold" parent="@style/TextAppearance.AppCompat.Large">
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Window animation style -->
+    <style name="WindowAnimationTransition">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
     
     <!-- Photo preview theme -->

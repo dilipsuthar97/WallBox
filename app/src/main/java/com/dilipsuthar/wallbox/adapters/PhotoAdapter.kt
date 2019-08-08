@@ -99,8 +99,6 @@ class PhotoAdapter
                 }
             }
 
-        } else {
-
         }
     }
 

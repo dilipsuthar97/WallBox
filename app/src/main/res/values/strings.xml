@@ -30,4 +30,7 @@
     <string name="retry">Retry</string>
     <string name="cancel">Cancel</string>
 
+    <string name="powered_by">powered by </string>
+    <string name="unsplash">Unsplash</string>
+
 </resources>

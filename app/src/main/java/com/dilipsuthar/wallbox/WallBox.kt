@@ -14,6 +14,8 @@ class WallBox : Application() {
         const val UNSPLASH_URL = "https://unsplash.com/"
 
         const val DEFAULT_PER_PAGE = 30
+        const val DEFAULT_SORT_PHOTOS = "latest"
+        const val DEFAULT_SORT_COLLECTIONS = "all"
 
         const val DATE_FORMAT = "yyyy/MM/dd"
         const val DOWNLOAD_PATH = "/Pictures/WallBox/"

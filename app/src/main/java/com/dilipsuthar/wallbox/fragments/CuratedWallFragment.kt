@@ -43,6 +43,7 @@ import retrofit2.Response
 class CuratedWallFragment : Fragment() {
 
     companion object {
+        const val TAG = "WallBox.CuratedWallFragment"
         fun newInstance(sort: String): CuratedWallFragment {
             val fragment = CuratedWallFragment()
 
@@ -71,13 +72,13 @@ class CuratedWallFragment : Fragment() {
     /** MAIN METHOD */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mSort = arguments?.getString(Preferences.SORT, "latest")
+        mSort = arguments?.getString(Preferences.SORT, WallBox.DEFAULT_SORT_PHOTOS)
 
             /** SERVICES / API */
         mService = Services.getService()
         mOnRequestPhotosListener = object : Services.OnRequestPhotosListener {
             override fun onRequestPhotosSuccess(call: Call<List<Photo>>, response: Response<List<Photo>>) {
-                Log.d(WallBox.TAG, response.code().toString())
+                Log.d(TAG, response.code().toString())
                 mSwipeRefreshView setRefresh false
                 if (!loadMore)  Popup.showToast(context, "Updated photos", Toast.LENGTH_SHORT)
                 if (response.isSuccessful) {
@@ -115,6 +116,8 @@ class CuratedWallFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        Log.d(TAG, "onCreateView: called >>>>>")
+
         retainInstance = true
         val view = inflater.inflate(R.layout.fragment_curated_wall, container, false)
         ButterKnife.bind(this, view)
@@ -188,6 +191,8 @@ class CuratedWallFragment : Fragment() {
     }
 
     private fun load() {
+        Log.d(TAG, "load: called >>>>>>>>>>")
+
         mSwipeRefreshView setRefresh true
         mService?.requestCuratedPhotos(mPage++, WallBox.DEFAULT_PER_PAGE, mSort!!, mOnRequestPhotosListener)
         mPhotoAdapter = PhotoAdapter(ArrayList(), context!!, mOnItemClickListener)
@@ -195,10 +200,14 @@ class CuratedWallFragment : Fragment() {
     }
 
     private fun loadMore() {
+        Log.d(TAG, "loadMore: called >>>>>>>>>>")
+
         mService?.requestCuratedPhotos(mPage++, WallBox.DEFAULT_PER_PAGE, mSort!!, mOnRequestPhotosListener)
     }
 
     private fun updateAdapter(photos: ArrayList<Photo>) {
+        Log.d(TAG, "updateAdapter: called >>>>>>>>>>")
+
         mPhotoAdapter?.addAll(photos)
     }
 

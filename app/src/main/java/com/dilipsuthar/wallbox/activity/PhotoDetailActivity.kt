@@ -52,7 +52,6 @@ class PhotoDetailActivity : BaseActivity() {
                 // Hide status bar
                 or View.SYSTEM_UI_FLAG_FULLSCREEN)*/
 
-        Tools.setSystemBarColor(this, ContextCompat.getColor(this, R.color.colorPrimaryDark))
         initToolbar()
     }
 

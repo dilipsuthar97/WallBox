@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -15,9 +16,11 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.adapters.SectionPagerAdapter
+import com.dilipsuthar.wallbox.data.service.Services
 import com.dilipsuthar.wallbox.fragments.CollectionWallFragment
 import com.dilipsuthar.wallbox.fragments.CuratedWallFragment
 import com.dilipsuthar.wallbox.fragments.RecentWallFragment
+import com.dilipsuthar.wallbox.utils.Popup
 import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.dilipsuthar.wallbox.utils.Tools
 import com.google.android.material.navigation.NavigationView
@@ -78,6 +81,19 @@ class HomeActivity : BaseActivity() {
                 }
             }
         }*/
+    }
+
+    override fun onResume() {
+        when(ThemeUtils.getTheme(this)) {
+            ThemeUtils.LIGHT -> setTheme(R.style.WallBox_Primary_Base_Light)
+            ThemeUtils.DARK -> setTheme(R.style.WallBox_Primary_Base_Dark)
+        }
+        super.onResume()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Services.getService().cancel()  // Cancel all request's call on Activity destroy
     }
 
     private fun initToolbar() {

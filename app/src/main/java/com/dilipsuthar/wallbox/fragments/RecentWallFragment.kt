@@ -70,10 +70,10 @@ class RecentWallFragment : Fragment() {
     @BindView(R.id.recent_wallpaper_list) lateinit var mRecyclerView: RecyclerView
     @BindView(R.id.recent_swipe_refresh_layout) lateinit var mSwipeRefreshView: SwipeRefreshLayout
 
-    /** MAIN METHOD */
+    /** Main Method */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mSort = arguments?.getString(Preferences.SORT, Preferences.SORT_DEFAULT)
+        mSort = arguments?.getString(Preferences.SORT, WallBox.DEFAULT_SORT_PHOTOS)
 
         /** SERVICES / API */
         mService = Services.getService()
