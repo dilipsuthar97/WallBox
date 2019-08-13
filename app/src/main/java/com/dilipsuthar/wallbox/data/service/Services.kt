@@ -14,6 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import android.util.Log
 import com.dilipsuthar.wallbox.data.api.CollectionApi
 import com.dilipsuthar.wallbox.data.model.Collection
+import com.dilipsuthar.wallbox.data.model.PhotoStatistics
 
 /**
  * Created by DILIP SUTHAR on 20/07/19
@@ -65,6 +66,20 @@ class Services {
             }
         })
     }
+
+    fun requestPhotoStatistics(id: String, listener: OnRequestPhotoStatistics?) {
+        val request = buildApi(buildClient(), PhotoApi::class.java).getPhotoStatistics(id, BuildConfig.WALLBOX_ACCESS_KEY)
+        request.enqueue(object : Callback<PhotoStatistics> {
+            override fun onResponse(call: Call<PhotoStatistics>, response: Response<PhotoStatistics>) {
+                listener?.onRequestSuccess(call, response)
+            }
+
+            override fun onFailure(call: Call<PhotoStatistics>, t: Throwable) {
+                listener?.onRequestFailed(call, t)
+            }
+        })
+    }
+
 
     /** Collection services*/
     fun requestCollections(page: Int, per_page: Int, listener: OnRequestCollectionsListener?) {
@@ -159,6 +174,10 @@ class Services {
     interface OnRequestPhotoListener {
         fun onRequestPhotoSuccess(call: Call<Photo>, response: Response<Photo>)
         fun onRequestPhotoFailed(call: Call<Photo>, t: Throwable)
+    }
+    interface OnRequestPhotoStatistics {
+        fun onRequestSuccess(call: Call<PhotoStatistics>, response: Response<PhotoStatistics>)
+        fun onRequestFailed(call: Call<PhotoStatistics>, t: Throwable)
     }
 
     // Collection listener

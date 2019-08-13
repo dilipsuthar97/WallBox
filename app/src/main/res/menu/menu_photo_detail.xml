@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/action_photo_info"
+          android:title="Photo info"
+          android:tooltipText="Photo info"
+          android:icon="@drawable/ic_info"
+          app:showAsAction="always"/>
+
     <item android:id="@+id/action_scale_type"
           android:title="Scale type"
           android:tooltipText="Scale type"

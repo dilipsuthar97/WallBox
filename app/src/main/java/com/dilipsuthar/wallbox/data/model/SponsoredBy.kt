@@ -18,7 +18,7 @@ data class SponsoredBy (
             self: "https://api.unsplash.com/users/squareinc",
             html: "https://unsplash.com/@squareinc",
             photos: "https://api.unsplash.com/users/squareinc/photos",
-            likes: "https://api.unsplash.com/users/squareinc/likes",
+            tvLikes: "https://api.unsplash.com/users/squareinc/tvLikes",
             portfolio: "https://api.unsplash.com/users/squareinc/portfolio",
             following: "https://api.unsplash.com/users/squareinc/following",
             followers: "https://api.unsplash.com/users/squareinc/followers"

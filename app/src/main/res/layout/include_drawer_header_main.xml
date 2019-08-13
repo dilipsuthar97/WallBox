@@ -19,7 +19,7 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="16dp"
             app:layout_constraintBottom_toTopOf="@+id/textView4"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="56dp"
             app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView

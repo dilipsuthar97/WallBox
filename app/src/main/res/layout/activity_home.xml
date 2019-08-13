@@ -30,7 +30,6 @@
                     android:background="?attr/appBarColor"
                     app:titleTextAppearance="@style/TextAppearance.Large.Bold"
                     app:titleTextColor="?attr/primaryTextColor"
-                    app:contentInsetStartWithNavigation="0dp"
                     app:layout_scrollFlags="scroll|snap|enterAlways"
                     app:popupTheme="@style/ThemeOverlay.MaterialComponents"/>
 

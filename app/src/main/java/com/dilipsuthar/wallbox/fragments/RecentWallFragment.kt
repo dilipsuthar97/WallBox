@@ -28,10 +28,7 @@ import com.dilipsuthar.wallbox.adapters.PhotoAdapter
 import com.dilipsuthar.wallbox.data.model.Photo
 import com.dilipsuthar.wallbox.data.service.Services
 import com.dilipsuthar.wallbox.preferences.Preferences
-import com.dilipsuthar.wallbox.utils.Dialog
-import com.dilipsuthar.wallbox.utils.Popup
-import com.dilipsuthar.wallbox.utils.Tools
-import com.dilipsuthar.wallbox.utils.setRefresh
+import com.dilipsuthar.wallbox.utils.*
 import com.dilipsuthar.wallbox.viewmodels.WallpaperListViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
@@ -128,8 +125,9 @@ class RecentWallFragment : Fragment() {
         ButterKnife.bind(this, view)
 
         /** Recycler View */
-        mRecyclerView.layoutManager = GridLayoutManager(context, 2)
+        mRecyclerView.layoutManager = LinearLayoutManager(context)
         mRecyclerView.setHasFixedSize(true)
+        mRecyclerView.addItemDecoration(VerticalSpacingItemDecorator(22))
         mRecyclerView.setItemViewCacheSize(5)
 
         mPage = 1

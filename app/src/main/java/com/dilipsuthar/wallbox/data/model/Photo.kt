@@ -9,7 +9,7 @@ data class Photo (
         width: 2254,
         height: 2817,
         color: "#C68E7A",
-        description: null,
+        tvDescription: null,
         alt_description: null,
         urls: {
             raw: "https://images.unsplash.com/photo-1563445192071-fb5b2fa4ad62?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjY5NjYzfQ",
@@ -21,14 +21,14 @@ data class Photo (
         links: {
             self: "https://api.unsplash.com/photos/aH8tRjQG4XM",
             html: "https://unsplash.com/photos/aH8tRjQG4XM",
-            download: "https://unsplash.com/photos/aH8tRjQG4XM/download",
-            download_location: "https://api.unsplash.com/photos/aH8tRjQG4XM/download"
+            tvDownload: "https://unsplash.com/photos/aH8tRjQG4XM/tvDownload",
+            download_location: "https://api.unsplash.com/photos/aH8tRjQG4XM/tvDownload"
         },
         categories: [ ],
         sponsored: false,
         sponsored_by: null,
         sponsored_impressions_id: null,
-        likes: 29,
+        tvLikes: 29,
         liked_by_user: false,
         current_user_collections: [ ],
         user: {
@@ -46,7 +46,7 @@ data class Photo (
                 self: "https://api.unsplash.com/users/rotaalternativa",
                 html: "https://unsplash.com/@rotaalternativa",
                 photos: "https://api.unsplash.com/users/rotaalternativa/photos",
-                likes: "https://api.unsplash.com/users/rotaalternativa/likes",
+                tvLikes: "https://api.unsplash.com/users/rotaalternativa/tvLikes",
                 portfolio: "https://api.unsplash.com/users/rotaalternativa/portfolio",
                 following: "https://api.unsplash.com/users/rotaalternativa/following",
                 followers: "https://api.unsplash.com/users/rotaalternativa/followers"
@@ -70,8 +70,8 @@ data class Photo (
     var width: Int,
     var height: Int,
     var color: String,
-    var description: String,
-    var alt_description: String,
+    var description: String? = null,
+    var alt_description: String? = null,
     var exif: Exif,
     var location: Location,
     var tags: List<Tag>,

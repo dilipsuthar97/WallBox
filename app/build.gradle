@@ -88,7 +88,7 @@ dependencies {
     implementation 'com.github.chrisbanes:PhotoView:2.2.0'
 
     // Blurry
-    implementation 'jp.wasabeef:blurry:3.0.0'
+    //implementation 'jp.wasabeef:blurry:3.0.0'
 
     /*// Fast adapter
     implementation 'com.mikepenz:fastadapter:4.0.0'

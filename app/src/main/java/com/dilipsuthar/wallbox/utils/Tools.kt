@@ -37,6 +37,15 @@ object Tools {
         }
     }
 
+    fun setNavigationBarColor(act: Activity, @ColorInt color: Int) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val window = act.window
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            window.navigationBarColor = color
+        }
+    }
+
     fun changeNavigationIconColor(toolbar: Toolbar, @ColorInt color: Int) {
         val drawable = toolbar.navigationIcon
         drawable?.mutate()
@@ -52,9 +61,8 @@ object Tools {
     }
 
     fun setSystemBarLight(act: Activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             act.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        }
     }
 
     fun clearSystemBarLight(act: Activity) {

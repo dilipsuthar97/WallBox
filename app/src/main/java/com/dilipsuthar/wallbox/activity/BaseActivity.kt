@@ -1,8 +1,6 @@
 package com.dilipsuthar.wallbox.activity
 
-import android.os.Build
 import android.os.Bundle
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.emoji.bundled.BundledEmojiCompatConfig
 import androidx.emoji.text.EmojiCompat
@@ -23,12 +21,13 @@ abstract class BaseActivity : AppCompatActivity() {
         val config: EmojiCompat.Config = BundledEmojiCompatConfig(this)
         EmojiCompat.init(config)
 
+        // Set recent app header color
         ThemeUtils.setRecentAppsHeaderColor(this)
         customizeStatusBar()
 
     }
 
-    private fun customizeStatusBar() {
+    fun customizeStatusBar() {
         when(ThemeUtils.getTheme(this)) {
             ThemeUtils.LIGHT -> Tools.setSystemBarLight(this)
             ThemeUtils.DARK -> Tools.clearSystemBarLight(this)

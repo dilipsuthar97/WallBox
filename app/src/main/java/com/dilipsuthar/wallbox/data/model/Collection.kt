@@ -8,7 +8,7 @@ data class Collection(
     {
         id: 3323575,
         title: "Candy",
-        description: null,
+        tvDescription: null,
         published_at: "2019-07-26T11:54:41-04:00",
         updated_at: "2019-07-26T11:54:41-04:00",
         curated: false,
@@ -57,7 +57,7 @@ data class Collection(
                 self: "https://api.unsplash.com/users/mintyfrills",
                 html: "https://unsplash.com/@mintyfrills",
                 photos: "https://api.unsplash.com/users/mintyfrills/photos",
-                likes: "https://api.unsplash.com/users/mintyfrills/likes",
+                tvLikes: "https://api.unsplash.com/users/mintyfrills/tvLikes",
                 portfolio: "https://api.unsplash.com/users/mintyfrills/portfolio",
                 following: "https://api.unsplash.com/users/mintyfrills/following",
                 followers: "https://api.unsplash.com/users/mintyfrills/followers"
@@ -80,7 +80,7 @@ data class Collection(
             width: 3300,
             height: 2550,
             color: "#13C9FD",
-            description: null,
+            tvDescription: null,
             alt_description: null,
             urls: {
                 raw: "https://images.unsplash.com/photo-1499195231111-6009d0b2f5c9?ixlib=rb-1.2.1",
@@ -92,11 +92,11 @@ data class Collection(
             links: {
                 self: "https://api.unsplash.com/photos/dGr6Cwp9qLs",
                 html: "https://unsplash.com/photos/dGr6Cwp9qLs",
-                download: "https://unsplash.com/photos/dGr6Cwp9qLs/download",
-                download_location: "https://api.unsplash.com/photos/dGr6Cwp9qLs/download"
+                tvDownload: "https://unsplash.com/photos/dGr6Cwp9qLs/tvDownload",
+                download_location: "https://api.unsplash.com/photos/dGr6Cwp9qLs/tvDownload"
             },
             categories: [ ],
-            likes: 116,
+            tvLikes: 116,
             liked_by_user: false,
             current_user_collections: [ ],
             user: {
@@ -114,7 +114,7 @@ data class Collection(
                 self: "https://api.unsplash.com/users/sylvanusurban",
                 html: "https://unsplash.com/@sylvanusurban",
                 photos: "https://api.unsplash.com/users/sylvanusurban/photos",
-                likes: "https://api.unsplash.com/users/sylvanusurban/likes",
+                tvLikes: "https://api.unsplash.com/users/sylvanusurban/tvLikes",
                 portfolio: "https://api.unsplash.com/users/sylvanusurban/portfolio",
                 following: "https://api.unsplash.com/users/sylvanusurban/following",
                 followers: "https://api.unsplash.com/users/sylvanusurban/followers"

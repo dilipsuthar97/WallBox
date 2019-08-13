@@ -10,6 +10,8 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import butterknife.BindView
+import butterknife.ButterKnife
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.data.model.Photo
 import com.dilipsuthar.wallbox.utils.loadUrl
@@ -30,7 +32,7 @@ class PhotoAdapter
         val view: View?
 
         return if (viewType == TYPE_PHOTO) {
-            view = LayoutInflater.from(parent.context).inflate(R.layout.item_photo_grid, parent, false)
+            view = LayoutInflater.from(parent.context).inflate(R.layout.item_photo, parent, false)
             PhotoViewHolder(view)
         } else {
             view = LayoutInflater.from(parent.context).inflate(R.layout.item_loader, parent, false)
@@ -58,7 +60,7 @@ class PhotoAdapter
 
                 holder.rootView.setBackgroundColor(Color.parseColor(photo.color))
                 holder.textPhotoBy.text = "By, $txtPhotoBy"
-                holder.textLikes.text = "${photo.likes}"
+                holder.textLikes.text = "${photo.likes} Likes"
                 holder.btnDownload.setOnClickListener {
                     // TODO: Download image from here
                 }
@@ -66,7 +68,7 @@ class PhotoAdapter
                 holder.imagePhoto.loadUrl(photo.urls.regular)
 
                 holder.imageUserProfile.loadUrl(
-                    photo.user.profile_image.medium,
+                    photo.user.profile_image.large,
                     R.drawable.placeholder_profile,
                     R.drawable.placeholder_profile)
 
@@ -86,16 +88,20 @@ class PhotoAdapter
     /** view holders */
     class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        var imagePhoto: ImageView = itemView.findViewById(R.id.image_photo)
-        var imageUserProfile: CircularImageView = itemView.findViewById(R.id.image_user_profile)
-        val textPhotoBy: TextView = itemView.findViewById(R.id.text_photo_by)
-        val textLikes: TextView = itemView.findViewById(R.id.text_likes)
-        val rootView: View = itemView.findViewById(R.id.root_view)
-        val btnDownload: ImageButton = itemView.findViewById(R.id.btn_download)
+        init {
+            ButterKnife.bind(this, itemView)
+        }
+
+        @BindView(R.id.image_photo) lateinit var imagePhoto: ImageView
+        @BindView(R.id.image_user_profile) lateinit var imageUserProfile: CircularImageView
+        @BindView(R.id.text_photo_by) lateinit var textPhotoBy: TextView
+        @BindView(R.id.text_likes) lateinit var textLikes: TextView
+        @BindView(R.id.root_view) lateinit var rootView: View
+        @BindView(R.id.btn_download) lateinit var btnDownload: ImageButton
     }
 
     class LoadingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val progressLoadMore = itemView.findViewById<ProgressBar>(R.id.progress_load_more)
+
     }
 
     /** methods */

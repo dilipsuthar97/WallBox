@@ -1,6 +1,7 @@
 package com.dilipsuthar.wallbox.data.api
 
 import com.dilipsuthar.wallbox.data.model.Photo
+import com.dilipsuthar.wallbox.data.model.PhotoStatistics
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -28,4 +29,8 @@ interface PhotoApi {
     @GET("photos/{id}")
     fun getPhoto(@Path("id") id: String,
                  @Query("client_id") client_id: String): Call<Photo>
+
+    @GET("photos/{id}/statistics")
+    fun getPhotoStatistics(@Path("id") id: String,
+                           @Query("client_id") client_id: String): Call<PhotoStatistics>
 }
