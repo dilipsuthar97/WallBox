@@ -16,7 +16,7 @@ object Dialog {
     const val NETWORK_ERROR = 0
     const val HTTP_ERROR = 1
 
-    fun showErrorDialog(ctx: Context?, errorType: Int?, photoList: ArrayList<Photo>?, load: () -> Unit?, loadMore: () -> Unit?) {
+    /*fun showErrorDialog(ctx: Context?, errorType: Int?, photoList: ArrayList<Photo>?, load: () -> Unit?, loadMore: () -> Unit?) {
         val dialog = Dialog(ctx!!)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -45,6 +45,6 @@ object Dialog {
         }
 
         dialog.show()
-    }
+    }*/
 
 }

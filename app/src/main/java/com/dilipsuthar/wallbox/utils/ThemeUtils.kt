@@ -5,13 +5,10 @@ import android.app.ActivityManager
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.BitmapFactory
-import android.preference.PreferenceManager
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
-import androidx.annotation.StringDef
 import com.dilipsuthar.wallbox.R
-import com.dilipsuthar.wallbox.preferences.Preferences
-import java.lang.annotation.RetentionPolicy
+import com.dilipsuthar.wallbox.preferences.PrefConst
 
 object ThemeUtils {
 
@@ -20,15 +17,15 @@ object ThemeUtils {
     const val DARK = "dark"
 
     fun getTheme(context: Context): String {
-        val sharedPreferences: SharedPreferences? = context.getSharedPreferences(Preferences.PREF, Context.MODE_PRIVATE)
-        return sharedPreferences?.getString(Preferences.THEME, LIGHT)!!
+        val sharedPreferences: SharedPreferences? = context.getSharedPreferences(PrefConst.PREF, Context.MODE_PRIVATE)
+        return sharedPreferences?.getString(PrefConst.THEME, LIGHT)!!
     }
 
     fun setTheme(context: Context, theme: String) {
-        val sharedPreferences: SharedPreferences? = context.getSharedPreferences(Preferences.PREF, Context.MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences? = context.getSharedPreferences(PrefConst.PREF, Context.MODE_PRIVATE)
         when (theme) {
-            LIGHT -> sharedPreferences?.edit()?.putString(Preferences.THEME, LIGHT)?.apply()
-            else -> sharedPreferences?.edit()?.putString(Preferences.THEME, DARK)?.apply()
+            LIGHT -> sharedPreferences?.edit()?.putString(PrefConst.THEME, LIGHT)?.apply()
+            else -> sharedPreferences?.edit()?.putString(PrefConst.THEME, DARK)?.apply()
         }
     }
 

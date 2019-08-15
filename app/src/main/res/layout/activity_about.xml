@@ -22,8 +22,7 @@
                 android:theme="@style/ThemeOverlay.MaterialComponents">
             <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:id="@+id/toolbar_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    style="@style/WallBoxToolbarTheme"
                     android:fitsSystemWindows="true"
                     app:titleEnabled="false"
                     app:contentScrim="?attr/appBarColor"

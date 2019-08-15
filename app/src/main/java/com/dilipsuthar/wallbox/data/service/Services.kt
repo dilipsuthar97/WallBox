@@ -24,8 +24,10 @@ class Services {
 
     private var photosCall: Call<List<Photo>>? = null
     private var collectionsCall: Call<List<Collection>>? = null
+    private var photoCall: Call<Photo>? = null
+    private var photoStatisticsCall: Call<PhotoStatistics>? = null
 
-    /** Photo services */
+    /** Photo services ---------------------------------------------------------------------------------------------- */
     fun requestPhotos(page: Int, per_page: Int, order_by: String, listener: OnRequestPhotosListener?) {
         val requestCall = buildApi(buildClient(), PhotoApi::class.java).getPhotos(BuildConfig.WALLBOX_ACCESS_KEY, page, per_page, order_by)
         requestCall.enqueue(object : Callback<List<Photo>> {
@@ -65,6 +67,7 @@ class Services {
                 listener?.onRequestPhotoFailed(call, t)
             }
         })
+        photoCall = request
     }
 
     fun requestPhotoStatistics(id: String, listener: OnRequestPhotoStatistics?) {
@@ -78,10 +81,37 @@ class Services {
                 listener?.onRequestFailed(call, t)
             }
         })
+        photoStatisticsCall = request
+    }
+
+    fun requestCollectionPhotos(id: String, page: Int, per_page: Int, listener: OnRequestPhotosListener?) {
+        val request = buildApi(buildClient(), PhotoApi::class.java).getCollectionPhotos(id, BuildConfig.WALLBOX_ACCESS_KEY, page, per_page)
+        request.enqueue(object : Callback<List<Photo>> {
+            override fun onResponse(call: Call<List<Photo>>, response: Response<List<Photo>>) {
+                listener?.onRequestPhotosSuccess(call, response)
+            }
+
+            override fun onFailure(call: Call<List<Photo>>, t: Throwable) {
+                listener?.onRequestPhotosFailed(call, t)
+            }
+        })
+    }
+
+    fun requestCuratedCollectionPhotos(id: String, page: Int, per_page: Int, listener: OnRequestPhotosListener?) {
+        val request = buildApi(buildClient(), PhotoApi::class.java).getCollectionPhotos(id, BuildConfig.WALLBOX_ACCESS_KEY, page, per_page)
+        request.enqueue(object : Callback<List<Photo>> {
+            override fun onResponse(call: Call<List<Photo>>, response: Response<List<Photo>>) {
+                listener?.onRequestPhotosSuccess(call, response)
+            }
+
+            override fun onFailure(call: Call<List<Photo>>, t: Throwable) {
+                listener?.onRequestPhotosFailed(call, t)
+            }
+        })
     }
 
 
-    /** Collection services*/
+    /** Collection services ----------------------------------------------------------------------------------------- */
     fun requestCollections(page: Int, per_page: Int, listener: OnRequestCollectionsListener?) {
         Log.d(TAG, "requestCollections: called >>>>>>>>>> Services")
 
@@ -130,6 +160,21 @@ class Services {
         collectionsCall = requestCall
     }
 
+    fun requestCollection(id: String, listener: OnRequestCollectionListener?) {
+        Log.d(TAG, "requestCollection: called >>>>>>>>>> Services")
+
+        val request = buildApi(buildClient(), CollectionApi::class.java).getCollection(id, BuildConfig.WALLBOX_ACCESS_KEY)
+        request.enqueue(object : Callback<Collection> {
+            override fun onResponse(call: Call<Collection>, response: Response<Collection>) {
+                listener?.onRequestCollectionSuccess(call, response)
+            }
+
+            override fun onFailure(call: Call<Collection>, t: Throwable) {
+                listener?.onRequestCollectionFailed(call, t)
+            }
+        })
+    }
+
     /** TODO: Authorization service */
 
     fun cancel() {
@@ -137,7 +182,7 @@ class Services {
         if (collectionsCall != null) collectionsCall?.cancel()
     }
 
-    /** build. */
+    /** build. ------------------------------------------------------------------------------------------------------ */
     // Create/build okHttp client and return it ---->>>
     private fun buildClient(): OkHttpClient {
         return OkHttpClient
@@ -180,10 +225,15 @@ class Services {
         fun onRequestFailed(call: Call<PhotoStatistics>, t: Throwable)
     }
 
+
     // Collection listener
     interface OnRequestCollectionsListener {
         fun onRequestCollectionsSuccess(call: Call<List<Collection>>, response: Response<List<Collection>>)
         fun onRequestCollectionsFailed(call: Call<List<Collection>>, t: Throwable)
+    }
+    interface OnRequestCollectionListener {
+        fun onRequestCollectionSuccess(call: Call<Collection>, response: Response<Collection>)
+        fun onRequestCollectionFailed(call: Call<Collection>, t: Throwable)
     }
 
     /** Singleton pattern */

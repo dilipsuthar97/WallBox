@@ -1,13 +1,11 @@
 package com.dilipsuthar.wallbox.adapters
 
-import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
@@ -18,21 +16,24 @@ import com.dilipsuthar.wallbox.utils.loadUrl
 import com.mikhaellopez.circularimageview.CircularImageView
 
 /**
- * Created by Dilip on 22/07/19
+ * Created by DILIP SUTHAR on 22/07/19
  */
 
 class PhotoAdapter
     constructor(
         private var mPhotoList: ArrayList<Photo>?,
-        private var ctx: Context?,
-        private var listener: OnItemClickListener?
+        private val layoutType: String,
+        private val listener: OnItemClickListener?
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view: View?
 
         return if (viewType == TYPE_PHOTO) {
-            view = LayoutInflater.from(parent.context).inflate(R.layout.item_photo, parent, false)
+            view = if (layoutType == "list")
+                LayoutInflater.from(parent.context).inflate(R.layout.item_photo, parent, false)
+            else
+                LayoutInflater.from(parent.context).inflate(R.layout.item_photo_grid, parent, false)
             PhotoViewHolder(view)
         } else {
             view = LayoutInflater.from(parent.context).inflate(R.layout.item_loader, parent, false)
@@ -53,32 +54,32 @@ class PhotoAdapter
 
         if (holder is PhotoViewHolder) {
 
-            photo?.let { photo ->
+            photo?.let {
 
                 val txtPhotoBy = photo.user.first_name
-                if (photo.user.last_name != null) txtPhotoBy + " ${photo.user.last_name}"
+                if (it.user.last_name != null) txtPhotoBy + " ${it.user.last_name}"
 
-                holder.rootView.setBackgroundColor(Color.parseColor(photo.color))
+                holder.rootView.setBackgroundColor(Color.parseColor(it.color))
                 holder.textPhotoBy.text = "By, $txtPhotoBy"
-                holder.textLikes.text = "${photo.likes} Likes"
+                holder.textLikes.text = "${it.likes} Likes"
                 holder.btnDownload.setOnClickListener {
                     // TODO: Download image from here
                 }
 
-                holder.imagePhoto.loadUrl(photo.urls.regular)
+                holder.imagePhoto.loadUrl(it.urls.regular)
 
                 holder.imageUserProfile.loadUrl(
-                    photo.user.profile_image.large,
+                    it.user.profile_image.large,
                     R.drawable.placeholder_profile,
                     R.drawable.placeholder_profile)
 
                 holder.rootView.setOnLongClickListener { view ->
-                    listener?.onItemLongClick(photo, view!!, position, holder.imagePhoto)
+                    listener?.onItemLongClick(it, view!!, position, holder.imagePhoto)
                     true
                 }
 
                 holder.rootView.setOnClickListener { view ->
-                    listener?.onItemClick(photo, view, position, holder.imagePhoto)
+                    listener?.onItemClick(it, view, position, holder.imagePhoto)
                 }
             }
 
@@ -100,9 +101,7 @@ class PhotoAdapter
         @BindView(R.id.btn_download) lateinit var btnDownload: ImageButton
     }
 
-    class LoadingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-    }
+    class LoadingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     /** methods */
     fun addAll(photos: ArrayList<Photo>) {

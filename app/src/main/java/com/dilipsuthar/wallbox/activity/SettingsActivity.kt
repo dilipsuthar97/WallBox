@@ -10,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Switch
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.dilipsuthar.wallbox.R
@@ -52,7 +53,7 @@ class SettingsActivity : BaseActivity() {
         actionBar?.title = resources.getString(R.string.toolbar_title_settings)
         actionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
         actionBar?.setDisplayHomeAsUpEnabled(true)
-        Tools.changeNavigationIconColor(toolbar, ThemeUtils.getThemeAttrColor(this, R.attr.colorAccent))
+        Tools.changeNavigationIconColor(toolbar, ContextCompat.getColor(applicationContext, R.color.colorAccent))
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

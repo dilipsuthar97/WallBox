@@ -35,12 +35,12 @@ class CollectionAdapter
         val collection = mCollectionList?.get(position)
         if (holder is CollectionViewHolder) {
             collection?.let {
-                holder.txtCollectionTitle.text = it.title
-                holder.imagePhoto.loadUrl(it.cover_photo.urls.regular)
-                holder.txtWallpaperCount.text = "${it.total_photos} Wallpapers"
+                holder.tvCollectionTitle.text = it.title
+                holder.imageCollection.loadUrl(it.cover_photo.urls.regular)
+                holder.tvWallpaperCount.text = "${it.total_photos} Wallpapers"
 
-                holder.imagePhoto.setOnClickListener { view ->
-                    listener?.onCollectionClick(it, view, position, holder.imagePhoto)
+                holder.imageCollection.setOnClickListener { view ->
+                    listener?.onCollectionClick(it, view, position)
                 }
             }
         }
@@ -48,9 +48,9 @@ class CollectionAdapter
 
     /** View holders */
     class CollectionViewHolder(itemView: View?): RecyclerView.ViewHolder(itemView!!) {
-        val imagePhoto: ImageView = itemView!!.findViewById(R.id.image_photo)
-        val txtCollectionTitle: TextView = itemView!!.findViewById(R.id.txt_collection_title)
-        val txtWallpaperCount: TextView = itemView!!.findViewById(R.id.txt_wallpaper_count)
+        val imageCollection: ImageView = itemView!!.findViewById(R.id.img_collection)
+        val tvCollectionTitle: TextView = itemView!!.findViewById(R.id.tv_collection_title)
+        val tvWallpaperCount: TextView = itemView!!.findViewById(R.id.tv_wallpaper_count)
     }
 
     /** Methods */
@@ -61,7 +61,7 @@ class CollectionAdapter
 
     /** Interface */
     interface OnCollectionClickListener {
-        fun onCollectionClick(collection: Collection, view: View, pos: Int, imageView: ImageView)
+        fun onCollectionClick(collection: Collection, view: View, pos: Int)
     }
 
     /** Static */

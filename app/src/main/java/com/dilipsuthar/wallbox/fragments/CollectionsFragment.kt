@@ -1,13 +1,13 @@
 package com.dilipsuthar.wallbox.fragments
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,13 +17,15 @@ import butterknife.ButterKnife
 
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.WallBox
+import com.dilipsuthar.wallbox.activity.CollectionDetailActivity
 import com.dilipsuthar.wallbox.adapters.CollectionAdapter
 import com.dilipsuthar.wallbox.data.model.Collection
 import com.dilipsuthar.wallbox.data.service.Services
-import com.dilipsuthar.wallbox.preferences.Preferences
+import com.dilipsuthar.wallbox.preferences.PrefConst
 import com.dilipsuthar.wallbox.utils.Popup
 import com.dilipsuthar.wallbox.utils.Tools
 import com.dilipsuthar.wallbox.utils.setRefresh
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Response
 
@@ -34,13 +36,13 @@ import retrofit2.Response
 class CollectionsFragment : Fragment() {
 
     companion object {
-        const val TAG = "WallBox.CollectionsFragment"
+        const val TAG = "WallBox.CollectionsFrag"
 
         fun newInstance(sort: String): CollectionsFragment {
             val fragment = CollectionsFragment()
 
             val args = Bundle()
-            args.putString(Preferences.SORT, sort)
+            args.putString(PrefConst.SORT, sort)
             fragment.arguments = args
 
             return fragment
@@ -60,11 +62,13 @@ class CollectionsFragment : Fragment() {
     // VIEWS
     @BindView(R.id.collections_list) lateinit var mRecyclerView: RecyclerView
     @BindView(R.id.collections_swipe_refresh_layout) lateinit var mSwipeRefreshView: SwipeRefreshLayout
+    @BindView(R.id.network_error_layout) lateinit var netWorkErrorLyt: View
+    @BindView(R.id.http_error_layout) lateinit var httpErrorLyt: View
 
     /** Main method */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mSort = arguments?.getString(Preferences.SORT, WallBox.DEFAULT_SORT_COLLECTIONS)
+        mSort = arguments?.getString(PrefConst.SORT, WallBox.DEFAULT_SORT_COLLECTIONS)
 
         /** SERVICES / API's */
         mService = Services.getService()
@@ -73,29 +77,42 @@ class CollectionsFragment : Fragment() {
                 Log.d(TAG, response.code().toString())
 
                 mSwipeRefreshView setRefresh false
-                if (!loadMore) Popup.showToast(context, "Updated collections", Toast.LENGTH_SHORT)
+                if (!loadMore) Popup.showToast(context, "Your collections :)", Toast.LENGTH_SHORT)
                 if (response.isSuccessful) {
+                    mPage++
                     loadMore = false
                     mCollectionList.clear()
                     mCollectionList.addAll(ArrayList(response.body()!!))
                     updateAdapter(mCollectionList)
                     Tools.visibleViews(mRecyclerView)
                 } else {
-                    //Dialog.showErrorDialog(context, Dialog.HTTP_ERROR, mPhotosList, ::load, ::loadMore)
+                    mSwipeRefreshView setRefresh false
+                    loadMore = false
+                    if (mCollectionList.isEmpty()) {
+                        Tools.visibleViews(httpErrorLyt)
+                        Tools.inVisibleViews(mRecyclerView, netWorkErrorLyt, mSwipeRefreshView, type = Tools.GONE)
+                    } else Popup.showHttpErrorSnackBar(mSwipeRefreshView) { load() }
                 }
             }
 
             override fun onRequestCollectionsFailed(call: Call<List<Collection>>, t: Throwable) {
-                Log.d(WallBox.TAG, t.message)
+                Log.d(TAG, t.message)
                 mSwipeRefreshView setRefresh false
-                //Dialog.showErrorDialog(context, Dialog.NETWORK_ERROR, mPhotosList, ::load, ::loadMore)
+                loadMore = false
+                if (mCollectionList.isEmpty()) {
+                    Tools.visibleViews(netWorkErrorLyt)
+                    Tools.inVisibleViews(mRecyclerView, httpErrorLyt, mSwipeRefreshView, type = Tools.GONE)
+                } else Popup.showNetworkErrorSnackBar(mSwipeRefreshView) { load() }
             }
         }
 
         /** ADAPTER LISTENER */
         mOnCollectionClickListener = object : CollectionAdapter.OnCollectionClickListener {
-            override fun onCollectionClick(collection: Collection, view: View, pos: Int, imageView: ImageView) {
-                Popup.showToast(context, "$pos >> ${collection.title}", Toast.LENGTH_SHORT)
+            override fun onCollectionClick(collection: Collection, view: View, pos: Int) {
+                // TODO: open collection's detail activity here
+                val intent = Intent(activity!!, CollectionDetailActivity::class.java)
+                intent.putExtra(PrefConst.COLLECTION, Gson().toJson(collection))
+                startActivity(intent)
             }
         }
     }
@@ -111,6 +128,8 @@ class CollectionsFragment : Fragment() {
         mRecyclerView.layoutManager = LinearLayoutManager(context)
         mRecyclerView.setHasFixedSize(true)
         mRecyclerView.setItemViewCacheSize(5)
+        mAdapter = CollectionAdapter(ArrayList(), context, mOnCollectionClickListener)
+        mRecyclerView.adapter = mAdapter
 
         mPage = 1
         load()
@@ -127,9 +146,8 @@ class CollectionsFragment : Fragment() {
                 val lastVisible = layoutManager?.findLastVisibleItemPosition()
                 val endHasBeenReached = lastVisible?.plus(2)!! >= totalItem!!   // Load more photos on last item
                 if (totalItem > 0 && endHasBeenReached && !loadMore) {
-                    loadMore = true
-                    mSwipeRefreshView setRefresh true
-                    loadMore()
+                    //loadMore = true
+                    load()
                 }
             }
 
@@ -143,6 +161,8 @@ class CollectionsFragment : Fragment() {
             mPage = 1
             mCollectionList.clear()
             load()
+            mAdapter = CollectionAdapter(ArrayList(), context, mOnCollectionClickListener)
+            mRecyclerView.adapter = mAdapter
         }
 
         return view
@@ -151,22 +171,20 @@ class CollectionsFragment : Fragment() {
     /** methods */
     private fun load() {
         Log.d(TAG, "load: called >>>>>>>>>>")
-
         mSwipeRefreshView setRefresh true
+        loadMore = true
         when (mSort) {
             "all" -> mService?.requestCollections(mPage++, WallBox.DEFAULT_PER_PAGE, mOnRequestCollectionsListener)
-            "featured" -> mService?.requestFeaturedCollections(mPage++, WallBox.DEFAULT_PER_PAGE, mOnRequestCollectionsListener)
-            "curated" -> mService?.requestCuratedCollections(mPage++, WallBox.DEFAULT_PER_PAGE, mOnRequestCollectionsListener)
+            "featured" -> mService?.requestFeaturedCollections(mPage, WallBox.DEFAULT_PER_PAGE, mOnRequestCollectionsListener)
+            "curated" -> mService?.requestCuratedCollections(mPage, WallBox.DEFAULT_PER_PAGE, mOnRequestCollectionsListener)
         }
-        mAdapter = CollectionAdapter(ArrayList(), context, mOnCollectionClickListener)
-        mRecyclerView.adapter = mAdapter
     }
 
     private fun loadMore() {
         when (mSort) {
             "all" -> mService?.requestCollections(mPage++, WallBox.DEFAULT_PER_PAGE, mOnRequestCollectionsListener)
-            "featured" -> mService?.requestFeaturedCollections(mPage++, WallBox.DEFAULT_PER_PAGE, mOnRequestCollectionsListener)
-            "curated" -> mService?.requestCuratedCollections(mPage++, WallBox.DEFAULT_PER_PAGE, mOnRequestCollectionsListener)
+            "featured" -> mService?.requestFeaturedCollections(mPage, WallBox.DEFAULT_PER_PAGE, mOnRequestCollectionsListener)
+            "curated" -> mService?.requestCuratedCollections(mPage, WallBox.DEFAULT_PER_PAGE, mOnRequestCollectionsListener)
         }
     }
 

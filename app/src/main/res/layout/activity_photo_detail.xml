@@ -10,19 +10,14 @@
 
     <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:gravity="start|center_vertical"
+            style="@style/WallBoxToolbarTheme"
             android:background="@drawable/gradient_overlay_toolbar"
-            android:elevation="1dp"
-            android:theme="@style/ThemeOverlay.MaterialComponents"
-            app:popupTheme="@style/ThemeOverlay.MaterialComponents">
-    </androidx.appcompat.widget.Toolbar>
+            android:elevation="1dp"/>
 
     <com.github.chrisbanes.photoview.PhotoView
-            android:id="@+id/image_photo"
+            android:id="@+id/img_photo"
             android:background="?attr/colorPrimaryDark"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:transitionName="photo"/>

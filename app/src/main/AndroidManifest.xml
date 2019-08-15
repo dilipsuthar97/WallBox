@@ -15,8 +15,6 @@
             android:theme="@style/WallBox.Primary.Base.Light">
         <activity android:name=".activity.CollectionDetailActivity">
         </activity>
-        <activity android:name=".activity.PhotoFullActivity">
-        </activity>
         <activity android:name=".activity.PhotoDetailActivity">
         </activity>
         <activity android:name=".activity.SupportUsActivity">

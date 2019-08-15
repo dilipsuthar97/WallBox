@@ -102,9 +102,14 @@ object Tools {
         }
     }
 
-    fun setSnackBarBgColor(ctx: Context, snackbar: Snackbar, color: Int) {
-        val sbView = snackbar.view
+    fun setSnackBarBgColor(ctx: Context, snackBar: Snackbar, color: Int) {
+        val sbView = snackBar.view
         sbView.setBackgroundColor(ctx.resources.getColor(color))
+    }
+
+    fun setSnackBarDrawable(snackBar: Snackbar, drawable: Drawable?) {
+        val view = snackBar.view
+        view.background = drawable
     }
 
     /*fun hasNetwork(ctx: Context?): Boolean? {

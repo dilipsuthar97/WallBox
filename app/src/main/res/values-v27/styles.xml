@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <!-- Base application theme. -->
@@ -20,6 +21,7 @@
         <item name="colorRipple">@color/colorRipple</item>
 
         <item name="colorControlHighlight">@color/overlay_dark_50</item> <!-- Ripple color -->
+        <item name="android:windowLayoutInDisplayCutoutMode">default</item> <!-- For notch display (default/shortEdges/never) -->
         <item name="android:windowBackground">@color/windowColor</item>
         <item name="android:fontFamily">@font/google_sans_regular</item>
         <!--<item name="android:windowTranslucentStatus">true</item>
@@ -47,6 +49,7 @@
         <item name="colorRipple">@color/colorRipple</item>
 
         <item name="colorControlHighlight">@color/overlay_light_50</item> <!-- Ripple color -->
+        <item name="android:windowLayoutInDisplayCutoutMode">default</item> <!-- For notch display (default/shortEdges/never) -->
         <item name="android:windowBackground">@color/windowColor_night</item>
         <item name="android:fontFamily">@font/google_sans_regular</item>
         <!--<item name="android:windowTranslucentStatus">true</item>
@@ -54,70 +57,6 @@
         <item name="android:navigationBarColor">#303030</item> <!-- Bottom nav bar color -->
         <item name="android:windowContentTransitions">true</item> <!-- For view transition between activities -->
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item> <!-- Activity transition -->
-    </style>
-
-    <!-- Text styles theme -->
-    <style name="TextAppearance.Subhead.Bold" parent="@style/TextAppearance.AppCompat.Subhead">
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="TextAppearance.Medium.Bold" parent="@style/TextAppearance.AppCompat.Medium">
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="TextAppearance.Large.Bold" parent="@style/TextAppearance.AppCompat.Large">
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <!-- Window animation style -->
-    <style name="WindowAnimationTransition">
-        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
-        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
-    </style>
-    
-    <!-- Photo preview theme -->
-    <style name="PhotoPreviewTheme">
-        <item name="android:windowIsFloating">false</item>
-    </style>
-
-    <!-- Toolbar style -->
-    <style name="WallBoxToolbarTheme">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">?attr/actionBarSize</item>
-        <item name="android:gravity">start|center_vertical</item>
-        <item name="titleTextAppearance">@style/TextAppearance.Large.Bold</item>
-        <item name="titleTextColor">?attr/primaryTextColor</item>
-        <item name="subtitleTextColor">?attr/secondaryTextColor</item>
-        <item name="popupTheme">@style/ThemeOverlay.MaterialComponents</item>
-        <item name="android:theme">@style/ThemeOverlay.MaterialComponents</item>
-    </style>
-
-    <!-- Photo info bottom sheet style -->
-    <style name="BottomSheetTitleTheme">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/primaryTextColor_night</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="BottomSheetSubtitleTheme">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/secondaryTextColor_night</item>
-    </style>
-
-    <style name="BottomSheetIconTheme">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:tint">@color/secondaryTextColor_night</item>
-    </style>
-
-    <style name="CircularImageViewTheme">
-        <item name="android:layout_width">35dp</item>
-        <item name="android:layout_height">35dp</item>
-        <item name="civ_border_width">0dp</item>
-        <item name="android:src">@drawable/placeholder_profile</item>
     </style>
 
 </resources>

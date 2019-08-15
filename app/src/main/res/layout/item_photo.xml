@@ -23,10 +23,7 @@
 
             <com.mikhaellopez.circularimageview.CircularImageView
                     android:id="@+id/image_user_profile"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    app:civ_border_width="0dp"
-                    tools:src="@drawable/placeholder_profile"
+                    style="@style/CircularImageViewTheme"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent"

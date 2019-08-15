@@ -103,9 +103,9 @@ class HomeActivity : BaseActivity() {
         /** Set mViewPager and link it with TabLayout */
         mViewPagerAdapter = SectionPagerAdapter(supportFragmentManager)
         mViewPagerAdapter?.let {
-            it.addFragment(RecentWallFragment.newInstance("latest"), "Fresh")
-            it.addFragment(CuratedWallFragment.newInstance("latest"), "Curated")
-            it.addFragment(CollectionsFragment.newInstance("featured"), "Collections")
+            it.addFragment(RecentWallFragment.newInstance("latest"), resources.getString(R.string.tab_title_recent_wall_fragment))
+            it.addFragment(CuratedWallFragment.newInstance("latest"), resources.getString(R.string.tab_title_curated_wall_fragment))
+            it.addFragment(CollectionsFragment.newInstance("featured"), resources.getString(R.string.tab_title_collections_fragment))
             mViewPager.adapter = it
         }
         mViewPager.offscreenPageLimit = 2
@@ -241,11 +241,11 @@ class HomeActivity : BaseActivity() {
             }
             R.id.menu_sort_collection_featured -> {
                 transaction.replace(R.id.collections_container, CollectionsFragment.newInstance("featured")).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
-                showSnackBar("Collections sorted by All", Snackbar.LENGTH_SHORT)
+                showSnackBar("Collections sorted by Featured", Snackbar.LENGTH_SHORT)
             }
             R.id.menu_sort_collection_curated -> {
                 transaction.replace(R.id.collections_container, CollectionsFragment.newInstance("curated")).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
-                showSnackBar("Collections sorted by All", Snackbar.LENGTH_SHORT)
+                showSnackBar("Collections sorted by Curated", Snackbar.LENGTH_SHORT)
             }
             else -> mDrawerLayout.openDrawer(GravityCompat.START)
         }

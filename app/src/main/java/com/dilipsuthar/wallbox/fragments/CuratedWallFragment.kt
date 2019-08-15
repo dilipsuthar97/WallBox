@@ -12,7 +12,6 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.ViewCompat
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -21,15 +20,12 @@ import butterknife.ButterKnife
 
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.WallBox
-import com.dilipsuthar.wallbox.activity.HomeActivity
 import com.dilipsuthar.wallbox.activity.PhotoDetailActivity
 import com.dilipsuthar.wallbox.adapters.PhotoAdapter
 import com.dilipsuthar.wallbox.data.model.Photo
 import com.dilipsuthar.wallbox.data.service.Services
-import com.dilipsuthar.wallbox.preferences.Preferences
+import com.dilipsuthar.wallbox.preferences.PrefConst
 import com.dilipsuthar.wallbox.utils.*
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Response
@@ -46,7 +42,7 @@ class CuratedWallFragment : Fragment() {
             val fragment = CuratedWallFragment()
 
             val args = Bundle()
-            args.putString(Preferences.SORT, sort)
+            args.putString(PrefConst.SORT, sort)
             fragment.arguments = args
 
             return fragment
@@ -66,20 +62,26 @@ class CuratedWallFragment : Fragment() {
     // VIEWS
     @BindView(R.id.curated_wallpaper_list) lateinit var mRecyclerView: RecyclerView
     @BindView(R.id.curated_swipe_refresh_layout) lateinit var mSwipeRefreshView: SwipeRefreshLayout
+    @BindView(R.id.network_error_layout) lateinit var netWorkErrorLyt: View
+    @BindView(R.id.http_error_layout) lateinit var httpErrorLyt: View
 
     /** MAIN METHOD */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mSort = arguments?.getString(Preferences.SORT, WallBox.DEFAULT_SORT_PHOTOS)
+        mSort = arguments?.getString(PrefConst.SORT, WallBox.DEFAULT_SORT_PHOTOS)
 
-            /** SERVICES / API */
+        /** SERVICES / API */
         mService = Services.getService()
+
+        /** Listeners */
+        // API request listener
         mOnRequestPhotosListener = object : Services.OnRequestPhotosListener {
             override fun onRequestPhotosSuccess(call: Call<List<Photo>>, response: Response<List<Photo>>) {
                 Log.d(TAG, response.code().toString())
                 mSwipeRefreshView setRefresh false
-                if (!loadMore)  Popup.showToast(context, "Updated photos", Toast.LENGTH_SHORT)
+                if (!loadMore)  Popup.showToast(context, "Your photos :)", Toast.LENGTH_SHORT)
                 if (response.isSuccessful) {
+                    mPage++
                     loadMore = false
                     mPhotosList.clear()
                     mPhotosList.addAll(ArrayList(response.body()!!))
@@ -87,25 +89,31 @@ class CuratedWallFragment : Fragment() {
                     Tools.visibleViews(mRecyclerView)
                 } else {
                     mSwipeRefreshView setRefresh false
-                    Dialog.showErrorDialog(context, Dialog.HTTP_ERROR, mPhotosList, ::load, ::loadMore)
                     loadMore = false
+                    if (mPhotosList.isEmpty()) {
+                        Tools.visibleViews(httpErrorLyt)
+                        Tools.inVisibleViews(mRecyclerView, netWorkErrorLyt, mSwipeRefreshView, type = Tools.GONE)
+                    } else Popup.showHttpErrorSnackBar(mSwipeRefreshView) { load() }
                 }
             }
 
             override fun onRequestPhotosFailed(call: Call<List<Photo>>, t: Throwable) {
-                Log.d(WallBox.TAG, t.message)
+                Log.d(WallBox.TAG, t.message!!)
                 mSwipeRefreshView setRefresh false
-                Dialog.showErrorDialog(context, Dialog.NETWORK_ERROR, mPhotosList, ::load, ::loadMore)
                 loadMore = false
+                if (mPhotosList.isEmpty()) {
+                    Tools.visibleViews(netWorkErrorLyt)
+                    Tools.inVisibleViews(mRecyclerView, httpErrorLyt, mSwipeRefreshView, type = Tools.GONE)
+                } else Popup.showNetworkErrorSnackBar(mSwipeRefreshView) { load() }
             }
         }
 
-        /** ADAPTER LISTENERS */
+        // Adapter listener
         mOnItemClickListener = object : PhotoAdapter.OnItemClickListener {
             override fun onItemClick(photo: Photo, view: View, pos: Int, imageView: ImageView) {
                 val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity!!, imageView, ViewCompat.getTransitionName(imageView)!!)
                 val intent = Intent(activity, PhotoDetailActivity::class.java)
-                intent.putExtra("PHOTO", Gson().toJson(photo))
+                intent.putExtra(PrefConst.PHOTO, Gson().toJson(photo))
                 startActivity(intent, options.toBundle())
             }
 
@@ -128,11 +136,13 @@ class CuratedWallFragment : Fragment() {
         mRecyclerView.setHasFixedSize(true)
         mRecyclerView.addItemDecoration(VerticalSpacingItemDecorator(22))
         mRecyclerView.setItemViewCacheSize(5)
+        mPhotoAdapter = PhotoAdapter(ArrayList(), "list", mOnItemClickListener)
+        mRecyclerView.adapter = mPhotoAdapter
 
         mPage = 1
         load()
 
-        /** Listeners */
+        /** Views listeners */
         // RecyclerView listener
         mRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
@@ -143,21 +153,20 @@ class CuratedWallFragment : Fragment() {
                 super.onScrolled(recyclerView, dx, dy)
 
                 /** check for first & last item position */
-                val layoutManager = LinearLayoutManager::class.java.cast(recyclerView.layoutManager)
-                val totalItem = layoutManager?.itemCount
-                val lastVisible = layoutManager?.findLastVisibleItemPosition()
-                val firstVisible = layoutManager?.findFirstCompletelyVisibleItemPosition()
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val totalItem = layoutManager.itemCount
+                val lastVisible = layoutManager.findLastCompletelyVisibleItemPosition()
+                val firstVisible = layoutManager.findFirstCompletelyVisibleItemPosition()
 
-                val atTopReached = firstVisible?.minus(1)!! <= 0    // Hide fab on first item
+                val atTopReached = firstVisible.minus(1) <= 0    // Hide fab on first item
                 if (atTopReached) {
                     // TODO: hide fabScrollUp here
                 }
 
-                val endHasBeenReached = lastVisible?.plus(2)!! >= totalItem!!   // Load more photos on last item
+                val endHasBeenReached = lastVisible.plus(2) >= totalItem   // Load more photos on last item
                 if (totalItem > 0 && endHasBeenReached && !loadMore) {
-                    loadMore = true
-                    mSwipeRefreshView setRefresh true
-                    loadMore()
+                    //loadMore = true
+                    load()
                 }
 
                 verticalOffset.plus(dy)
@@ -180,11 +189,13 @@ class CuratedWallFragment : Fragment() {
         })
 
 
-        // Swipe listener
+        // Swipe refresh listener
         mSwipeRefreshView.setOnRefreshListener {
             mPage = 1
             mPhotosList.clear()
             load()
+            mPhotoAdapter = PhotoAdapter(ArrayList(), "list", mOnItemClickListener)
+            mRecyclerView.adapter = mPhotoAdapter
         }
 
         return view
@@ -193,26 +204,22 @@ class CuratedWallFragment : Fragment() {
     /** Methods */
     private fun load() {
         Log.d(TAG, "load: called >>>>>>>>>>")
-
         mSwipeRefreshView setRefresh true
-        mService?.requestCuratedPhotos(mPage++, WallBox.DEFAULT_PER_PAGE, mSort!!, mOnRequestPhotosListener)
-        mPhotoAdapter = PhotoAdapter(ArrayList(), context!!, mOnItemClickListener)
-        mRecyclerView.adapter = mPhotoAdapter
+        loadMore = true
+        mService?.requestCuratedPhotos(mPage, WallBox.DEFAULT_PER_PAGE, mSort!!, mOnRequestPhotosListener)
     }
 
     private fun loadMore() {
         Log.d(TAG, "loadMore: called >>>>>>>>>>")
-
-        mService?.requestCuratedPhotos(mPage++, WallBox.DEFAULT_PER_PAGE, mSort!!, mOnRequestPhotosListener)
+        mService?.requestCuratedPhotos(mPage, WallBox.DEFAULT_PER_PAGE, mSort!!, mOnRequestPhotosListener)
     }
 
     private fun updateAdapter(photos: ArrayList<Photo>) {
         Log.d(TAG, "updateAdapter: called >>>>>>>>>>")
-
         mPhotoAdapter?.addAll(photos)
     }
 
-    fun scrollToTop() {
+    /*fun scrollToTop() {
         val layoutManager = mRecyclerView.layoutManager as LinearLayoutManager
         if (mRecyclerView != null) {
             if (layoutManager != null && layoutManager.findFirstVisibleItemPosition() > 5) {
@@ -221,6 +228,6 @@ class CuratedWallFragment : Fragment() {
             mRecyclerView.smoothScrollToPosition(0)
         }
 
-    }
+    }*/
 
 }

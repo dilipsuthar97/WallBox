@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
@@ -19,9 +20,8 @@ import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.data.model.Photo
 import com.dilipsuthar.wallbox.data.model.PhotoStatistics
 import com.dilipsuthar.wallbox.data.service.Services
-import com.dilipsuthar.wallbox.utils.ThemeUtils
-import com.dilipsuthar.wallbox.utils.Tools
-import com.dilipsuthar.wallbox.utils.loadUrl
+import com.dilipsuthar.wallbox.preferences.PrefConst
+import com.dilipsuthar.wallbox.utils.*
 import com.github.chrisbanes.photoview.PhotoView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
@@ -30,7 +30,7 @@ import retrofit2.Call
 import retrofit2.Response
 
 class PhotoDetailActivity : BaseActivity() {
-    private val TAG = "WallBox.PhotoDetailActivity"
+    private val TAG = "WallBox.PhotoDetailAct"
 
     private var mService: Services? = null
     private var mOnRequestPhotoListener: Services.OnRequestPhotoListener? = null
@@ -38,19 +38,21 @@ class PhotoDetailActivity : BaseActivity() {
     private lateinit var mPhoto: Photo
     private lateinit var mPhotoStatistics: PhotoStatistics
 
-    @BindView(R.id.image_photo) lateinit var imgPhoto: PhotoView
+    @BindView(R.id.img_photo) lateinit var imgPhoto: PhotoView
     @BindView(R.id.toolbar) lateinit var mToolbar: Toolbar
-    @BindView(R.id.imgUserProfile) lateinit var imgUser: CircularImageView
-    @BindView(R.id.tvPhotoBy) lateinit var tvPhotoBy: TextView
+    @BindView(R.id.img_user) lateinit var imgUser: CircularImageView
+    @BindView(R.id.tv_photo_by) lateinit var tvPhotoBy: TextView
     @BindView(R.id.root_view_bottom_sheet) lateinit var bottomSheet: View
 
-    @BindView(R.id.text_description) lateinit var tvDescription: TextView
-    @BindView(R.id.text_likes) lateinit var tvLikes: TextView
-    @BindView(R.id.text_downloads) lateinit var tvDownload: TextView
-    @BindView(R.id.text_views) lateinit var tvViews: TextView
-    @BindView(R.id.text_location) lateinit var tvLocation: TextView
-    @BindView(R.id.tvColorPalette) lateinit var tvColor: TextView
-    @BindView(R.id.viewColor) lateinit var viewColor: CardView
+    @BindView(R.id.tv_description) lateinit var tvDescription: TextView
+    @BindView(R.id.tv_likes) lateinit var tvLikes: TextView
+    @BindView(R.id.tv_downloads) lateinit var tvDownload: TextView
+    @BindView(R.id.tv_views) lateinit var tvViews: TextView
+    @BindView(R.id.tv_location) lateinit var tvLocation: TextView
+    @BindView(R.id.tv_color) lateinit var tvColor: TextView
+    @BindView(R.id.view_color) lateinit var viewColor: CardView
+    @BindView(R.id.btn_set_wallpaper) lateinit var btnSetWallpaper: ImageButton
+    @BindView(R.id.btn_download) lateinit var btnDownload: ImageButton
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
 
@@ -59,10 +61,10 @@ class PhotoDetailActivity : BaseActivity() {
         setContentView(R.layout.activity_photo_detail)
         ButterKnife.bind(this)
 
-        mPhoto = Gson().fromJson(intent.getStringExtra("PHOTO"), Photo::class.java)
+        mPhoto = Gson().fromJson(intent.getStringExtra(PrefConst.PHOTO), Photo::class.java)
 
         /** Set mPhoto data */
-        imgPhoto.setBackgroundColor(Color.parseColor(mPhoto.color))
+        imgPhoto.setBackgroundColor(Color.parseColor("#000000"))
         imgPhoto.loadUrl(mPhoto.urls.regular)
         imgUser.loadUrl(
             mPhoto.user.profile_image.large,
@@ -90,8 +92,8 @@ class PhotoDetailActivity : BaseActivity() {
         mService = Services.getService()
         mOnRequestPhotoListener = object : Services.OnRequestPhotoListener {
             override fun onRequestPhotoSuccess(call: Call<Photo>, response: Response<Photo>) {
-                Log.d(TAG, Gson().toJson(response.body()))
                 if (response.isSuccessful) {
+                    Log.d(TAG, Gson().toJson(response.body()))
                     mPhoto = response.body()!!
                     setPhotoInfo()
                 }
@@ -114,7 +116,7 @@ class PhotoDetailActivity : BaseActivity() {
             }
 
             override fun onRequestFailed(call: Call<PhotoStatistics>, t: Throwable) {
-
+                Log.d(TAG, t.message!!)
             }
         }
         mService?.requestPhotoStatistics(mPhoto.id, mOnRequestPhotoStatistics)
@@ -127,10 +129,22 @@ class PhotoDetailActivity : BaseActivity() {
             }
 
             override fun onStateChanged(p0: View, newState: Int) {
-                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                    bottomSheet.setBackgroundColor((ContextCompat.getColor(applicationContext, R.color.cardDialogColor_night)))
+
+                if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                    bottomSheet.setBackgroundColor((ContextCompat.getColor(applicationContext, R.color.overlay_dark_50)))
+                    tvPhotoBy.setTextColor(ContextCompat.getColor(applicationContext, R.color.primaryTextColor_night))
+                    btnSetWallpaper.setColorFilter(ContextCompat.getColor(applicationContext, R.color.primaryTextColor_night))
+                    btnDownload.setColorFilter(ContextCompat.getColor(applicationContext, R.color.primaryTextColor_night))
                 } else {
-                    bottomSheet.setBackgroundColor(ContextCompat.getColor(applicationContext, R.color.overlay_dark_50))
+                    bottomSheet.setBackgroundColor(Color.parseColor(mPhoto.color))
+                    if (Color.parseColor(mPhoto.color).isDark() eq true)
+                        setViewsColor(
+                            ContextCompat.getColor(applicationContext, R.color.primaryTextColor_night),
+                            ContextCompat.getColor(applicationContext, R.color.secondaryTextColor_night))
+                    else
+                        setViewsColor(
+                            ContextCompat.getColor(applicationContext, R.color.primaryTextColor),
+                            ContextCompat.getColor(applicationContext, R.color.secondaryTextColor))
                 }
             }
         })
@@ -209,7 +223,27 @@ class PhotoDetailActivity : BaseActivity() {
             tvLocation.text = "${mPhoto.location.city}, ${mPhoto.location.country}"
         else if(mPhoto.location.city != "") tvLocation.text = mPhoto.location.city
         else if (mPhoto.location.country != "") tvLocation.text = mPhoto.location.country
-        else tvLocation.text = "-"
+        else tvLocation.text = "no location!"
+    }
+
+    private fun setViewsColor(colorPrimary: Int, colorSecondary: Int) {
+        (findViewById<TextView>(R.id.label_description)).setTextColor(colorPrimary)
+        tvPhotoBy.setTextColor(colorPrimary)
+        btnSetWallpaper.setColorFilter(colorPrimary)
+        btnDownload.setColorFilter(colorPrimary)
+        tvDescription.setTextColor(colorSecondary)
+        (findViewById<ImageView>(R.id.ic_location)).setColorFilter(colorPrimary)
+        tvLocation.setTextColor(colorSecondary)
+        (findViewById<TextView>(R.id.label_info)).setTextColor(colorPrimary)
+        (findViewById<ImageView>(R.id.ic_likes)).setColorFilter(colorPrimary)
+        (findViewById<ImageView>(R.id.ic_downloads)).setColorFilter(colorPrimary)
+        (findViewById<ImageView>(R.id.ic_views)).setColorFilter(colorPrimary)
+        tvLikes.setTextColor(colorSecondary)
+        tvDownload.setTextColor(colorSecondary)
+        tvViews.setTextColor(colorSecondary)
+        (findViewById<TextView>(R.id.label_color_palette)).setTextColor(colorPrimary)
+        tvColor.setTextColor(colorSecondary)
+
     }
 
 }

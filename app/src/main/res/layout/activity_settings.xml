@@ -11,13 +11,8 @@
 
     <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            style="@style/WallBoxToolbarTheme"
             android:background="?attr/appBarColor"
-            android:gravity="start|center_vertical"
-            app:titleTextAppearance="@style/TextAppearance.Large.Bold"
-            app:titleTextColor="?attr/primaryTextColor"
-            app:contentInsetStartWithNavigation="0dp"
             app:layout_scrollFlags="scroll|enterAlways"/>
 
     <androidx.core.widget.NestedScrollView

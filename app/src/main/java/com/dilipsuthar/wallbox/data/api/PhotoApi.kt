@@ -33,4 +33,16 @@ interface PhotoApi {
     @GET("photos/{id}/statistics")
     fun getPhotoStatistics(@Path("id") id: String,
                            @Query("client_id") client_id: String): Call<PhotoStatistics>
+
+    @GET("collections/{id}/photos")
+    fun getCollectionPhotos(@Path("id") id: String,
+                            @Query("client_id") client_id: String,
+                            @Query("page") page: Int,
+                            @Query("per_page") per_page: Int): Call<List<Photo>>
+
+    @GET("collections/curated/{id}/photos")
+    fun getCuratedCollectionPhotos(@Path("id") id: String,
+                                   @Query("client_id") client_id: String,
+                                   @Query("page") page: Int,
+                                   @Query("per_page") per_page: Int): Call<List<Photo>>
 }

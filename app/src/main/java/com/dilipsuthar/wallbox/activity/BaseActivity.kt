@@ -27,7 +27,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     }
 
-    fun customizeStatusBar() {
+    private fun customizeStatusBar() {
         when(ThemeUtils.getTheme(this)) {
             ThemeUtils.LIGHT -> Tools.setSystemBarLight(this)
             ThemeUtils.DARK -> Tools.clearSystemBarLight(this)

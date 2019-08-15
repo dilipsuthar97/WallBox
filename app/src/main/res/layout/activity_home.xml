@@ -17,7 +17,7 @@
                 android:id="@+id/appbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
+                android:background="?attr/appBarColor"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -25,11 +25,7 @@
 
             <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="?attr/appBarColor"
-                    app:titleTextAppearance="@style/TextAppearance.Large.Bold"
-                    app:titleTextColor="?attr/primaryTextColor"
+                    style="@style/WallBoxToolbarTheme"
                     app:layout_scrollFlags="scroll|snap|enterAlways"
                     app:popupTheme="@style/ThemeOverlay.MaterialComponents"/>
 
