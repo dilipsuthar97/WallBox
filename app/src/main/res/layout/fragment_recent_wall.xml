@@ -8,12 +8,6 @@
         android:layout_height="match_parent"
         android:background="?attr/backgroundColor"
         tools:context=".fragments.RecentWallFragment">
-
-    <include layout="@layout/include_network_error"
-            android:visibility="gone"/>
-
-    <include layout="@layout/include_http_error"
-            android:visibility="gone"/>
     
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/recent_swipe_refresh_layout"
@@ -31,5 +25,11 @@
                 android:visibility="gone"/>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <include layout="@layout/include_network_error"
+             android:visibility="gone"/>
+
+    <include layout="@layout/include_http_error"
+             android:visibility="gone"/>
 
 </FrameLayout>

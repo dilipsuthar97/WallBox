@@ -29,20 +29,21 @@
     <string name="tab_title_curated_wall_fragment">Curated</string>
     <string name="tab_title_collections_fragment">Collections</string>
 
-    <!-- -->
+    <!-- Notify -->
     <string name="no_internet_title">Oh shucks!</string>
     <string name="no_internet_message">Slow or no internet connection. Please check and try again.</string>
-    <string name="http_error_title">Oop!</string>
-    <string name="http_error_message">Something went wrong please try again.</string>
-    <string name="retry">Try Again</string>
+    <string name="http_error_title">404</string>
+    <string name="http_error_message">Something went wrong.</string>
+    <string name="more_photos_message">More photos..</string>
+    <string name="no_more_photos_message">No more photos available :(</string>
+    <string name="retry">Retry</string>
+    <string name="tap_to_retry">Tap to retry</string>
+    <string name="photo_statistics_error">Failed to load statistics</string>
+    <string name="photo_error">Failed to load photo details</string>
     <string name="cancel" translatable="false">Cancel</string>
 
     <string name="powered_by">powered by </string>
     <string name="unsplash">Unsplash</string>
-
-    <!-- Notify -->
-    <string name="more_photos_message">More photos..</string>
-    <string name="no_more_photos_message">No more photos available :(</string>
 
     <!-- Extras -->
     <string name="wallpapers">Wallpapers</string>

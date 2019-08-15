@@ -1,11 +1,11 @@
 package com.dilipsuthar.wallbox.utils
 
-import android.util.TypedValue
-import android.view.View
 import android.widget.ImageView
 import androidx.core.graphics.ColorUtils
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.squareup.picasso.Picasso
+import java.text.NumberFormat
+import java.util.*
 
 fun ImageView.loadUrl(url: String) {
     Picasso.get()
@@ -32,4 +32,6 @@ infix fun Boolean.eq(value: Boolean): Boolean {
     return this == value
 }
 
-//fun View.margin()
+fun Int.getFormattedNumber(): String {
+    return NumberFormat.getNumberInstance(Locale.US).format(this)
+}

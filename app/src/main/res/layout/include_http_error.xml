@@ -8,19 +8,12 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:tint="@color/colorAccent"
-            android:src="@drawable/ic_http"/>
-
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:text="@string/http_error_title"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="18sp"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textColor="?attr/primaryTextColor"/>
 
     <TextView
             android:layout_width="wrap_content"
@@ -29,13 +22,24 @@
             android:text="@string/http_error_message"
             android:textColor="?attr/secondaryTextColor"/>
 
-    <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_retry"
+    <LinearLayout
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            android:gravity="center"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAllCaps="false"
-            android:layout_marginTop="16dp"
-            style="@style/Widget.MaterialComponents.Button"
-            android:text="@string/retry"/>
+            android:layout_height="wrap_content">
+        <ImageView
+                android:tint="?attr/secondaryTextColor"
+                android:layout_width="@dimen/spacing_large"
+                android:layout_height="@dimen/spacing_large"
+                android:layout_marginEnd="@dimen/spacing_medium"
+                android:src="@drawable/ic_refresh"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tap_to_retry"
+                android:textAlignment="center"
+                android:textColor="?attr/secondaryTextColor" />
+    </LinearLayout>
 
 </LinearLayout>

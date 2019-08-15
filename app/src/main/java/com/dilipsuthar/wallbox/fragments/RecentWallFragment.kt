@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityOptionsCompat
-import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,6 +23,7 @@ import com.dilipsuthar.wallbox.data.model.Photo
 import com.dilipsuthar.wallbox.data.service.Services
 import com.dilipsuthar.wallbox.preferences.PrefConst
 import com.dilipsuthar.wallbox.utils.*
+import com.dilipsuthar.wallbox.utils.itemDecorater.VerticalSpacingItemDecorator
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import retrofit2.Call
@@ -34,7 +34,7 @@ import retrofit2.Response
  */
 
 class RecentWallFragment : Fragment() {
-    private final val TAG = "WallBox.RecentWallFrag"
+    private val TAG = "WallBox.RecentWallFrag"
 
     companion object {
         fun newInstance(sort: String): RecentWallFragment {
@@ -57,6 +57,7 @@ class RecentWallFragment : Fragment() {
     private var mPhotoAdapter: PhotoAdapter? = null
     private var mOnItemClickListener: PhotoAdapter.OnItemClickListener? = null
     private var loadMore: Boolean = false
+    private var snackBar: Snackbar? = null
 
 
     // VIEWS
@@ -88,13 +89,14 @@ class RecentWallFragment : Fragment() {
                     mPhotosList.addAll(ArrayList(response.body()!!))
                     updateAdapter(mPhotosList)
                     Tools.visibleViews(mRecyclerView)
+                    Tools.inVisibleViews(netWorkErrorLyt, httpErrorLyt, type = Tools.GONE)
                 } else {
                     mSwipeRefreshView setRefresh false
                     loadMore = false
                     if (mPhotosList.isEmpty()) {
                         Tools.visibleViews(httpErrorLyt)
-                        Tools.inVisibleViews(mRecyclerView, netWorkErrorLyt, mSwipeRefreshView, type = Tools.GONE)
-                    } else Popup.showHttpErrorSnackBar(mSwipeRefreshView) { load() }
+                        Tools.inVisibleViews(mRecyclerView, netWorkErrorLyt, type = Tools.GONE)
+                    } else snackBar = Popup.showHttpErrorSnackBar(mSwipeRefreshView) { load() }
                 }
             }
 
@@ -104,8 +106,8 @@ class RecentWallFragment : Fragment() {
                 loadMore = false
                 if (mPhotosList.isEmpty()) {
                     Tools.visibleViews(netWorkErrorLyt)
-                    Tools.inVisibleViews(mRecyclerView, httpErrorLyt, mSwipeRefreshView, type = Tools.GONE)
-                } else Popup.showNetworkErrorSnackBar(mSwipeRefreshView) { load() }
+                    Tools.inVisibleViews(mRecyclerView, httpErrorLyt, type = Tools.GONE)
+                } else snackBar = Popup.showNetworkErrorSnackBar(mSwipeRefreshView) { load() }
             }
         }
 
@@ -188,7 +190,6 @@ class RecentWallFragment : Fragment() {
 
         })
 
-
         // Swipe refresh listener
         mSwipeRefreshView.setOnRefreshListener {
             mPage = 1
@@ -198,6 +199,16 @@ class RecentWallFragment : Fragment() {
             mRecyclerView.adapter = mPhotoAdapter
         }
 
+        /** Event listener */
+        netWorkErrorLyt.setOnClickListener {
+            load()
+            it.visibility = View.GONE
+        }
+        httpErrorLyt.setOnClickListener {
+            load()
+            it.visibility = View.GONE
+        }
+
         return view
     }
 
@@ -205,6 +216,7 @@ class RecentWallFragment : Fragment() {
     private fun load() {
         mSwipeRefreshView setRefresh true
         loadMore = true
+        if (snackBar != null) snackBar?.dismiss()
         mService?.requestPhotos(mPage, WallBox.DEFAULT_PER_PAGE, mSort!!, mOnRequestPhotosListener)
     }
 

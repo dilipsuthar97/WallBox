@@ -1,4 +1,4 @@
-package com.dilipsuthar.wallbox.utils
+package com.dilipsuthar.wallbox.utils.itemDecorater
 
 import android.graphics.Rect
 import android.view.View

@@ -25,6 +25,7 @@ import com.dilipsuthar.wallbox.preferences.PrefConst
 import com.dilipsuthar.wallbox.utils.Popup
 import com.dilipsuthar.wallbox.utils.Tools
 import com.dilipsuthar.wallbox.utils.setRefresh
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Response
@@ -58,6 +59,7 @@ class CollectionsFragment : Fragment() {
     private var mAdapter: CollectionAdapter? = null
     private var mOnCollectionClickListener: CollectionAdapter.OnCollectionClickListener? = null
     private var loadMore = false
+    private var snackBar: Snackbar? = null
 
     // VIEWS
     @BindView(R.id.collections_list) lateinit var mRecyclerView: RecyclerView
@@ -85,12 +87,13 @@ class CollectionsFragment : Fragment() {
                     mCollectionList.addAll(ArrayList(response.body()!!))
                     updateAdapter(mCollectionList)
                     Tools.visibleViews(mRecyclerView)
+                    Tools.inVisibleViews(netWorkErrorLyt, httpErrorLyt, type = Tools.GONE)
                 } else {
                     mSwipeRefreshView setRefresh false
                     loadMore = false
                     if (mCollectionList.isEmpty()) {
                         Tools.visibleViews(httpErrorLyt)
-                        Tools.inVisibleViews(mRecyclerView, netWorkErrorLyt, mSwipeRefreshView, type = Tools.GONE)
+                        Tools.inVisibleViews(mRecyclerView, netWorkErrorLyt, type = Tools.GONE)
                     } else Popup.showHttpErrorSnackBar(mSwipeRefreshView) { load() }
                 }
             }
@@ -101,7 +104,7 @@ class CollectionsFragment : Fragment() {
                 loadMore = false
                 if (mCollectionList.isEmpty()) {
                     Tools.visibleViews(netWorkErrorLyt)
-                    Tools.inVisibleViews(mRecyclerView, httpErrorLyt, mSwipeRefreshView, type = Tools.GONE)
+                    Tools.inVisibleViews(mRecyclerView, httpErrorLyt, type = Tools.GONE)
                 } else Popup.showNetworkErrorSnackBar(mSwipeRefreshView) { load() }
             }
         }
@@ -141,10 +144,10 @@ class CollectionsFragment : Fragment() {
                 super.onScrolled(recyclerView, dx, dy)
 
                 /** check for first & last item position */
-                val layoutManager = LinearLayoutManager::class.java.cast(recyclerView.layoutManager)
-                val totalItem = layoutManager?.itemCount
-                val lastVisible = layoutManager?.findLastVisibleItemPosition()
-                val endHasBeenReached = lastVisible?.plus(2)!! >= totalItem!!   // Load more photos on last item
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val totalItem = layoutManager.itemCount
+                val lastVisible = layoutManager.findLastCompletelyVisibleItemPosition()
+                val endHasBeenReached = lastVisible.plus(1) >= totalItem   // Load more photos on last item
                 if (totalItem > 0 && endHasBeenReached && !loadMore) {
                     //loadMore = true
                     load()
@@ -165,6 +168,16 @@ class CollectionsFragment : Fragment() {
             mRecyclerView.adapter = mAdapter
         }
 
+        /** Event listener */
+        netWorkErrorLyt.setOnClickListener {
+            load()
+            it.visibility = View.GONE
+        }
+        httpErrorLyt.setOnClickListener {
+            load()
+            it.visibility = View.GONE
+        }
+
         return view
     }
 
@@ -173,6 +186,7 @@ class CollectionsFragment : Fragment() {
         Log.d(TAG, "load: called >>>>>>>>>>")
         mSwipeRefreshView setRefresh true
         loadMore = true
+        if (snackBar != null) snackBar?.dismiss()
         when (mSort) {
             "all" -> mService?.requestCollections(mPage++, WallBox.DEFAULT_PER_PAGE, mOnRequestCollectionsListener)
             "featured" -> mService?.requestFeaturedCollections(mPage, WallBox.DEFAULT_PER_PAGE, mOnRequestCollectionsListener)

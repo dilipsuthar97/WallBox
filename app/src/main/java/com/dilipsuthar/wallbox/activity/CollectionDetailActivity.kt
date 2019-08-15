@@ -1,7 +1,6 @@
 package com.dilipsuthar.wallbox.activity
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -13,7 +12,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -27,6 +25,8 @@ import com.dilipsuthar.wallbox.data.model.Photo
 import com.dilipsuthar.wallbox.data.service.Services
 import com.dilipsuthar.wallbox.preferences.PrefConst
 import com.dilipsuthar.wallbox.utils.*
+import com.dilipsuthar.wallbox.utils.itemDecorater.VerticalSpacingItemDecorator
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.mikhaellopez.circularimageview.CircularImageView
 import retrofit2.Call
@@ -46,6 +46,7 @@ class CollectionDetailActivity : BaseActivity() {
     private var mOnItemClickListener: PhotoAdapter.OnItemClickListener? = null
 
     private var loadMore = false
+    private var snackBar: Snackbar? = null
 
     // VIEWS
     @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
@@ -85,14 +86,15 @@ class CollectionDetailActivity : BaseActivity() {
                     mPhotoList.addAll(ArrayList(response.body()!!))
                     updateAdapter(mPhotoList)
                     Tools.visibleViews(mRecyclerView)
+                    Tools.inVisibleViews(netWorkErrorLyt, httpErrorLyt, type = Tools.GONE)
 
                 } else {
                     mSwipeRefreshView setRefresh false
                     loadMore = false
                     if (mPhotoList.isEmpty()) {
                         Tools.visibleViews(httpErrorLyt)
-                        Tools.inVisibleViews(mRecyclerView, netWorkErrorLyt, mSwipeRefreshView, type = Tools.GONE)
-                    } else Popup.showHttpErrorSnackBar(mSwipeRefreshView) { load() }
+                        Tools.inVisibleViews(mRecyclerView, netWorkErrorLyt, type = Tools.GONE)
+                    } else snackBar = Popup.showHttpErrorSnackBar(mSwipeRefreshView) { load() }
                 }
             }
 
@@ -102,8 +104,8 @@ class CollectionDetailActivity : BaseActivity() {
                 loadMore = false
                 if (mPhotoList.isEmpty()) {
                     Tools.visibleViews(netWorkErrorLyt)
-                    Tools.inVisibleViews(mRecyclerView, httpErrorLyt, mSwipeRefreshView, type = Tools.GONE)
-                } else Popup.showNetworkErrorSnackBar(mSwipeRefreshView) { load() }
+                    Tools.inVisibleViews(mRecyclerView, httpErrorLyt, type = Tools.GONE)
+                } else snackBar = Popup.showNetworkErrorSnackBar(mSwipeRefreshView) { load() }
             }
         }
 
@@ -150,6 +152,16 @@ class CollectionDetailActivity : BaseActivity() {
             }
         })
 
+        // OnClick listener
+        netWorkErrorLyt.setOnClickListener {
+            load()
+            it.visibility = View.GONE
+        }
+        httpErrorLyt.setOnClickListener {
+            load()
+            it.visibility = View.GONE
+        }
+
         initToolbar()
         initComponent()
 
@@ -180,6 +192,7 @@ class CollectionDetailActivity : BaseActivity() {
         mPhotoAdapter = PhotoAdapter(ArrayList(), "list", mOnItemClickListener)
         mRecyclerView.adapter = mPhotoAdapter
 
+        /** First load request */
         mPage = 1
         load()
     }
@@ -187,6 +200,7 @@ class CollectionDetailActivity : BaseActivity() {
     private fun load() {
         mSwipeRefreshView setRefresh true
         loadMore = true
+        if (snackBar != null) snackBar?.dismiss()
         if (mCollection!!.curated)
             mServices?.requestCuratedCollectionPhotos(mCollection?.id.toString(), mPage, WallBox.DEFAULT_PER_PAGE, mOnRequestPhotosListener)
         else

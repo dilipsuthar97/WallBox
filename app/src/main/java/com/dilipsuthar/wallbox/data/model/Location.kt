@@ -1,9 +1,9 @@
 package com.dilipsuthar.wallbox.data.model
 
 data class Location(
-    var city: String,
-    var country: String,
-    var position: Position
+    var city: String? = null,
+    var country: String? = null,
+    var position: Position? = null
 ) {
     constructor(): this("","",Position())
 }

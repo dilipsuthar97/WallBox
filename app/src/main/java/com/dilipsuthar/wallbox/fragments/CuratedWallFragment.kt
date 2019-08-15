@@ -26,6 +26,8 @@ import com.dilipsuthar.wallbox.data.model.Photo
 import com.dilipsuthar.wallbox.data.service.Services
 import com.dilipsuthar.wallbox.preferences.PrefConst
 import com.dilipsuthar.wallbox.utils.*
+import com.dilipsuthar.wallbox.utils.itemDecorater.VerticalSpacingItemDecorator
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Response
@@ -58,6 +60,7 @@ class CuratedWallFragment : Fragment() {
     private var mPhotoAdapter: PhotoAdapter? = null
     private var mOnItemClickListener: PhotoAdapter.OnItemClickListener? = null
     private var loadMore: Boolean = false
+    private var snackBar: Snackbar? = null
 
     // VIEWS
     @BindView(R.id.curated_wallpaper_list) lateinit var mRecyclerView: RecyclerView
@@ -87,12 +90,13 @@ class CuratedWallFragment : Fragment() {
                     mPhotosList.addAll(ArrayList(response.body()!!))
                     updateAdapter(mPhotosList)
                     Tools.visibleViews(mRecyclerView)
+                    Tools.inVisibleViews(netWorkErrorLyt, httpErrorLyt, type = Tools.GONE)
                 } else {
                     mSwipeRefreshView setRefresh false
                     loadMore = false
                     if (mPhotosList.isEmpty()) {
                         Tools.visibleViews(httpErrorLyt)
-                        Tools.inVisibleViews(mRecyclerView, netWorkErrorLyt, mSwipeRefreshView, type = Tools.GONE)
+                        Tools.inVisibleViews(mRecyclerView, netWorkErrorLyt, type = Tools.GONE)
                     } else Popup.showHttpErrorSnackBar(mSwipeRefreshView) { load() }
                 }
             }
@@ -103,7 +107,7 @@ class CuratedWallFragment : Fragment() {
                 loadMore = false
                 if (mPhotosList.isEmpty()) {
                     Tools.visibleViews(netWorkErrorLyt)
-                    Tools.inVisibleViews(mRecyclerView, httpErrorLyt, mSwipeRefreshView, type = Tools.GONE)
+                    Tools.inVisibleViews(mRecyclerView, httpErrorLyt, type = Tools.GONE)
                 } else Popup.showNetworkErrorSnackBar(mSwipeRefreshView) { load() }
             }
         }
@@ -163,7 +167,7 @@ class CuratedWallFragment : Fragment() {
                     // TODO: hide fabScrollUp here
                 }
 
-                val endHasBeenReached = lastVisible.plus(2) >= totalItem   // Load more photos on last item
+                val endHasBeenReached = lastVisible.plus(1) >= totalItem   // Load more photos on last item
                 if (totalItem > 0 && endHasBeenReached && !loadMore) {
                     //loadMore = true
                     load()
@@ -198,6 +202,16 @@ class CuratedWallFragment : Fragment() {
             mRecyclerView.adapter = mPhotoAdapter
         }
 
+        /** Event listener */
+        netWorkErrorLyt.setOnClickListener {
+            load()
+            it.visibility = View.GONE
+        }
+        httpErrorLyt.setOnClickListener {
+            load()
+            it.visibility = View.GONE
+        }
+
         return view
     }
 
@@ -206,6 +220,7 @@ class CuratedWallFragment : Fragment() {
         Log.d(TAG, "load: called >>>>>>>>>>")
         mSwipeRefreshView setRefresh true
         loadMore = true
+        if (snackBar != null) snackBar?.dismiss()
         mService?.requestCuratedPhotos(mPage, WallBox.DEFAULT_PER_PAGE, mSort!!, mOnRequestPhotosListener)
     }
 

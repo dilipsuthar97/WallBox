@@ -11,6 +11,7 @@ import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
@@ -101,6 +102,7 @@ class PhotoDetailActivity : BaseActivity() {
 
             override fun onRequestPhotoFailed(call: Call<Photo>, t: Throwable) {
                 Log.d(TAG, t.message!!)
+                Popup.showToast(applicationContext, resources.getString(R.string.photo_error), Toast.LENGTH_SHORT)
             }
         }
         mService?.requestPhoto(mPhoto.id, mOnRequestPhotoListener)
@@ -117,6 +119,7 @@ class PhotoDetailActivity : BaseActivity() {
 
             override fun onRequestFailed(call: Call<PhotoStatistics>, t: Throwable) {
                 Log.d(TAG, t.message!!)
+                Popup.showToast(applicationContext, resources.getString(R.string.photo_statistics_error), Toast.LENGTH_SHORT)
             }
         }
         mService?.requestPhotoStatistics(mPhoto.id, mOnRequestPhotoStatistics)
@@ -213,16 +216,16 @@ class PhotoDetailActivity : BaseActivity() {
     }
 
     private fun setStatisticsData() {
-        tvLikes.text = mPhotoStatistics.likes.total.toString()
-        tvDownload.text = mPhotoStatistics.downloads.total.toString()
-        tvViews.text = mPhotoStatistics.views.total.toString()
+        tvLikes.text = mPhotoStatistics.likes.total.getFormattedNumber()
+        tvDownload.text = mPhotoStatistics.downloads.total.getFormattedNumber()
+        tvViews.text = mPhotoStatistics.views.total.getFormattedNumber()
     }
 
     private fun setPhotoInfo() {
-        if (mPhoto.location.city != "" && mPhoto.location.country != "")
+        if (mPhoto.location.city != null && mPhoto.location.country != null)
             tvLocation.text = "${mPhoto.location.city}, ${mPhoto.location.country}"
-        else if(mPhoto.location.city != "") tvLocation.text = mPhoto.location.city
-        else if (mPhoto.location.country != "") tvLocation.text = mPhoto.location.country
+        else if(mPhoto.location.city != null) tvLocation.text = mPhoto.location.city
+        else if (mPhoto.location.country != null) tvLocation.text = mPhoto.location.country
         else tvLocation.text = "no location!"
     }
 

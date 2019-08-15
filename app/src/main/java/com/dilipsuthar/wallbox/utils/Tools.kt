@@ -18,9 +18,8 @@ import android.view.Menu
 import androidx.core.content.ContextCompat
 import com.dilipsuthar.wallbox.R
 import java.nio.file.Files.size
-
-
-
+import java.text.NumberFormat
+import java.util.*
 
 
 object Tools {
