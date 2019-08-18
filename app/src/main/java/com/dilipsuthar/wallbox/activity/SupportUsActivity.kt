@@ -1,6 +1,5 @@
 package com.dilipsuthar.wallbox.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
@@ -9,6 +8,11 @@ import butterknife.ButterKnife
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.dilipsuthar.wallbox.utils.Tools
+
+/**
+ * Created by,
+ * @author DILIP SUTHAR 05/06/19
+ */
 
 class SupportUsActivity : BaseActivity() {
 
@@ -23,6 +27,7 @@ class SupportUsActivity : BaseActivity() {
         initToolbar()
     }
 
+    /** @mthod init toolbar settings */
     private fun initToolbar() {
         setSupportActionBar(toolbar)
         val actionBar = supportActionBar

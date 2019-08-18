@@ -5,8 +5,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.emoji.bundled.BundledEmojiCompatConfig
 import androidx.emoji.text.EmojiCompat
 import com.dilipsuthar.wallbox.R
+import com.dilipsuthar.wallbox.helpers.LocaleHelper
 import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.dilipsuthar.wallbox.utils.Tools
+
+/**
+ * Created by,
+ * @author DILIP SUTHAR 05/06/19
+ */
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -21,6 +27,9 @@ abstract class BaseActivity : AppCompatActivity() {
         val config: EmojiCompat.Config = BundledEmojiCompatConfig(this)
         EmojiCompat.init(config)
 
+        // Init app language
+        LocaleHelper.loadLocal(this)
+
         // Set recent app header color
         ThemeUtils.setRecentAppsHeaderColor(this)
         customizeStatusBar()
@@ -33,6 +42,7 @@ abstract class BaseActivity : AppCompatActivity() {
             ThemeUtils.DARK -> Tools.clearSystemBarLight(this)
         }
 
-        Tools.setSystemBarColor(this, ThemeUtils.getThemeAttrColor(this, R.attr.colorPrimaryDark))
+        Tools.setSystemBarColor(this, ThemeUtils.getThemeAttrColor(this, R.attr.statusBarColor))
     }
+
 }

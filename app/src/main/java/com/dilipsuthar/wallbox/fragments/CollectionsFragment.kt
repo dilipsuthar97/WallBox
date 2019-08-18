@@ -21,10 +21,10 @@ import com.dilipsuthar.wallbox.activity.CollectionDetailActivity
 import com.dilipsuthar.wallbox.adapters.CollectionAdapter
 import com.dilipsuthar.wallbox.data.model.Collection
 import com.dilipsuthar.wallbox.data.service.Services
-import com.dilipsuthar.wallbox.preferences.PrefConst
-import com.dilipsuthar.wallbox.utils.Popup
+import com.dilipsuthar.wallbox.preferences.Preferences
+import com.dilipsuthar.wallbox.utils.PopupUtils
 import com.dilipsuthar.wallbox.utils.Tools
-import com.dilipsuthar.wallbox.utils.setRefresh
+import com.dilipsuthar.wallbox.helpers.setRefresh
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import retrofit2.Call
@@ -43,7 +43,7 @@ class CollectionsFragment : Fragment() {
             val fragment = CollectionsFragment()
 
             val args = Bundle()
-            args.putString(PrefConst.SORT, sort)
+            args.putString(Preferences.SORT, sort)
             fragment.arguments = args
 
             return fragment
@@ -70,7 +70,7 @@ class CollectionsFragment : Fragment() {
     /** Main method */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mSort = arguments?.getString(PrefConst.SORT, WallBox.DEFAULT_SORT_COLLECTIONS)
+        mSort = arguments?.getString(Preferences.SORT, WallBox.DEFAULT_SORT_COLLECTIONS)
 
         /** SERVICES / API's */
         mService = Services.getService()
@@ -79,7 +79,7 @@ class CollectionsFragment : Fragment() {
                 Log.d(TAG, response.code().toString())
 
                 mSwipeRefreshView setRefresh false
-                if (!loadMore) Popup.showToast(context, "Your collections :)", Toast.LENGTH_SHORT)
+                if (!loadMore) PopupUtils.showToast(context, "Your collections :)", Toast.LENGTH_SHORT)
                 if (response.isSuccessful) {
                     mPage++
                     loadMore = false
@@ -94,7 +94,7 @@ class CollectionsFragment : Fragment() {
                     if (mCollectionList.isEmpty()) {
                         Tools.visibleViews(httpErrorLyt)
                         Tools.inVisibleViews(mRecyclerView, netWorkErrorLyt, type = Tools.GONE)
-                    } else Popup.showHttpErrorSnackBar(mSwipeRefreshView) { load() }
+                    } else PopupUtils.showHttpErrorSnackBar(mSwipeRefreshView) { load() }
                 }
             }
 
@@ -105,7 +105,7 @@ class CollectionsFragment : Fragment() {
                 if (mCollectionList.isEmpty()) {
                     Tools.visibleViews(netWorkErrorLyt)
                     Tools.inVisibleViews(mRecyclerView, httpErrorLyt, type = Tools.GONE)
-                } else Popup.showNetworkErrorSnackBar(mSwipeRefreshView) { load() }
+                } else PopupUtils.showNetworkErrorSnackBar(mSwipeRefreshView) { load() }
             }
         }
 
@@ -114,7 +114,7 @@ class CollectionsFragment : Fragment() {
             override fun onCollectionClick(collection: Collection, view: View, pos: Int) {
                 // TODO: open collection's detail activity here
                 val intent = Intent(activity!!, CollectionDetailActivity::class.java)
-                intent.putExtra(PrefConst.COLLECTION, Gson().toJson(collection))
+                intent.putExtra(Preferences.COLLECTION, Gson().toJson(collection))
                 startActivity(intent)
             }
         }

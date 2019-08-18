@@ -8,7 +8,11 @@ import android.graphics.BitmapFactory
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import com.dilipsuthar.wallbox.R
-import com.dilipsuthar.wallbox.preferences.PrefConst
+import com.dilipsuthar.wallbox.preferences.Preferences
+import androidx.core.content.ContextCompat.startActivity
+import android.content.Intent
+
+
 
 object ThemeUtils {
 
@@ -17,15 +21,15 @@ object ThemeUtils {
     const val DARK = "dark"
 
     fun getTheme(context: Context): String {
-        val sharedPreferences: SharedPreferences? = context.getSharedPreferences(PrefConst.PREF, Context.MODE_PRIVATE)
-        return sharedPreferences?.getString(PrefConst.THEME, LIGHT)!!
+        val sharedPreferences = Preferences.getSharedPreferences(context)
+        return sharedPreferences?.getString(Preferences.THEME, LIGHT)!!
     }
 
-    fun setTheme(context: Context, theme: String) {
-        val sharedPreferences: SharedPreferences? = context.getSharedPreferences(PrefConst.PREF, Context.MODE_PRIVATE)
+    fun setTheme(context: Context?, theme: String) {
+        val sharedPreferences = Preferences.getSharedPreferences(context)
         when (theme) {
-            LIGHT -> sharedPreferences?.edit()?.putString(PrefConst.THEME, LIGHT)?.apply()
-            else -> sharedPreferences?.edit()?.putString(PrefConst.THEME, DARK)?.apply()
+            LIGHT -> sharedPreferences?.edit()?.putString(Preferences.THEME, LIGHT)?.apply()
+            DARK -> sharedPreferences?.edit()?.putString(Preferences.THEME, DARK)?.apply()
         }
     }
 
@@ -48,5 +52,14 @@ object ThemeUtils {
         activity.setTaskDescription(taskDescription)
         icon?.recycle()
     }
+
+    fun restartApp(context: Context?) {
+        val i = context!!.packageManager
+            .getLaunchIntentForPackage(context.packageName)
+        i?.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+        i?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        context.startActivity(i)
+    }
+
 
 }

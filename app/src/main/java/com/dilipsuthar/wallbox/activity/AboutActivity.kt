@@ -12,6 +12,11 @@ import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.dilipsuthar.wallbox.utils.Tools
 import kotlinx.android.synthetic.main.activity_about.*
 
+/**
+ * Created by,
+ * @author DILIP SUTHAR 05/06/19
+ */
+
 class AboutActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

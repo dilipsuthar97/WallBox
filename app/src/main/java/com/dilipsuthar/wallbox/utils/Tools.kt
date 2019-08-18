@@ -122,7 +122,7 @@ object Tools {
 
     val hasActiveNetwork: (Context) -> Boolean? = { ctx ->
         var isConnected: Boolean? = false
-        val connectivityManager = ctx?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager = ctx.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkInfo = connectivityManager.activeNetworkInfo
         if (networkInfo != null && networkInfo.isConnected)
             isConnected = true

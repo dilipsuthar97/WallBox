@@ -21,7 +21,8 @@ import com.dilipsuthar.wallbox.activity.PhotoDetailActivity
 import com.dilipsuthar.wallbox.adapters.PhotoAdapter
 import com.dilipsuthar.wallbox.data.model.Photo
 import com.dilipsuthar.wallbox.data.service.Services
-import com.dilipsuthar.wallbox.preferences.PrefConst
+import com.dilipsuthar.wallbox.helpers.setRefresh
+import com.dilipsuthar.wallbox.preferences.Preferences
 import com.dilipsuthar.wallbox.utils.*
 import com.dilipsuthar.wallbox.utils.itemDecorater.VerticalSpacingItemDecorator
 import com.google.android.material.snackbar.Snackbar
@@ -41,7 +42,7 @@ class RecentWallFragment : Fragment() {
             val fragment = RecentWallFragment()
 
             val args = Bundle()
-            args.putString(PrefConst.SORT, sort)
+            args.putString(Preferences.SORT, sort)
             fragment.arguments = args
 
             return fragment
@@ -69,7 +70,7 @@ class RecentWallFragment : Fragment() {
     /** Main Method */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mSort = arguments?.getString(PrefConst.SORT, WallBox.DEFAULT_SORT_PHOTOS)
+        mSort = arguments?.getString(Preferences.SORT, WallBox.DEFAULT_SORT_PHOTOS)
 
         /** SERVICES / API */
         mService = Services.getService()
@@ -81,7 +82,7 @@ class RecentWallFragment : Fragment() {
 
                 Log.d(TAG, response.code().toString())
                 mSwipeRefreshView setRefresh false
-                if (!loadMore) Popup.showToast(context, "Your photos :)", Toast.LENGTH_SHORT)
+                if (!loadMore) PopupUtils.showToast(context, "Your photos :)", Toast.LENGTH_SHORT)
                 if (response.isSuccessful) {
                     mPage++
                     loadMore = false
@@ -96,7 +97,7 @@ class RecentWallFragment : Fragment() {
                     if (mPhotosList.isEmpty()) {
                         Tools.visibleViews(httpErrorLyt)
                         Tools.inVisibleViews(mRecyclerView, netWorkErrorLyt, type = Tools.GONE)
-                    } else snackBar = Popup.showHttpErrorSnackBar(mSwipeRefreshView) { load() }
+                    } else snackBar = PopupUtils.showHttpErrorSnackBar(mSwipeRefreshView) { load() }
                 }
             }
 
@@ -107,7 +108,7 @@ class RecentWallFragment : Fragment() {
                 if (mPhotosList.isEmpty()) {
                     Tools.visibleViews(netWorkErrorLyt)
                     Tools.inVisibleViews(mRecyclerView, httpErrorLyt, type = Tools.GONE)
-                } else snackBar = Popup.showNetworkErrorSnackBar(mSwipeRefreshView) { load() }
+                } else snackBar = PopupUtils.showNetworkErrorSnackBar(mSwipeRefreshView) { load() }
             }
         }
 
@@ -116,12 +117,12 @@ class RecentWallFragment : Fragment() {
             override fun onItemClick(photo: Photo, view: View, pos: Int, imageView: ImageView) {
                 val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity!!, imageView, ViewCompat.getTransitionName(imageView)!!)
                 val intent = Intent(activity, PhotoDetailActivity::class.java)
-                intent.putExtra(PrefConst.PHOTO, Gson().toJson(photo))
+                intent.putExtra(Preferences.PHOTO, Gson().toJson(photo))
                 startActivity(intent, options.toBundle())
             }
 
             override fun onItemLongClick(photo: Photo, view: View, pos: Int, imageView: ImageView) {
-                Popup.showToast(context, "$pos", Toast.LENGTH_SHORT)
+                PopupUtils.showToast(context, "$pos", Toast.LENGTH_SHORT)
                 Log.d(WallBox.TAG, "mOnItemClickListener: onItemLongClick")
             }
         }
@@ -138,7 +139,7 @@ class RecentWallFragment : Fragment() {
         mRecyclerView.setHasFixedSize(true)
         mRecyclerView.addItemDecoration(VerticalSpacingItemDecorator(22))
         mRecyclerView.setItemViewCacheSize(5)
-        mPhotoAdapter = PhotoAdapter(ArrayList(), "list", mOnItemClickListener)
+        mPhotoAdapter = PhotoAdapter(ArrayList(), "list", context, mOnItemClickListener)
         mRecyclerView.adapter = mPhotoAdapter
 
         mPage = 1
@@ -195,7 +196,7 @@ class RecentWallFragment : Fragment() {
             mPage = 1
             mPhotosList.clear()
             load()
-            mPhotoAdapter = PhotoAdapter(ArrayList(), "list", mOnItemClickListener)
+            mPhotoAdapter = PhotoAdapter(ArrayList(), "list", context, mOnItemClickListener)
             mRecyclerView.adapter = mPhotoAdapter
         }
 

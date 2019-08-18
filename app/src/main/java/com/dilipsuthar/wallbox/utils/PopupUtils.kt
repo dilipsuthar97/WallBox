@@ -8,7 +8,7 @@ import com.dilipsuthar.wallbox.R
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.toast_layout.view.*
 
-object Popup {
+object PopupUtils {
 
     fun showToast(context: Context?, msg: String?, duration: Int) {
         val inflater = LayoutInflater.from(context)
@@ -21,14 +21,14 @@ object Popup {
     }
 
     fun showHttpErrorSnackBar(view: View, action: () -> Unit? = {}): Snackbar {
-        val snackBar = Snackbar.make(view, R.string.http_error_message, Snackbar.LENGTH_LONG)
+        val snackBar = Snackbar.make(view, R.string.desc_http_error, Snackbar.LENGTH_LONG)
         //Tools.setSnackBarDrawable(snackBar, ContextCompat.getDrawable(context!!, R.drawable.container_snackbar_error))
         snackBar.setAction(R.string.retry) { action() }.show()
         return snackBar
     }
 
     fun showNetworkErrorSnackBar(view: View, action: () -> Unit? = {}): Snackbar {
-        val snackBar = Snackbar.make(view, R.string.no_internet_message, Snackbar.LENGTH_LONG)
+        val snackBar = Snackbar.make(view, R.string.desc_network_error, Snackbar.LENGTH_LONG)
         snackBar.setAction(R.string.retry) { action() }.show()
         return snackBar
     }

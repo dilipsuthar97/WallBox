@@ -31,7 +31,9 @@
                 android:layout_height="match_parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent">
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btn_set_wallpaper"
+                app:layout_constraintHorizontal_bias="0.0">
 
             <com.mikhaellopez.circularimageview.CircularImageView
                     android:id="@+id/img_user"
@@ -81,7 +83,7 @@
             android:layout_height="wrap_content">
         <TextView
                 android:id="@+id/label_description"
-                android:text="Description"
+                android:text="@string/title_description"
                 style="@style/BottomSheetTitleTheme"/>
         <TextView
                 android:id="@+id/tv_description"
@@ -119,7 +121,7 @@
             android:layout_height="wrap_content">
         <TextView
                 android:id="@+id/label_info"
-                android:text="Info"
+                android:text="@string/title_info"
                 style="@style/BottomSheetTitleTheme"/>
         <LinearLayout
                 android:orientation="horizontal"
@@ -176,7 +178,7 @@
             android:layout_height="wrap_content">
         <TextView
                 android:id="@+id/label_color_palette"
-                android:text="Color Palette"
+                android:text="@string/title_color_palette"
                 style="@style/BottomSheetTitleTheme"/>
 
         <LinearLayout

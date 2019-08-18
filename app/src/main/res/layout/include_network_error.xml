@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/no_internet_title"
+            android:text="@string/title_network_error"
             android:textColor="?attr/primaryTextColor"
             android:textSize="18sp"/>
 
@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:text="@string/no_internet_message"
+            android:text="@string/desc_network_error"
             android:textColor="?attr/secondaryTextColor"/>
 
     <LinearLayout

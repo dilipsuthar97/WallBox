@@ -1,5 +1,6 @@
 package com.dilipsuthar.wallbox.adapters
 
+import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -11,20 +12,29 @@ import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.dilipsuthar.wallbox.R
+import com.dilipsuthar.wallbox.WallBox
 import com.dilipsuthar.wallbox.data.model.Photo
-import com.dilipsuthar.wallbox.utils.loadUrl
+import com.dilipsuthar.wallbox.preferences.Preferences
+import com.dilipsuthar.wallbox.helpers.loadUrl
 import com.mikhaellopez.circularimageview.CircularImageView
 
 /**
- * Created by DILIP SUTHAR on 22/07/19
+ * @adapter It bind the photos data to recycler view
+ *
+ * @param mPhotoList List of all photos
+ * @param layoutType layout types list view & grid view
+ * @param context Application context for shared preferences
+ * @param listener On collection item click listener when user tap
  */
-
 class PhotoAdapter
     constructor(
         private var mPhotoList: ArrayList<Photo>?,
         private val layoutType: String,
+        private val context: Context?,
         private val listener: OnItemClickListener?
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private val sharedPreferences = Preferences.getSharedPreferences(context)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view: View?
@@ -42,7 +52,7 @@ class PhotoAdapter
     }
 
     override fun getItemCount(): Int {
-        return if (mPhotoList == null) 0 else mPhotoList?.size!!
+        return mPhotoList?.size ?: 0
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -66,7 +76,13 @@ class PhotoAdapter
                     // TODO: Download image from here
                 }
 
-                holder.imagePhoto.loadUrl(it.urls.regular)
+                val url = when (sharedPreferences?.getString(Preferences.WALLPAPER_QUALITY, WallBox.DEFAULT_WALLPAPER_QUALITY)) {
+                    "Full" -> it.urls.full
+                    "Regular" -> it.urls.regular
+                    "Small" -> it.urls.small
+                    else -> it.urls.thumb
+                }
+                holder.imagePhoto.loadUrl(url)
 
                 holder.imageUserProfile.loadUrl(
                     it.user.profile_image.large,

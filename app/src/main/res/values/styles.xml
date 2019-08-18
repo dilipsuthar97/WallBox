@@ -26,7 +26,9 @@
         <item name="android:windowTranslucentNavigation">true</item>-->
         <item name="android:navigationBarColor">#000</item> <!-- Bottom nav bar color -->
         <item name="android:windowContentTransitions">true</item> <!-- For view transition between activities -->
-        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item> <!-- Activity transition -->
+        <!--<item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>--> <!-- Activity transition -->
+
+        <item name="md_color_button_text">@color/colorAccent</item>
     </style>
 
     <!-- Dark Theme -->
@@ -53,7 +55,9 @@
         <item name="android:windowTranslucentNavigation">true</item>-->
         <item name="android:navigationBarColor">#303030</item> <!-- Bottom nav bar color -->
         <item name="android:windowContentTransitions">true</item> <!-- For view transition between activities -->
-        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item> <!-- Activity transition -->
+        <!--<item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>--> <!-- Activity transition -->
+
+        <item name="md_color_button_text">@color/colorAccent_night</item>
     </style>
 
     <!-- Text styles theme -->

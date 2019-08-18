@@ -9,38 +9,37 @@
               android:checked="true"
               android:tooltipText="Home menu"
               android:icon="@drawable/ic_nav_wallpaper"
-              android:title="Wallpapers"/>
+              android:title="@string/nav_title_wallpapers"/>
 
         <item android:id="@+id/nav_Favorites"
               android:checkable="false"
               android:icon="@drawable/ic_nav_favorite"
-              android:title="Favorites"/>
+              android:title="@string/nav_title_favorites"/>
 
         <item android:id="@+id/nav_settings"
               android:checkable="false"
               android:icon="@drawable/ic_nav_settings"
-              android:title="Settings"/>
+              android:title="@string/nav_title_settings"/>
 
         <item android:id="@+id/nav_support_us"
               android:checkable="false"
               android:icon="@drawable/ic_nav_support_us"
-              android:title="Support Us"/>
-
+              android:title="@string/nav_title_support_us"/>
 
         <item android:id="@+id/nav_about"
               android:checkable="false"
               android:icon="@drawable/ic_nav_about"
-              android:title="About"/>
+              android:title="@string/nav_title_about"/>
 
         <item android:id="@+id/nav_share_app"
               android:checkable="false"
               android:icon="@drawable/ic_nav_share"
-              android:title="Share App"/>
+              android:title="@string/nav_title_share_app"/>
 
         <item android:id="@+id/nav_rate_review"
               android:checkable="false"
               android:icon="@drawable/ic_nav_rate_review"
-              android:title="rate &amp; Review"/>
+              android:title="@string/nav_title_rate_review"/>
     </group>
 
 </menu>

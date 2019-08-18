@@ -12,6 +12,11 @@ import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.utils.ThemeUtils
 import kotlinx.android.synthetic.main.activity_main.*
 
+/**
+ * Created by,
+ * @author DILIP SUTHAR 05/06/19
+ */
+
 class MainActivity : BaseActivity() {
 
     @BindView(R.id.txt_bottom_msg) lateinit var txtBottomMsg: TextView
@@ -22,13 +27,10 @@ class MainActivity : BaseActivity() {
         ButterKnife.bind(this)
         hideStatusBar()
 
-        //txt_bottom_msg.text = "Made from ${Character.toChars(0x2764)} by, Dilip Suthar"
-        //txtBottomMsg.text = String(Character.toChars(0x1F496))
-
         txtBottomMsg.text = (StringBuilder()
             .append("Made with ")
             .append(String(Character.toChars(0x2764)))
-            .append(" by DILIP SUTHAR"))
+            .append(" by ${resources.getString(R.string.owner_name)}"))
 
         // Start HomeActivity after 800 millisec
         Handler().postDelayed(
@@ -41,6 +43,7 @@ class MainActivity : BaseActivity() {
 
     }
 
+    /** @method hide system UI */
     private fun hideStatusBar() {
         window.decorView.systemUiVisibility =
                 View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY

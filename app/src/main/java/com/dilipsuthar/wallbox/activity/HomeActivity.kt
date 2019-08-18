@@ -1,6 +1,8 @@
 package com.dilipsuthar.wallbox.activity
 
+import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.Menu
@@ -19,33 +21,39 @@ import com.dilipsuthar.wallbox.data.service.Services
 import com.dilipsuthar.wallbox.fragments.CollectionsFragment
 import com.dilipsuthar.wallbox.fragments.CuratedWallFragment
 import com.dilipsuthar.wallbox.fragments.RecentWallFragment
+import com.dilipsuthar.wallbox.helpers.LocaleHelper
 import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.dilipsuthar.wallbox.utils.Tools
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
+import java.util.*
 
 /**
- * Created by DILIP SUTHAR on 05/06/2019
+ * Created by,
+ * @author DILIP SUTHAR 05/06/19
  */
 
 class HomeActivity : BaseActivity() {
 
     companion object {
         const val TAG: String = "debug_HomeActivity"
+        fun get(): HomeActivity {
+            return HomeActivity()
+        }
     }
 
-    // VIEWS
     @BindView(R.id.toolbar) lateinit var mToolbar: Toolbar
     @BindView(R.id.tab_layout) lateinit var mTabLayout: TabLayout
     @BindView(R.id.view_pager) lateinit var mViewPager: ViewPager
     @BindView(R.id.nav_view) lateinit var mNavigationView: NavigationView
     @BindView(R.id.drawer_layout) lateinit var mDrawerLayout: DrawerLayout
     @BindView(R.id.root_coordinator_layout) lateinit var mRootView: View
-//    @BindView(R.id.fab_scroll_to_top) lateinit var mFabScrollUp: FloatingActionButton
+    // @BindView(R.id.fab_scroll_to_top) lateinit var mFabScrollUp: FloatingActionButton
 
-    // VARS
     private var mViewPagerAdapter: SectionPagerAdapter? = null
+    private lateinit var currentLanguage: Locale
+    private lateinit var currentTheme: String
 
     // Wallpaper sort menu
     private var mSortRecentLatest: MenuItem? = null
@@ -62,7 +70,10 @@ class HomeActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         ButterKnife.bind(this)
-//        fabScrollUp = mFabScrollUp
+        // fabScrollUp = mFabScrollUp
+
+        currentLanguage = LocaleHelper.getLocale(this)
+        currentTheme = ThemeUtils.getTheme(this)
 
         initToolbar()
         initTabLayout()
@@ -83,13 +94,30 @@ class HomeActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
+        if (currentLanguage != LocaleHelper.getLocale(this)) {
+            recreate()
+            mDrawerLayout.closeDrawers()
+        }
+        else if (currentTheme != ThemeUtils.getTheme(this)) {
+            recreate()
+            mDrawerLayout.closeDrawers()
+        }
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        LocaleHelper.loadLocal(this)
+        recreate()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Services.getService().cancel()  // Cancel all request's call on Activity destroy
+        //Services.getService().cancel()  // Cancel all request's call on Activity destroy
     }
 
+    /**
+     * @method init toolbar settings
+     */
     private fun initToolbar() {
         setSupportActionBar(mToolbar)
         val actionBar = supportActionBar
@@ -99,6 +127,9 @@ class HomeActivity : BaseActivity() {
         Tools.changeNavigationIconColor(mToolbar, ThemeUtils.getThemeAttrColor(this, R.attr.tabUnselectedColor))
     }
 
+    /**
+     * @method init tab layout settings
+     */
     private fun initTabLayout() {
         /** Set mViewPager and link it with TabLayout */
         mViewPagerAdapter = SectionPagerAdapter(supportFragmentManager)
@@ -165,6 +196,9 @@ class HomeActivity : BaseActivity() {
         drawerToggle.syncState()*/
     }
 
+    /**
+     * @method init navigation drawer settings
+     */
     private fun initNavigationDrawer() {
         mNavigationView.setNavigationItemSelectedListener {
             when (it.itemId) {
@@ -180,6 +214,7 @@ class HomeActivity : BaseActivity() {
         }
     }
 
+    /** @method show snack bar */
     private fun showSnackBar(message: String, duration: Int) {
         Snackbar.make(mDrawerLayout, message, duration).show()
     }
@@ -253,6 +288,9 @@ class HomeActivity : BaseActivity() {
         return super.onOptionsItemSelected(item!!)
     }
 
+    /**
+     * @method handle sort menu items on different fragment
+     */
     private fun handleSortMenuItems(vararg value: Boolean) {
         for ((i, v) in value.withIndex()) {
             when (i) {

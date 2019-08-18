@@ -98,7 +98,7 @@ class Services {
     }
 
     fun requestCuratedCollectionPhotos(id: String, page: Int, per_page: Int, listener: OnRequestPhotosListener?) {
-        val request = buildApi(buildClient(), PhotoApi::class.java).getCollectionPhotos(id, BuildConfig.WALLBOX_ACCESS_KEY, page, per_page)
+        val request = buildApi(buildClient(), PhotoApi::class.java).getCuratedCollectionPhotos(id, BuildConfig.WALLBOX_ACCESS_KEY, page, per_page)
         request.enqueue(object : Callback<List<Photo>> {
             override fun onResponse(call: Call<List<Photo>>, response: Response<List<Photo>>) {
                 listener?.onRequestPhotosSuccess(call, response)
@@ -177,10 +177,10 @@ class Services {
 
     /** TODO: Authorization service */
 
-    fun cancel() {
+    /*fun cancel() {
         if (photosCall != null) photosCall?.cancel()
         if (collectionsCall != null) collectionsCall?.cancel()
-    }
+    }*/
 
     /** build. ------------------------------------------------------------------------------------------------------ */
     // Create/build okHttp client and return it ---->>>

@@ -1,4 +1,4 @@
-package com.dilipsuthar.wallbox.utils
+package com.dilipsuthar.wallbox.helpers
 
 import android.widget.ImageView
 import androidx.core.graphics.ColorUtils
@@ -7,12 +7,24 @@ import com.squareup.picasso.Picasso
 import java.text.NumberFormat
 import java.util.*
 
+/**
+ * load photo and apply into imageView
+ *
+ * @param url The url from where the photo will be load
+ */
 fun ImageView.loadUrl(url: String) {
     Picasso.get()
         .load(url)
         .into(this)
 }
 
+/**
+ * load photo and apply into imageView and add placeHolder, errorHolder
+ *
+ * @param url The url from where the photo will be load
+ * @param placeHolder The res id of placeHolder drawable
+ * @param errorHolder The res id of errorHolder drawable
+ */
 fun ImageView.loadUrl(url: String, placeHolder: Int = 0 , errorHolder: Int = 0) {
     Picasso.get()
         .load(url)
@@ -21,6 +33,11 @@ fun ImageView.loadUrl(url: String, placeHolder: Int = 0 , errorHolder: Int = 0) 
         .into(this)
 }
 
+/**
+ * set value of swipe refresh layout true or false
+ *
+ * @param refreshing The boolean value which make layout refresh start and stop
+ */
 infix fun SwipeRefreshLayout.setRefresh(refreshing: Boolean) {
     if (refreshing) this.isRefreshing = refreshing
     else if (this.isRefreshing) this.isRefreshing = refreshing
@@ -28,6 +45,11 @@ infix fun SwipeRefreshLayout.setRefresh(refreshing: Boolean) {
 
 fun Int.isDark(): Boolean = ColorUtils.calculateLuminance(this) < 0.5
 
+/**
+ * compare the given boolean value with user's check predicate
+ *
+ * @param value The boolean value to check predicate
+ */
 infix fun Boolean.eq(value: Boolean): Boolean {
     return this == value
 }

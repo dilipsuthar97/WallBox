@@ -4,6 +4,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 
+/**
+ * @adapter HomeActivity view pager adapter for fragments
+ *
+ * @param manager Fragment manager
+ */
 class SectionPagerAdapter(manager: FragmentManager) : FragmentStatePagerAdapter(manager) {
 
     private var fragmentList: ArrayList<Fragment> = ArrayList<Fragment>()

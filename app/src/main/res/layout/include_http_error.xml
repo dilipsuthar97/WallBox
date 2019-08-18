@@ -11,7 +11,7 @@
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/http_error_title"
+            android:text="@string/title_http_error"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textColor="?attr/primaryTextColor"/>
 
@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:text="@string/http_error_message"
+            android:text="@string/desc_http_error"
             android:textColor="?attr/secondaryTextColor"/>
 
     <LinearLayout

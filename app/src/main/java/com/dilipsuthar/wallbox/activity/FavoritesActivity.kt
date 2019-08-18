@@ -12,9 +12,13 @@ import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.dilipsuthar.wallbox.utils.Tools
 
+/**
+ * Created by,
+ * @author DILIP SUTHAR 05/06/19
+ */
+
 class FavoritesActivity : BaseActivity() {
 
-    // View
     @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,5 +1,6 @@
 package com.dilipsuthar.wallbox.activity
 
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
 import android.os.PersistableBundle
@@ -18,10 +19,15 @@ import androidx.core.content.ContextCompat
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.dilipsuthar.wallbox.R
+import com.dilipsuthar.wallbox.WallBox
 import com.dilipsuthar.wallbox.data.model.Photo
 import com.dilipsuthar.wallbox.data.model.PhotoStatistics
 import com.dilipsuthar.wallbox.data.service.Services
-import com.dilipsuthar.wallbox.preferences.PrefConst
+import com.dilipsuthar.wallbox.helpers.eq
+import com.dilipsuthar.wallbox.helpers.getFormattedNumber
+import com.dilipsuthar.wallbox.helpers.isDark
+import com.dilipsuthar.wallbox.helpers.loadUrl
+import com.dilipsuthar.wallbox.preferences.Preferences
 import com.dilipsuthar.wallbox.utils.*
 import com.github.chrisbanes.photoview.PhotoView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -29,6 +35,11 @@ import com.google.gson.Gson
 import com.mikhaellopez.circularimageview.CircularImageView
 import retrofit2.Call
 import retrofit2.Response
+
+/**
+ * Created by,
+ * @author DILIP SUTHAR 05/06/19
+ */
 
 class PhotoDetailActivity : BaseActivity() {
     private val TAG = "WallBox.PhotoDetailAct"
@@ -38,6 +49,8 @@ class PhotoDetailActivity : BaseActivity() {
     private var mOnRequestPhotoStatistics: Services.OnRequestPhotoStatistics? = null
     private lateinit var mPhoto: Photo
     private lateinit var mPhotoStatistics: PhotoStatistics
+
+    private var sharedPreferences: SharedPreferences? = null
 
     @BindView(R.id.img_photo) lateinit var imgPhoto: PhotoView
     @BindView(R.id.toolbar) lateinit var mToolbar: Toolbar
@@ -61,12 +74,19 @@ class PhotoDetailActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_photo_detail)
         ButterKnife.bind(this)
-
-        mPhoto = Gson().fromJson(intent.getStringExtra(PrefConst.PHOTO), Photo::class.java)
+        sharedPreferences = Preferences.getSharedPreferences(this)
+        mPhoto = Gson().fromJson(intent.getStringExtra(Preferences.PHOTO), Photo::class.java)
 
         /** Set mPhoto data */
         imgPhoto.setBackgroundColor(Color.parseColor("#000000"))
-        imgPhoto.loadUrl(mPhoto.urls.regular)
+
+        val url = when (sharedPreferences?.getString(Preferences.WALLPAPER_QUALITY, WallBox.DEFAULT_WALLPAPER_QUALITY)) {
+            "Full" -> mPhoto.urls.full
+            "Regular" -> mPhoto.urls.regular
+            "Small" -> mPhoto.urls.small
+            else -> mPhoto.urls.thumb
+        }
+        imgPhoto.loadUrl(url)
         imgUser.loadUrl(
             mPhoto.user.profile_image.large,
             R.drawable.placeholder_profile,
@@ -82,7 +102,7 @@ class PhotoDetailActivity : BaseActivity() {
         when {
             mPhoto.description != "" -> tvDescription.text = mPhoto.description
             mPhoto.alt_description != "" -> tvDescription.text = mPhoto.alt_description
-            else -> tvDescription.text = "no description!"
+            else -> tvDescription.text = resources.getString(R.string.desc_no_description)
         }
 
         tvColor.text = mPhoto.color
@@ -102,7 +122,7 @@ class PhotoDetailActivity : BaseActivity() {
 
             override fun onRequestPhotoFailed(call: Call<Photo>, t: Throwable) {
                 Log.d(TAG, t.message!!)
-                Popup.showToast(applicationContext, resources.getString(R.string.photo_error), Toast.LENGTH_SHORT)
+                PopupUtils.showToast(applicationContext, resources.getString(R.string.photo_error), Toast.LENGTH_SHORT)
             }
         }
         mService?.requestPhoto(mPhoto.id, mOnRequestPhotoListener)
@@ -119,7 +139,7 @@ class PhotoDetailActivity : BaseActivity() {
 
             override fun onRequestFailed(call: Call<PhotoStatistics>, t: Throwable) {
                 Log.d(TAG, t.message!!)
-                Popup.showToast(applicationContext, resources.getString(R.string.photo_statistics_error), Toast.LENGTH_SHORT)
+                PopupUtils.showToast(applicationContext, resources.getString(R.string.photo_statistics_error), Toast.LENGTH_SHORT)
             }
         }
         mService?.requestPhotoStatistics(mPhoto.id, mOnRequestPhotoStatistics)
@@ -188,7 +208,7 @@ class PhotoDetailActivity : BaseActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    /** Methods */
+    /** @method init toolbar settings */
     private fun initToolbar() {
         setSupportActionBar(mToolbar)
         val actionBar = supportActionBar
@@ -199,6 +219,7 @@ class PhotoDetailActivity : BaseActivity() {
         Tools.setSystemBarColor(this, Color.TRANSPARENT)
     }
 
+    /** @method hide system UI */
     private fun hideSystemUI() {
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -215,20 +236,23 @@ class PhotoDetailActivity : BaseActivity() {
                         or View.SYSTEM_UI_FLAG_FULLSCREEN)
     }
 
+    /** @method set photo statistics data **/
     private fun setStatisticsData() {
         tvLikes.text = mPhotoStatistics.likes.total.getFormattedNumber()
         tvDownload.text = mPhotoStatistics.downloads.total.getFormattedNumber()
         tvViews.text = mPhotoStatistics.views.total.getFormattedNumber()
     }
 
+    /** @method set photo info */
     private fun setPhotoInfo() {
         if (mPhoto.location.city != null && mPhoto.location.country != null)
             tvLocation.text = "${mPhoto.location.city}, ${mPhoto.location.country}"
         else if(mPhoto.location.city != null) tvLocation.text = mPhoto.location.city
         else if (mPhoto.location.country != null) tvLocation.text = mPhoto.location.country
-        else tvLocation.text = "no location!"
+        else tvLocation.text = resources.getString(R.string.desc_no_location)
     }
 
+    /** @method change photo detail's bottom sheet UI & colors */
     private fun setViewsColor(colorPrimary: Int, colorSecondary: Int) {
         (findViewById<TextView>(R.id.label_description)).setTextColor(colorPrimary)
         tvPhotoBy.setTextColor(colorPrimary)

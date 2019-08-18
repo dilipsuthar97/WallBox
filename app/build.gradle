@@ -62,30 +62,21 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     // Third party------------------------------------------------------------
-    // Butter knife
-    implementation "com.jakewharton:butterknife:$butterKnifeVersion"
+    implementation "com.jakewharton:butterknife:$butterKnifeVersion"            // Butter knife
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     kapt "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
-
-    // Circle Image View
-    implementation 'com.mikhaellopez:circularimageview:3.2.0'
-
-    // Picasso
-    implementation 'com.squareup.picasso:picasso:2.71828'
-
-    // Glide
-    /*implementation "com.github.bumptech.glide:glide:$glideVersion"
+    implementation 'com.mikhaellopez:circularimageview:3.2.0'                   // Circle Image View
+    implementation 'com.squareup.picasso:picasso:2.71828'                       // Picasso
+    /*implementation "com.github.bumptech.glide:glide:$glideVersion"            // Glide
     annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"*/
-
-    // Retrofit 2 - Http client
-    implementation "com.squareup.retrofit2:retrofit:$retrofit2Version"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit2Version"          // Retrofit 2 - Http client
     implementation "com.squareup.retrofit2:converter-gson:$retrofit2Version"
+    implementation 'com.airbnb.android:lottie:3.0.1'                            // Lottie animation
+    implementation 'com.github.chrisbanes:PhotoView:2.2.0'                      // PhotoView
+    implementation 'com.github.danimahardhika.android-helpers:core:0.1.0'       // Helper
+    implementation 'com.afollestad.material-dialogs:core:3.1.0'                 // Material dialog
 
-    // Lottie animation
-    implementation 'com.airbnb.android:lottie:3.0.1'
-
-    // PhotoView
-    implementation 'com.github.chrisbanes:PhotoView:2.2.0'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-beta-2' // Leak canary
 
     // Blurry
     //implementation 'jp.wasabeef:blurry:3.0.0'

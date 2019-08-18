@@ -1,6 +1,7 @@
 package com.dilipsuthar.wallbox
 
 import android.app.Application
+import android.content.Context
 import com.dilipsuthar.wallbox.utils.ThemeUtils
 
 class WallBox : Application() {
@@ -16,6 +17,8 @@ class WallBox : Application() {
         const val DEFAULT_PER_PAGE = 30
         const val DEFAULT_SORT_PHOTOS = "latest"
         const val DEFAULT_SORT_COLLECTIONS = "all"
+
+        const val DEFAULT_WALLPAPER_QUALITY = "Regular"
 
         const val DATE_FORMAT = "yyyy/MM/dd"
         const val DOWNLOAD_PATH = "/Pictures/WallBox/"
@@ -41,6 +44,10 @@ class WallBox : Application() {
 
     init {
         instance = this
+    }
+
+    fun getContext(): Context? {
+        return applicationContext
     }
 
 }

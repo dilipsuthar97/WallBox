@@ -23,7 +23,9 @@ import com.dilipsuthar.wallbox.adapters.PhotoAdapter
 import com.dilipsuthar.wallbox.data.model.Collection
 import com.dilipsuthar.wallbox.data.model.Photo
 import com.dilipsuthar.wallbox.data.service.Services
-import com.dilipsuthar.wallbox.preferences.PrefConst
+import com.dilipsuthar.wallbox.helpers.loadUrl
+import com.dilipsuthar.wallbox.helpers.setRefresh
+import com.dilipsuthar.wallbox.preferences.Preferences
 import com.dilipsuthar.wallbox.utils.*
 import com.dilipsuthar.wallbox.utils.itemDecorater.VerticalSpacingItemDecorator
 import com.google.android.material.snackbar.Snackbar
@@ -32,10 +34,14 @@ import com.mikhaellopez.circularimageview.CircularImageView
 import retrofit2.Call
 import retrofit2.Response
 
+/**
+ * Created by,
+ * @author DILIP SUTHAR 05/06/19
+ */
+
 class CollectionDetailActivity : BaseActivity() {
     private val TAG = "WallBox.CollectionDetailAct"
 
-    // VARS
     private var mPage = 0
     private var mCollection: Collection? = null
     private var mPhotoList: ArrayList<Photo> = ArrayList()
@@ -48,7 +54,6 @@ class CollectionDetailActivity : BaseActivity() {
     private var loadMore = false
     private var snackBar: Snackbar? = null
 
-    // VIEWS
     @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
     @BindView(R.id.img_user_profile) lateinit var imgUserProfile: CircularImageView
     @BindView(R.id.tv_photo_by) lateinit var tvPhotoBy: TextView
@@ -66,7 +71,7 @@ class CollectionDetailActivity : BaseActivity() {
         mServices = Services.getService()
 
         /** Set Collection data on Toolbar */
-        mCollection = Gson().fromJson(intent.getStringExtra(PrefConst.COLLECTION), Collection::class.java)
+        mCollection = Gson().fromJson(intent.getStringExtra(Preferences.COLLECTION), Collection::class.java)
         mCollection?.let {
             imgUserProfile.loadUrl(it.user.profile_image.medium)
             tvPhotoBy.text = "${resources.getString(R.string.wallpaper_by)} ${it.user.first_name} ${it.user.last_name}"
@@ -79,7 +84,7 @@ class CollectionDetailActivity : BaseActivity() {
                 mSwipeRefreshView setRefresh false
                 if (response.isSuccessful) {
 
-                    if (loadMore) Popup.showToast(applicationContext, resources.getString(R.string.more_photos_message), Toast.LENGTH_SHORT)
+                    if (loadMore) PopupUtils.showToast(applicationContext, resources.getString(R.string.msg_more_photos), Toast.LENGTH_SHORT)
                     mPage++
                     loadMore = false
                     mPhotoList.clear()
@@ -94,7 +99,7 @@ class CollectionDetailActivity : BaseActivity() {
                     if (mPhotoList.isEmpty()) {
                         Tools.visibleViews(httpErrorLyt)
                         Tools.inVisibleViews(mRecyclerView, netWorkErrorLyt, type = Tools.GONE)
-                    } else snackBar = Popup.showHttpErrorSnackBar(mSwipeRefreshView) { load() }
+                    } else snackBar = PopupUtils.showHttpErrorSnackBar(mSwipeRefreshView) { load() }
                 }
             }
 
@@ -105,7 +110,7 @@ class CollectionDetailActivity : BaseActivity() {
                 if (mPhotoList.isEmpty()) {
                     Tools.visibleViews(netWorkErrorLyt)
                     Tools.inVisibleViews(mRecyclerView, httpErrorLyt, type = Tools.GONE)
-                } else snackBar = Popup.showNetworkErrorSnackBar(mSwipeRefreshView) { load() }
+                } else snackBar = PopupUtils.showNetworkErrorSnackBar(mSwipeRefreshView) { load() }
             }
         }
 
@@ -114,12 +119,12 @@ class CollectionDetailActivity : BaseActivity() {
             override fun onItemClick(photo: Photo, view: View, pos: Int, imageView: ImageView) {
                 val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this@CollectionDetailActivity, imageView, ViewCompat.getTransitionName(imageView)!!)
                 val intent = Intent(this@CollectionDetailActivity, PhotoDetailActivity::class.java)
-                intent.putExtra(PrefConst.PHOTO, Gson().toJson(photo))
+                intent.putExtra(Preferences.PHOTO, Gson().toJson(photo))
                 startActivity(intent, options.toBundle())
             }
 
             override fun onItemLongClick(photo: Photo, view: View, pos: Int, imageView: ImageView) {
-                Popup.showToast(applicationContext, pos.toString(), Toast.LENGTH_SHORT)
+                PopupUtils.showToast(applicationContext, pos.toString(), Toast.LENGTH_SHORT)
             }
         }
 
@@ -128,7 +133,7 @@ class CollectionDetailActivity : BaseActivity() {
             mPage = 1
             mPhotoList.clear()
             load()
-            mPhotoAdapter = PhotoAdapter(ArrayList(), "list", mOnItemClickListener)
+            mPhotoAdapter = PhotoAdapter(ArrayList(), "list", this, mOnItemClickListener)
             mRecyclerView.adapter = mPhotoAdapter
         }
 
@@ -144,7 +149,7 @@ class CollectionDetailActivity : BaseActivity() {
                     if (totalItem != mCollection!!.total_photos) {  // Check if more photos available OR not
                         //loadMore = true
                         load()
-                    } else Popup.showToast(applicationContext, resources.getString(R.string.no_more_photos_message), Toast.LENGTH_SHORT)
+                    } else PopupUtils.showToast(applicationContext, resources.getString(R.string.msg_no_more_photos), Toast.LENGTH_SHORT)
             }
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -172,7 +177,7 @@ class CollectionDetailActivity : BaseActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    /** Methods */
+    /** @method init toolbar settings */
     private fun initToolbar() {
         setSupportActionBar(toolbar)
         supportActionBar?.title = mCollection?.title
@@ -182,6 +187,7 @@ class CollectionDetailActivity : BaseActivity() {
         Tools.changeNavigationIconColor(toolbar, ContextCompat.getColor(applicationContext, R.color.colorAccent))
     }
 
+    /** @method init components */
     private fun initComponent() {
 
         /** Recycler View */
@@ -189,7 +195,7 @@ class CollectionDetailActivity : BaseActivity() {
         mRecyclerView.addItemDecoration(VerticalSpacingItemDecorator(22))
         mRecyclerView.setHasFixedSize(true)
         mRecyclerView.setItemViewCacheSize(5)
-        mPhotoAdapter = PhotoAdapter(ArrayList(), "list", mOnItemClickListener)
+        mPhotoAdapter = PhotoAdapter(ArrayList(), "list", this, mOnItemClickListener)
         mRecyclerView.adapter = mPhotoAdapter
 
         /** First load request */
@@ -197,6 +203,7 @@ class CollectionDetailActivity : BaseActivity() {
         load()
     }
 
+    /** @method request photos api */
     private fun load() {
         mSwipeRefreshView setRefresh true
         loadMore = true
@@ -207,6 +214,11 @@ class CollectionDetailActivity : BaseActivity() {
             mServices?.requestCollectionPhotos(mCollection?.id.toString(), mPage, WallBox.DEFAULT_PER_PAGE, mOnRequestPhotosListener)
     }
 
+    /**
+     * Update PhotoAdapter when new photos fetched
+     *
+     * @param photos List of photos to update adapter
+     */
     private fun updateAdapter(photos: ArrayList<Photo>) {
         mPhotoAdapter?.addAll(photos)
     }

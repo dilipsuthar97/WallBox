@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:background="?attr/selectableItemBackground"
+              android:clickable="true"
+              android:focusable="true"
+              android:id="@+id/btn_powered_by"
+              android:gravity="center"
+              android:layout_width="match_parent"
+              android:layout_height="100dp">
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/secondaryTextColor"
+            android:text="@string/powered_by"/>
+    <View
+            android:layout_width="5dp"
+            android:layout_height="0dp"/>
+    <TextView
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/secondaryTextColor"
+            android:text="@string/unsplash"/>
+
+</LinearLayout>

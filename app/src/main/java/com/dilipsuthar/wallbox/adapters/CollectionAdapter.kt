@@ -8,15 +8,26 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.dilipsuthar.wallbox.R
+import com.dilipsuthar.wallbox.WallBox
 import com.dilipsuthar.wallbox.data.model.Collection
-import com.dilipsuthar.wallbox.utils.loadUrl
+import com.dilipsuthar.wallbox.preferences.Preferences
+import com.dilipsuthar.wallbox.helpers.loadUrl
 
+/**
+ * @adapter It bind the collection data to recycler view
+ *
+ * @param mCollectionList List of all collections
+ * @param context Application context for shared preferences
+ * @param listener On collection item click listener when user tap
+ */
 class CollectionAdapter
     constructor(
         private var mCollectionList: ArrayList<Collection>?,
         private val context: Context?,
         private val listener: OnCollectionClickListener?
     ): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private val sharedPreferences = Preferences.getSharedPreferences(context)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view: View? = LayoutInflater.from(parent.context).inflate(R.layout.item_collection, parent, false)
@@ -36,8 +47,14 @@ class CollectionAdapter
         if (holder is CollectionViewHolder) {
             collection?.let {
                 holder.tvCollectionTitle.text = it.title
-                holder.imageCollection.loadUrl(it.cover_photo.urls.regular)
-                holder.tvWallpaperCount.text = "${it.total_photos} Wallpapers"
+                val url = when (sharedPreferences?.getString(Preferences.WALLPAPER_QUALITY, WallBox.DEFAULT_WALLPAPER_QUALITY)) {
+                    "Full" -> it.cover_photo.urls.full
+                    "Regular" -> it.cover_photo.urls.regular
+                    "Small" -> it.cover_photo.urls.small
+                    else -> it.cover_photo.urls.thumb
+                }
+                holder.imageCollection.loadUrl(url)
+                holder.tvWallpaperCount.text = "${it.total_photos} ${context!!.resources.getString(R.string.wallpapers)}"
 
                 holder.imageCollection.setOnClickListener { view ->
                     listener?.onCollectionClick(it, view, position)
@@ -53,7 +70,7 @@ class CollectionAdapter
         val tvWallpaperCount: TextView = itemView!!.findViewById(R.id.tv_wallpaper_count)
     }
 
-    /** Methods */
+    /** @method update adapter and notify item change */
     fun addAll(collections: ArrayList<Collection>) {
         mCollectionList?.addAll(collections)
         notifyItemInserted(mCollectionList?.size!!.minus(28))

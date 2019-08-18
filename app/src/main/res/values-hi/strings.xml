@@ -1,0 +1,82 @@
+<resources>
+    <string name="app_name">WallBox</string>
+    <string name="owner_name">DILIP SUTHAR</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- Menu -->
+    <string name="menu_sort_latest">नवीनतम</string>
+    <string name="menu_sort_oldest">सबसे पुराना</string>
+    <string name="menu_sort_popular">लोकप्रिय</string>
+    <string name="menu_sort_random">रेंडम</string>
+    <string name="menu_sort_all">सब</string>
+    <string name="menu_sort_curated">क्यूरेटेड</string>
+    <string name="menu_sort_featured">फीचर्ड</string>
+
+    <string name="menu_search">खोज</string>
+    <string name="menu_sort">सॉर्ट </string>
+
+    <!-- Toolbar -->
+    <string name="toolbar_title_favorites">पसंदीदा</string>
+    <string name="toolbar_title_settings">सेटिंग्स</string>
+    <string name="toolbar_title_about">ऐप के बारे में</string>
+    <string name="toolbar_title_support_us">हमें सहयोग दीजिये</string>
+    <string name="tab_title_recent_wall_fragment">ताज़ा</string>
+    <string name="tab_title_curated_wall_fragment">क्यूरेटेड</string>
+    <string name="tab_title_collections_fragment">कलेक्शन</string>
+
+    <!-- Nav drawer -->
+    <string name="nav_title_wallpapers">वॉलपेपर्स</string>
+    <string name="nav_title_favorites">पसंदीदा</string>
+    <string name="nav_title_settings">सेटिंग्स</string>
+    <string name="nav_title_support_us">हमें सहयोग दीजिये</string>
+    <string name="nav_title_about">ऐप के बारे में</string>
+    <string name="nav_title_share_app">ऐप शेयर करें</string>
+    <string name="nav_title_rate_review">रेट एवम रिव्यू</string>
+
+    <!-- Notify -->
+    <string name="title_network_error">ओह शक्स!</string>
+    <string name="desc_network_error">धीमा या कोई इंटरनेट कनेक्शन नहीं। कृपया जाँच करें और पुनः प्रयास करें।</string>
+    <string name="title_http_error">404</string>
+    <string name="desc_http_error">कुछ गलत हो गया।</string>
+    <string name="msg_more_photos">और अधिक तस्वीरें..</string>
+    <string name="msg_no_more_photos">और कोई फ़ोटो उपलब्ध नहीं है :(</string>
+    <string name="retry">पुन: प्रयास करें</string>
+    <string name="tap_to_retry">फिर से कोशिश करने के लिये स्क्रीन को छुइए</string>
+    <string name="photo_statistics_error">आंकड़े लोड करने में विफल</string>
+    <string name="photo_error">फ़ोटो विवरण लोड करने में विफल</string>
+    <string name="cancel">कैंसिल</string>
+
+    <string name="powered_by">powered by </string>
+    <string name="unsplash">Unsplash</string>
+
+    <string name="title_language">भाषा</string>
+    <string name="title_Theme">थीम</string>
+    <string name="title_clear_cache">क्लियर कैश</string>
+    <string name="title_wallpaper_preview_quality">वॉलपेपर प्रीव्यू क्वालिटी</string>
+    <string name="title_wallpaper_save_location">वॉलपेपर सेव लोकेशन</string>
+    <string name="title_reset_tutorial">रिसेट ट्यूटोरियल</string>
+    <string name="title_official_site">ऑफिसियल साइट पर जाएं</string>
+    <string name="title_description">विवरण</string>
+    <string name="title_info">जानकारी</string>
+    <string name="title_color_palette">रंगों के प्रकार</string>
+
+    <string name="desc_no_location">कोई स्थान नहीं</string>
+    <string name="desc_no_description">कोई विवरण नहीं</string>
+    <string name="desc_theme">Get that whiteness out of my sight</string>
+    <string name="desc_clear_cache">क्लाउड वॉलपेपर लोड करने के बाद अपने स्टोरेज में बनाए गए इमेज कैश को निकालें</string>
+    <string name="desc_reset_tutorial">स्टार्टअप इंट्रो ट्यूटोरियल को रीसेट करें</string>
+
+    <string name="msg_clear_cache">कैश सफलतापूर्वक साफ़ हो गया</string>
+    <string name="msg_reset_tutorial">ट्यूटोरियल सफलतापूर्वक रीसेट हो गया</string>
+
+    <!-- Extras -->
+    <string name="wallpapers">वॉलपेपर्स</string>
+    <string name="wallpaper_by">by, </string>
+    <string name="total_cache">कुल कैश: </string>
+
+    <!-- lorem ipsum -->
+    <string name="dummy_description">Proin eget tortor risus. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.</string>
+
+</resources>
