@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -160,6 +161,8 @@ class CollectionsFragment : Fragment() {
         })
 
         // Swipe listener
+        mSwipeRefreshView.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(context!!, R.color.colorAccent))
+        mSwipeRefreshView.setColorSchemeColors(ContextCompat.getColor(context!!, R.color.white))
         mSwipeRefreshView.setOnRefreshListener {
             mPage = 1
             mCollectionList.clear()

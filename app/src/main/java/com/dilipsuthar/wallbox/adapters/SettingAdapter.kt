@@ -15,9 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.list.getRecyclerView
 import com.afollestad.materialdialogs.list.listItems
-import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import com.danimahardhika.android.helpers.core.FileHelper
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.helpers.LocaleHelper
@@ -26,7 +24,6 @@ import com.dilipsuthar.wallbox.preferences.Preferences
 import com.dilipsuthar.wallbox.utils.PopupUtils
 import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.dilipsuthar.wallbox.utils.Tools
-import com.google.android.material.snackbar.Snackbar
 import java.text.DecimalFormat
 
 /**
@@ -38,8 +35,8 @@ import java.text.DecimalFormat
  */
 class SettingAdapter(
     private val settingList: ArrayList<Setting>?,
-    private val context: Context?,
-    private val activity: Activity?
+    private val context: Context,
+    private val activity: Activity
 ): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val sharedPreferences = Preferences.getSharedPreferences(context)
@@ -80,7 +77,7 @@ class SettingAdapter(
                     if (it.type == Setting.Type.THEME) {
                         if (isChecked) ThemeUtils.setTheme(context, ThemeUtils.DARK)
                         else ThemeUtils.setTheme(context, ThemeUtils.LIGHT)
-                        activity?.recreate()
+                        activity.recreate()
                         //ThemeUtils.restartApp(context)
                     }
                 }
@@ -90,12 +87,12 @@ class SettingAdapter(
                     when (it.type) {
                         Setting.Type.LANGUAGE -> {
 
-                            val languageCode = context!!.resources.getStringArray(R.array.languages_code)
+                            val languageCode = context.resources.getStringArray(R.array.languages_code)
 
                             MaterialDialog(context).show {
                                 title(R.string.title_language)
                                 cornerRadius(16f)
-                                listItems(R.array.languages_name) { dialog, index, text ->
+                                listItems(R.array.languages_name) { _, index, text ->
                                     sharedPreferences?.let { sharedPref ->
                                         LocaleHelper.loadLocal(context)
                                         sharedPref.edit().putString(Preferences.LANGUAGE, text).apply()
@@ -104,7 +101,7 @@ class SettingAdapter(
 
                                     it.subTitle = text
                                     notifyItemChanged(position)
-                                    activity?.recreate()
+                                    activity.recreate()
                                 }
                             }
                         }
@@ -112,7 +109,7 @@ class SettingAdapter(
                             holder.btnSwitch.isChecked = !holder.btnSwitch.isChecked
                         }
                         Setting.Type.CLEAR_CACHE -> {
-                            FileHelper.clearDirectory(context!!.cacheDir)
+                            FileHelper.clearDirectory(context.cacheDir)
                             PopupUtils.showToast(context, context.resources?.getString(R.string.msg_clear_cache), Toast.LENGTH_SHORT)
 
                             val cacheSize = (FileHelper.getDirectorySize(context.cacheDir) / FileHelper.MB).toDouble()
@@ -125,7 +122,7 @@ class SettingAdapter(
                         }
                         Setting.Type.WALLPAPER_PREVIEW_QUALITY -> {
 
-                            MaterialDialog(context!!).show {
+                            MaterialDialog(context).show {
                                 title(R.string.title_wallpaper_preview_quality)
                                 cornerRadius(16f)
                                 listItems(R.array.wallpaper_quality) { _, _, text ->
@@ -139,11 +136,11 @@ class SettingAdapter(
                         }
                         Setting.Type.RESET_TUTORIAL -> {
                             sharedPreferences!!.edit().putBoolean(Preferences.SHOW_INTRO_TUTORIAL, true).apply()
-                            PopupUtils.showToast(context, context!!.resources.getString(R.string.msg_reset_tutorial), Toast.LENGTH_SHORT)
+                            PopupUtils.showToast(context, context.resources.getString(R.string.msg_reset_tutorial), Toast.LENGTH_SHORT)
                         }
                         Setting.Type.UNSPLASH_SITE -> {
                             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it.subTitle))
-                            context?.startActivity(intent)
+                            context.startActivity(intent)
                         }
                         else -> {}
                     }

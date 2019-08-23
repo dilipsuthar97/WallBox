@@ -60,6 +60,7 @@
     <string name="title_official_site">ऑफिसियल साइट पर जाएं</string>
     <string name="title_description">विवरण</string>
     <string name="title_info">जानकारी</string>
+    <string name="title_photo_info">फोटो की जानकारी</string>
     <string name="title_color_palette">रंगों के प्रकार</string>
 
     <string name="desc_no_location">कोई स्थान नहीं</string>

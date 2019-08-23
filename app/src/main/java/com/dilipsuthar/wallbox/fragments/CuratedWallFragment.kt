@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -195,6 +196,8 @@ class CuratedWallFragment : Fragment() {
 
 
         // Swipe refresh listener
+        mSwipeRefreshView.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(context!!, R.color.colorAccent))
+        mSwipeRefreshView.setColorSchemeColors(ContextCompat.getColor(context!!, R.color.white))
         mSwipeRefreshView.setOnRefreshListener {
             mPage = 1
             mPhotosList.clear()

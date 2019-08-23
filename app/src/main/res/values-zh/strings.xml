@@ -3,7 +3,7 @@
     <string name="app_name">WallBox</string>
     <string name="cancel">取消</string>
     <string name="desc_clear_cache">從加載雲壁紙後創建的存儲中刪除圖像緩存</string>
-    <string name="desc_http_error">有些不對勁。</string>
+    <string name="desc_http_error">有些不對勁</string>
     <string name="desc_network_error">網絡連接速度慢或沒有。 請檢查並重試。</string>
     <string name="desc_no_description">沒有說明</string>
     <string name="desc_no_location">沒有位置</string>
@@ -61,4 +61,5 @@
     <string name="unsplash">Unsplash</string>
     <string name="wallpaper_by">"by, "</string>
     <string name="wallpapers">壁紙</string>
+    <string name="title_photo_info">照片信息</string>
 </resources>

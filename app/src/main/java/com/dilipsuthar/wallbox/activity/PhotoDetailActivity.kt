@@ -9,20 +9,21 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import butterknife.BindView
 import butterknife.ButterKnife
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.customview.customView
+import com.afollestad.materialdialogs.customview.getCustomView
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.WallBox
 import com.dilipsuthar.wallbox.data.model.Photo
 import com.dilipsuthar.wallbox.data.model.PhotoStatistics
 import com.dilipsuthar.wallbox.data.service.Services
+import com.dilipsuthar.wallbox.fragments.dialog.PhotoInfoDialog
 import com.dilipsuthar.wallbox.helpers.eq
 import com.dilipsuthar.wallbox.helpers.getFormattedNumber
 import com.dilipsuthar.wallbox.helpers.isDark
@@ -31,6 +32,7 @@ import com.dilipsuthar.wallbox.preferences.Preferences
 import com.dilipsuthar.wallbox.utils.*
 import com.github.chrisbanes.photoview.PhotoView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 import com.mikhaellopez.circularimageview.CircularImageView
 import retrofit2.Call
@@ -57,6 +59,7 @@ class PhotoDetailActivity : BaseActivity() {
     @BindView(R.id.img_user) lateinit var imgUser: CircularImageView
     @BindView(R.id.tv_photo_by) lateinit var tvPhotoBy: TextView
     @BindView(R.id.root_view_bottom_sheet) lateinit var bottomSheet: View
+    @BindView(R.id.fab_photo_info) lateinit var fabPhotoInfo: FloatingActionButton
 
     @BindView(R.id.tv_description) lateinit var tvDescription: TextView
     @BindView(R.id.tv_likes) lateinit var tvLikes: TextView
@@ -149,6 +152,7 @@ class PhotoDetailActivity : BaseActivity() {
         bottomSheetBehavior.setBottomSheetCallback(object: BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(p0: View, offset: Float) {
                 Log.d(TAG, offset.toString())
+                fabPhotoInfo.animate().scaleX(1 - offset).scaleY(1 - offset).alpha(1 - offset).setDuration(0).start()
             }
 
             override fun onStateChanged(p0: View, newState: Int) {
@@ -171,6 +175,12 @@ class PhotoDetailActivity : BaseActivity() {
                 }
             }
         })
+
+        fabPhotoInfo.setOnClickListener {
+            /*val dialog = PhotoInfoDialog(mPhoto)
+            dialog.show(supportFragmentManager, null)*/
+            infoDialog()
+        }
 
         initToolbar()
     }
@@ -271,6 +281,44 @@ class PhotoDetailActivity : BaseActivity() {
         (findViewById<TextView>(R.id.label_color_palette)).setTextColor(colorPrimary)
         tvColor.setTextColor(colorSecondary)
 
+    }
+
+    private fun infoDialog() {
+        val dialog = MaterialDialog(this)
+            .cornerRadius(16f)
+            .title(R.string.title_photo_info)
+            .customView(R.layout.dialog_photo_info)
+
+        val view = dialog.getCustomView()
+
+        val lytProgress: LinearLayout = view.findViewById(R.id.lyt_progress)
+        val lytInfo: LinearLayout = view.findViewById(R.id.lyt_info)
+        val tvCameraMake: TextView = view.findViewById(R.id.tv_camera_make)
+        val tvCameraModel: TextView = view.findViewById(R.id.tv_camera_model)
+        val tvFocalLength: TextView = view.findViewById(R.id.tv_focal_length)
+        val tvAperture: TextView = view.findViewById(R.id.tv_aperture)
+        val tvShutterSpeed: TextView = view.findViewById(R.id.tv_shutter_speed)
+        val tvIso: TextView = view.findViewById(R.id.tv_iso)
+        val tvDimensions: TextView = view.findViewById(R.id.tv_dimensions)
+
+        tvCameraMake.text = if (mPhoto.exif.make == "") "--" else mPhoto.exif.make
+        tvCameraModel.text = if (mPhoto.exif.model == "") "--" else mPhoto.exif.model
+        tvFocalLength.text = if (mPhoto.exif.focal_length == "") "--" else "${mPhoto.exif.focal_length}mm"
+        tvAperture.text = if (mPhoto.exif.aperture == "") "--" else "ƒ/${mPhoto.exif.aperture}"
+        tvShutterSpeed.text = if (mPhoto.exif.exposure_time == "") "--" else "${mPhoto.exif.exposure_time}s"
+        tvIso.text = if (mPhoto.exif.iso == -1) "--" else mPhoto.exif.iso.toString()
+        tvDimensions.text =
+            if ((mPhoto.width == 0) or (mPhoto.height == 0)) "--" else "${mPhoto.width} x ${mPhoto.height}"
+
+        if (mPhoto.exif.model != "") {
+            Tools.visibleViews(lytInfo)
+            Tools.inVisibleViews(lytProgress, type = Tools.GONE)
+        } else {
+            Tools.visibleViews(lytProgress)
+            Tools.inVisibleViews(lytInfo, type = Tools.GONE)
+        }
+
+        dialog.show()
     }
 
 }

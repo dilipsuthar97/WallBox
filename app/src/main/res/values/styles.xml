@@ -124,4 +124,8 @@
         <item name="android:src">@drawable/placeholder_profile</item>
     </style>
 
+    <!-- Swipe refresh style -->
+    <style name="SwipeRefreshLayout">
+    </style>
+
 </resources>

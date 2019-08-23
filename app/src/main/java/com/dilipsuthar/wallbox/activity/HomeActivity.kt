@@ -97,18 +97,17 @@ class HomeActivity : BaseActivity() {
         if (currentLanguage != LocaleHelper.getLocale(this)) {
             recreate()
             mDrawerLayout.closeDrawers()
-        }
-        else if (currentTheme != ThemeUtils.getTheme(this)) {
+        } else if (currentTheme != ThemeUtils.getTheme(this)) {
             recreate()
             mDrawerLayout.closeDrawers()
         }
     }
 
-    override fun onConfigurationChanged(newConfig: Configuration) {
+    /*override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         LocaleHelper.loadLocal(this)
         recreate()
-    }
+    }*/
 
     override fun onDestroy() {
         super.onDestroy()

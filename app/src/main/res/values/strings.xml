@@ -60,6 +60,7 @@
     <string name="title_official_site">Go to the official site</string>
     <string name="title_description">Description</string>
     <string name="title_info">Info</string>
+    <string name="title_photo_info">Photo Info</string>
     <string name="title_color_palette">Color Palette</string>
 
     <string name="desc_no_location">No location</string>

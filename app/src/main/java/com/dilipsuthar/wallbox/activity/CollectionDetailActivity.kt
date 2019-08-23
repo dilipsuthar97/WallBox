@@ -129,6 +129,8 @@ class CollectionDetailActivity : BaseActivity() {
         }
 
         // Swipe refresh listener
+        mSwipeRefreshView.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(this, R.color.colorAccent))
+        mSwipeRefreshView.setColorSchemeColors(ContextCompat.getColor(this, R.color.white))
         mSwipeRefreshView.setOnRefreshListener {
             mPage = 1
             mPhotoList.clear()
