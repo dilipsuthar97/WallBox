@@ -12,9 +12,9 @@ data class Category (
     }
 */
 
-    var id: Int,
-    var title: String,
-    var photo_count: Int,
-    var links: CategoryLinks
+    val id: Int,
+    val title: String,
+    val photo_count: Int,
+    val links: CategoryLinks
 
 )

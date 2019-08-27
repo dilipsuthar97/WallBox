@@ -22,6 +22,7 @@
                 app:layout_scrollFlags="scroll|snap|enterAlways"/>
 
         <LinearLayout
+                android:id="@+id/btn_profile"
                 android:clickable="true"
                 android:focusable="true"
                 android:background="?attr/selectableItemBackground"
@@ -32,6 +33,7 @@
             <com.mikhaellopez.circularimageview.CircularImageView
                     android:id="@+id/img_user_profile"
                     android:layout_marginStart="16dp"
+                    android:transitionName="profilePhoto"
                     style="@style/CircularImageViewTheme"/>
 
             <TextView

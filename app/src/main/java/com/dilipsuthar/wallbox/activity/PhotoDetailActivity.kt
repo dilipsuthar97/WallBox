@@ -1,5 +1,6 @@
 package com.dilipsuthar.wallbox.activity
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
@@ -12,7 +13,9 @@ import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.cardview.widget.CardView
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.afollestad.materialdialogs.MaterialDialog
@@ -35,6 +38,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 import com.mikhaellopez.circularimageview.CircularImageView
+import kotlinx.android.synthetic.main.bottom_sheet_photo_detail.*
+import kotlinx.android.synthetic.main.item_photo_grid.*
 import retrofit2.Call
 import retrofit2.Response
 
@@ -82,7 +87,6 @@ class PhotoDetailActivity : BaseActivity() {
 
         /** Set mPhoto data */
         imgPhoto.setBackgroundColor(Color.parseColor("#000000"))
-
         val url = when (sharedPreferences?.getString(Preferences.WALLPAPER_QUALITY, WallBox.DEFAULT_WALLPAPER_QUALITY)) {
             "Full" -> mPhoto.urls.full
             "Regular" -> mPhoto.urls.regular
@@ -112,8 +116,8 @@ class PhotoDetailActivity : BaseActivity() {
         viewColor.setCardBackgroundColor(Color.parseColor(mPhoto.color))
 
         /** Service / API request */
-        // request Photo
         mService = Services.getService()
+        // request photo
         mOnRequestPhotoListener = object : Services.OnRequestPhotoListener {
             override fun onRequestPhotoSuccess(call: Call<Photo>, response: Response<Photo>) {
                 if (response.isSuccessful) {
@@ -176,10 +180,20 @@ class PhotoDetailActivity : BaseActivity() {
             }
         })
 
+        /** OnClick listener */
         fabPhotoInfo.setOnClickListener {
             /*val dialog = PhotoInfoDialog(mPhoto)
-            dialog.show(supportFragmentManager, null)*/
-            infoDialog()
+                dialog.show(supportFragmentManager, null)*/
+            showInfoDialog()
+        }
+        (findViewById<View>(R.id.lyt_color)).setOnClickListener {
+            Tools.copyToClipboard(this, tvColor.text.toString(), "Code ${tvColor.text}")
+        }
+        (findViewById<View>(R.id.btn_profile)).setOnClickListener {
+            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, imgUser, ViewCompat.getTransitionName(imgUser)!!)
+            val intent = Intent(this@PhotoDetailActivity, UserActivity::class.java)
+            intent.putExtra(Preferences.USER, Gson().toJson(mPhoto.user))
+            startActivity(intent, options.toBundle())
         }
 
         initToolbar()
@@ -218,7 +232,7 @@ class PhotoDetailActivity : BaseActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    /** @method init toolbar settings */
+    /** Methods */
     private fun initToolbar() {
         setSupportActionBar(mToolbar)
         val actionBar = supportActionBar
@@ -229,7 +243,6 @@ class PhotoDetailActivity : BaseActivity() {
         Tools.setSystemBarColor(this, Color.TRANSPARENT)
     }
 
-    /** @method hide system UI */
     private fun hideSystemUI() {
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -246,14 +259,12 @@ class PhotoDetailActivity : BaseActivity() {
                         or View.SYSTEM_UI_FLAG_FULLSCREEN)
     }
 
-    /** @method set photo statistics data **/
     private fun setStatisticsData() {
         tvLikes.text = mPhotoStatistics.likes.total.getFormattedNumber()
         tvDownload.text = mPhotoStatistics.downloads.total.getFormattedNumber()
         tvViews.text = mPhotoStatistics.views.total.getFormattedNumber()
     }
 
-    /** @method set photo info */
     private fun setPhotoInfo() {
         if (mPhoto.location.city != null && mPhoto.location.country != null)
             tvLocation.text = "${mPhoto.location.city}, ${mPhoto.location.country}"
@@ -262,7 +273,6 @@ class PhotoDetailActivity : BaseActivity() {
         else tvLocation.text = resources.getString(R.string.desc_no_location)
     }
 
-    /** @method change photo detail's bottom sheet UI & colors */
     private fun setViewsColor(colorPrimary: Int, colorSecondary: Int) {
         (findViewById<TextView>(R.id.label_description)).setTextColor(colorPrimary)
         tvPhotoBy.setTextColor(colorPrimary)
@@ -283,7 +293,7 @@ class PhotoDetailActivity : BaseActivity() {
 
     }
 
-    private fun infoDialog() {
+    private fun showInfoDialog() {
         val dialog = MaterialDialog(this)
             .cornerRadius(16f)
             .title(R.string.title_photo_info)
@@ -293,6 +303,7 @@ class PhotoDetailActivity : BaseActivity() {
 
         val lytProgress: LinearLayout = view.findViewById(R.id.lyt_progress)
         val lytInfo: LinearLayout = view.findViewById(R.id.lyt_info)
+        val lytNoInfo: LinearLayout = view.findViewById(R.id.lyt_no_info)
         val tvCameraMake: TextView = view.findViewById(R.id.tv_camera_make)
         val tvCameraModel: TextView = view.findViewById(R.id.tv_camera_model)
         val tvFocalLength: TextView = view.findViewById(R.id.tv_focal_length)
@@ -301,22 +312,15 @@ class PhotoDetailActivity : BaseActivity() {
         val tvIso: TextView = view.findViewById(R.id.tv_iso)
         val tvDimensions: TextView = view.findViewById(R.id.tv_dimensions)
 
-        tvCameraMake.text = if (mPhoto.exif.make == "") "--" else mPhoto.exif.make
-        tvCameraModel.text = if (mPhoto.exif.model == "") "--" else mPhoto.exif.model
-        tvFocalLength.text = if (mPhoto.exif.focal_length == "") "--" else "${mPhoto.exif.focal_length}mm"
-        tvAperture.text = if (mPhoto.exif.aperture == "") "--" else "ƒ/${mPhoto.exif.aperture}"
-        tvShutterSpeed.text = if (mPhoto.exif.exposure_time == "") "--" else "${mPhoto.exif.exposure_time}s"
-        tvIso.text = if (mPhoto.exif.iso == -1) "--" else mPhoto.exif.iso.toString()
+        tvCameraMake.text = if (mPhoto.exif.make == null) "--" else mPhoto.exif.make
+        tvCameraModel.text = if (mPhoto.exif.model == null) "--" else mPhoto.exif.model
+        tvFocalLength.text = if (mPhoto.exif.focal_length == null) "--" else "${mPhoto.exif.focal_length}mm"
+        tvAperture.text = if (mPhoto.exif.aperture == null) "--" else "ƒ/${mPhoto.exif.aperture}"
+        tvShutterSpeed.text = if (mPhoto.exif.exposure_time == null) "--" else "${mPhoto.exif.exposure_time}s"
+        tvIso.text = if (mPhoto.exif.iso == null) "--" else mPhoto.exif.iso.toString()
         tvDimensions.text =
             if ((mPhoto.width == 0) or (mPhoto.height == 0)) "--" else "${mPhoto.width} x ${mPhoto.height}"
 
-        if (mPhoto.exif.model != "") {
-            Tools.visibleViews(lytInfo)
-            Tools.inVisibleViews(lytProgress, type = Tools.GONE)
-        } else {
-            Tools.visibleViews(lytProgress)
-            Tools.inVisibleViews(lytInfo, type = Tools.GONE)
-        }
 
         dialog.show()
     }

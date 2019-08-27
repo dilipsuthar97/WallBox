@@ -34,6 +34,7 @@ interface CollectionApi {
      * Api for fetch collection for given id
      *
      * @param id Id of collection which will be fetch
+     * @param client_id Unsplash access key
      */
     @GET("collections/{id}")
     fun getCollection(@Path("id") id: String,

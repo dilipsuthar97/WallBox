@@ -60,7 +60,7 @@
     <string name="title_official_site">ऑफिसियल साइट पर जाएं</string>
     <string name="title_description">विवरण</string>
     <string name="title_info">जानकारी</string>
-    <string name="title_photo_info">फोटो की जानकारी</string>
+    <string name="title_photo_info">कैमरा</string>
     <string name="title_color_palette">रंगों के प्रकार</string>
 
     <string name="desc_no_location">कोई स्थान नहीं</string>
@@ -71,6 +71,7 @@
 
     <string name="msg_clear_cache">कैश सफलतापूर्वक साफ़ हो गया</string>
     <string name="msg_reset_tutorial">ट्यूटोरियल सफलतापूर्वक रीसेट हो गया</string>
+    <string name="msg_no_photo_info">No photo info!</string>
 
     <!-- Extras -->
     <string name="wallpapers">वॉलपेपर्स</string>

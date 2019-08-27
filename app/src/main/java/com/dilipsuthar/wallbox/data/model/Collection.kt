@@ -1,7 +1,5 @@
 package com.dilipsuthar.wallbox.data.model
 
-import java.lang.StringBuilder
-
 data class Collection(
 
     /**
@@ -176,20 +174,20 @@ data class Collection(
     },
      */
 
-    var id: Int,
-    var title: String,
-    var description: String,
-    var published_at: String,
-    var updated_at: String,
-    var curated: Boolean,
-    var featured: Boolean,
-    var total_photos: Int,
-    var private: Boolean,
-    var share_key: String,
-    var tags: List<Tag>,
-    var links: CollectionLinks,
-    var user: User,
-    var cover_photo: Photo,
-    var preview_photos: List<PreviewPhoto>
+    val id: Int,
+    val title: String,
+    val description: String,
+    val published_at: String,
+    val updated_at: String,
+    val curated: Boolean,
+    val featured: Boolean,
+    val total_photos: Int,
+    val private: Boolean,
+    val share_key: String,
+    val tags: List<Tag>,
+    val links: CollectionLinks,
+    val user: User,
+    val cover_photo: Photo,
+    val preview_photos: List<PreviewPhoto>
 
 )

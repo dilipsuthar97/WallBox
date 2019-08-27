@@ -20,6 +20,7 @@ class Preferences(context: Context) {
         // Constants
         const val PHOTO = "photo"
         const val COLLECTION = "collection"
+        const val USER = "user"
 
         private var mPreferences: Preferences? = null
 

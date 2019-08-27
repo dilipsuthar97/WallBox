@@ -60,7 +60,7 @@
     <string name="title_official_site">Go to the official site</string>
     <string name="title_description">Description</string>
     <string name="title_info">Info</string>
-    <string name="title_photo_info">Photo Info</string>
+    <string name="title_photo_info">Camera</string>
     <string name="title_color_palette">Color Palette</string>
 
     <string name="desc_no_location">No location</string>
@@ -71,6 +71,7 @@
 
     <string name="msg_clear_cache">Cache cleared successfully</string>
     <string name="msg_reset_tutorial">Tutorial reset successfully</string>
+    <string name="msg_no_photo_info">No photo info!</string>
 
     <string-array name="languages_name">
         <item>English</item>
@@ -82,7 +83,7 @@
         <item>hi</item>
         <item>zh</item>
     </string-array>
-    
+
     <string-array name="wallpaper_quality">
         <item>Full</item>
         <item>Regular</item>

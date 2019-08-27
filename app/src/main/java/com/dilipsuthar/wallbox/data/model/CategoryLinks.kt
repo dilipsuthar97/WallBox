@@ -11,6 +11,6 @@ data class CategoryLinks (
     "photos": "https://api.unsplash.com/categories/6/photos"
 */
 
-    var self: String,
-    var photos: String
+    val self: String,
+    val photos: String
 )

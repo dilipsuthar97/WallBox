@@ -6,6 +6,20 @@
         android:orientation="vertical">
 
     <LinearLayout
+            android:id="@+id/lyt_no_info"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:visibility="gone">
+        <TextView
+                android:text="@string/msg_no_photo_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/secondaryTextColor"/>
+    </LinearLayout>
+
+    <LinearLayout
             android:id="@+id/lyt_progress"
             android:gravity="center"
             android:padding="16dp"

@@ -11,10 +11,10 @@ data class CollectionLinks(
     },
      */
 
-    var self: String,
-    var html: String,
-    var photos: String,
-    var related: String
+    val self: String,
+    val html: String,
+    val photos: String,
+    val related: String
 
 ) {
     constructor(): this("", "", "", "")

@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
@@ -55,6 +56,7 @@ class CollectionDetailActivity : BaseActivity() {
     private var snackBar: Snackbar? = null
 
     @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
+    @BindView(R.id.btn_profile) lateinit var btnProfile: LinearLayout
     @BindView(R.id.img_user_profile) lateinit var imgUserProfile: CircularImageView
     @BindView(R.id.tv_photo_by) lateinit var tvPhotoBy: TextView
 
@@ -73,7 +75,10 @@ class CollectionDetailActivity : BaseActivity() {
         /** Set Collection data on Toolbar */
         mCollection = Gson().fromJson(intent.getStringExtra(Preferences.COLLECTION), Collection::class.java)
         mCollection?.let {
-            imgUserProfile.loadUrl(it.user.profile_image.medium)
+            imgUserProfile.loadUrl(
+                it.user.profile_image.medium,
+                R.drawable.placeholder_profile,
+                R.drawable.placeholder_profile)
             tvPhotoBy.text = "${resources.getString(R.string.wallpaper_by)} ${it.user.first_name} ${it.user.last_name}"
         }
 
@@ -168,6 +173,12 @@ class CollectionDetailActivity : BaseActivity() {
             load()
             it.visibility = View.GONE
         }
+        btnProfile.setOnClickListener {
+            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, imgUserProfile, ViewCompat.getTransitionName(imgUserProfile)!!)
+            val intent = Intent(this, UserActivity::class.java)
+            intent.putExtra(Preferences.USER, Gson().toJson(mCollection?.user))
+            startActivity(intent, options.toBundle())
+        }
 
         initToolbar()
         initComponent()
@@ -179,7 +190,7 @@ class CollectionDetailActivity : BaseActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    /** @method init toolbar settings */
+    /** Methods */
     private fun initToolbar() {
         setSupportActionBar(toolbar)
         supportActionBar?.title = mCollection?.title
@@ -189,7 +200,6 @@ class CollectionDetailActivity : BaseActivity() {
         Tools.changeNavigationIconColor(toolbar, ContextCompat.getColor(applicationContext, R.color.colorAccent))
     }
 
-    /** @method init components */
     private fun initComponent() {
 
         /** Recycler View */
@@ -205,7 +215,6 @@ class CollectionDetailActivity : BaseActivity() {
         load()
     }
 
-    /** @method request photos api */
     private fun load() {
         mSwipeRefreshView setRefresh true
         loadMore = true

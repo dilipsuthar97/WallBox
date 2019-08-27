@@ -25,7 +25,6 @@ object LocaleHelper {
             it.resources.updateConfiguration(configuration, it.resources.displayMetrics)
         }
 
-
     }
 
     fun getLocale(context: Context?): Locale {

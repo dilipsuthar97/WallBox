@@ -32,7 +32,7 @@ class PhotoInfoDialog(photo: Photo) : DialogFragment() {
         return AlertDialog.Builder(activity!!).setView(view).create()
     }
 
-    fun initInfoData() {
+    private fun initInfoData() {
         if (mPhoto != null) {
             tvCameraMake.text = if (mPhoto.exif.make == null) "--" else mPhoto.exif.make
             tvCameraModel.text = if (mPhoto.exif.model == null) "--" else mPhoto.exif.model

@@ -8,7 +8,7 @@ data class Tag(
     },
      */
 
-    var title: String
+    val title: String
 
 ) {
     constructor(): this("")

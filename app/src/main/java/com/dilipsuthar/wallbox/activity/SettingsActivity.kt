@@ -25,7 +25,6 @@ import java.text.DecimalFormat
 
 class SettingsActivity : BaseActivity() {
 
-    private var activityRestarted = false
     private var mSettingList: ArrayList<Setting> = ArrayList()
 
     @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
@@ -40,7 +39,7 @@ class SettingsActivity : BaseActivity() {
         initSettings()
     }
 
-    /** @method init toolbar settings */
+    /** Methods */
     private fun initToolbar() {
         setSupportActionBar(toolbar)
         val actionBar = supportActionBar
@@ -50,7 +49,6 @@ class SettingsActivity : BaseActivity() {
         Tools.changeNavigationIconColor(toolbar, ContextCompat.getColor(applicationContext, R.color.colorAccent))
     }
 
-    /** @method init setting menus */
     private fun initSettings() {
         mRecyclerView.layoutManager = LinearLayoutManager(this)
         mRecyclerView.setHasFixedSize(true)

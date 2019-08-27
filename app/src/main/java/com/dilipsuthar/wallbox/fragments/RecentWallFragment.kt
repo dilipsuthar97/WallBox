@@ -90,6 +90,7 @@ class RecentWallFragment : Fragment() {
                     mPhotosList.clear()
                     mPhotosList.addAll(ArrayList(response.body()!!))
                     updateAdapter(mPhotosList)
+                    mRecyclerView.smoothScrollToPosition(mPhotoAdapter!!.itemCount.minus(29))
                     Tools.visibleViews(mRecyclerView)
                     Tools.inVisibleViews(netWorkErrorLyt, httpErrorLyt, type = Tools.GONE)
                 } else {

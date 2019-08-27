@@ -13,13 +13,13 @@ data class SponsoredLinks (
     }
 */
 
-    var self: String,
-    var html: String,
-    var photos: String,
-    var likes: String,
-    var portfolio: String,
-    var following: String,
-    var followers: String
+    val self: String,
+    val html: String,
+    val photos: String,
+    val likes: String,
+    val portfolio: String,
+    val following: String,
+    val followers: String
 
 ) {
     constructor() : this ("", "", "", "", "", "", "")

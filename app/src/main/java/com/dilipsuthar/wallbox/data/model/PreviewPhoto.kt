@@ -15,7 +15,7 @@ data class PreviewPhoto(
     },
      */
 
-    var id: String,
+    val id: String,
     val urls: Urls
 
 )

@@ -36,28 +36,32 @@ data class User (
         }
     */
 
-    var id: String,
-    var updated_at: String,
-    var username: String,
-    var name: String,
-    var first_name: String,
-    var last_name: String,
-    var twitter_username: String,
-    var portfolio_url: String,
-    var bio: String,
-    var location: String,
-    var links: UserLinks,
-    var profile_image: ProfileImage,
-    var instagram_username: String,
-    var total_collections: Int,
-    var total_likes: Int,
-    var total_photos: Int,
-    var accepted_tos: Boolean
+    val id: String,
+    val updated_at: String,
+    val username: String,
+    val name: String,
+    val first_name: String,
+    val last_name: String,
+    val twitter_username: String,
+    val portfolio_url: String = "",
+    val bio: String = "",
+    val location: String = "",
+    val links: UserLinks,
+    val profile_image: ProfileImage,
+    val instagram_username: String,
+    val total_collections: Int,
+    val total_likes: Int,
+    val total_photos: Int,
+    val followers_count: Int,
+    val following_count: Int,
+    val downloads: Int,
+    val accepted_tos: Boolean,
+    val badge: Badge
 
 ) {
     constructor() : this("", "", "", "", "",
         "", "", "", "", "",
         UserLinks(), ProfileImage(), "", -1, -1,
-        -1, false
-        )
+        -1, -1, -1, -1, false,
+        Badge())
 }

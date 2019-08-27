@@ -10,9 +10,9 @@ data class ProfileImage (
     }
  */
 
-    var small: String,
-    var medium: String,
-    var large: String
+    val small: String,
+    val medium: String,
+    val large: String
 
 ) {
     constructor() : this("", "", "")

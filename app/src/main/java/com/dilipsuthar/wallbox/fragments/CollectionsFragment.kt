@@ -87,6 +87,7 @@ class CollectionsFragment : Fragment() {
                     mCollectionList.clear()
                     mCollectionList.addAll(ArrayList(response.body()!!))
                     updateAdapter(mCollectionList)
+                    mRecyclerView.smoothScrollToPosition(mAdapter!!.itemCount.minus(29))
                     Tools.visibleViews(mRecyclerView)
                     Tools.inVisibleViews(netWorkErrorLyt, httpErrorLyt, type = Tools.GONE)
                 } else {

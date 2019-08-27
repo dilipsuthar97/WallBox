@@ -23,6 +23,7 @@
     <string name="msg_more_photos">更多照片..</string>
     <string name="msg_no_more_photos">沒有更多照片 :(</string>
     <string name="msg_reset_tutorial">教程重置成功</string>
+    <string name="msg_no_photo_info">No photo info!</string>
     <string name="nav_title_about">關於</string>
     <string name="nav_title_favorites">最愛</string>
     <string name="nav_title_rate_review">rate &amp; Review</string>
@@ -53,6 +54,7 @@
     <string name="title_reset_tutorial">重置教程</string>
     <string name="title_wallpaper_preview_quality">壁紙預覽質量</string>
     <string name="title_wallpaper_save_location">壁紙保存位置</string>
+    <string name="title_photo_info">相機</string>
     <string name="toolbar_title_about">關於</string>
     <string name="toolbar_title_favorites">最愛</string>
     <string name="toolbar_title_settings">設置</string>
@@ -61,5 +63,4 @@
     <string name="unsplash">Unsplash</string>
     <string name="wallpaper_by">"by, "</string>
     <string name="wallpapers">壁紙</string>
-    <string name="title_photo_info">照片信息</string>
 </resources>

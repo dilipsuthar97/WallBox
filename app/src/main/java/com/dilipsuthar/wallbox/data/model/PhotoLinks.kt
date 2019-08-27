@@ -10,10 +10,10 @@ data class PhotoLinks(
     }
 */
 
-    var self: String,
-    var html: String,
-    var download: String,
-    var download_location: String
+    val self: String,
+    val html: String,
+    val download: String,
+    val download_location: String
 ) {
     constructor() : this("", "", "", "")
 }

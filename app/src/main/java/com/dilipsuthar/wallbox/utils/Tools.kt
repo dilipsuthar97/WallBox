@@ -1,6 +1,8 @@
 package com.dilipsuthar.wallbox.utils
 
 import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.PorterDuff
 import android.os.Build
@@ -15,6 +17,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.util.TypedValue
 import android.view.Menu
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.dilipsuthar.wallbox.R
 import java.nio.file.Files.size
@@ -111,23 +114,29 @@ object Tools {
         view.background = drawable
     }
 
-    /*fun hasNetwork(ctx: Context?): Boolean? {
+    fun hasNetwork(ctx: Context?): Boolean? {
         var isConnected: Boolean? = false
         val connectivityManager = ctx?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
         if (activeNetwork != null && activeNetwork.isConnected)
             isConnected = true
         return isConnected
-    }*/
+    }
 
-    val hasActiveNetwork: (Context) -> Boolean? = { ctx ->
+    /*val hasActiveNetwork: (Context) -> Boolean? = { ctx ->
         var isConnected: Boolean? = false
         val connectivityManager = ctx.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkInfo = connectivityManager.activeNetworkInfo
         if (networkInfo != null && networkInfo.isConnected)
             isConnected = true
         isConnected
-    }
+    }*/
 
+    fun copyToClipboard(context: Context, data: String, msg: String) {
+        val clip = "clipboard"
+        (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager)
+            .setPrimaryClip(ClipData.newPlainText(clip, data))
+        PopupUtils.showToast(context, "$msg copied to clipboard", Toast.LENGTH_SHORT)
+    }
 
 }

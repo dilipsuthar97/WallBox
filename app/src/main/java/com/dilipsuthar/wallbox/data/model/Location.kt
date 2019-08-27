@@ -1,17 +1,17 @@
 package com.dilipsuthar.wallbox.data.model
 
 data class Location(
-    var city: String? = null,
-    var country: String? = null,
-    var position: Position? = null
+    val city: String? = null,
+    val country: String? = null,
+    val position: Position? = null
 ) {
     constructor(): this("","",Position())
 }
 
 /** Position */
 data class Position(
-    var latitude: Long,
-    var longitude: Long
+    val latitude: Long,
+    val longitude: Long
 ) {
     constructor(): this(-1, -1)
 }

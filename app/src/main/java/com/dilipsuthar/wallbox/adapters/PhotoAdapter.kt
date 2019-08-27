@@ -89,12 +89,12 @@ class PhotoAdapter
                     R.drawable.placeholder_profile,
                     R.drawable.placeholder_profile)
 
-                holder.rootView.setOnLongClickListener { view ->
+                holder.imagePhoto.setOnLongClickListener { view ->
                     listener?.onItemLongClick(it, view!!, position, holder.imagePhoto)
                     true
                 }
 
-                holder.rootView.setOnClickListener { view ->
+                holder.imagePhoto.setOnClickListener { view ->
                     listener?.onItemClick(it, view, position, holder.imagePhoto)
                 }
             }

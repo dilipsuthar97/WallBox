@@ -11,11 +11,11 @@ data class Urls(
     },
 */
 
-    var raw: String,
-    var full: String,
-    var regular: String,
-    var small: String,
-    var thumb: String
+    val raw: String,
+    val full: String,
+    val regular: String,
+    val small: String,
+    val thumb: String
 ) {
     constructor() : this("", "", "", "", "")
 }

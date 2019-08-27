@@ -1,12 +1,12 @@
 package com.dilipsuthar.wallbox.data.model
 
 data class Exif(
-    var make: String? = "",
-    var model: String? = "",
-    var exposure_time: String? = "", // Shutter speed
-    var aperture: String? = "",
-    var focal_length: String? = "",
-    var iso: Int? = -1
+    val make: String? = null,
+    val model: String? = null,
+    val exposure_time: String? = null, // Shutter speed
+    val aperture: String? = null,
+    val focal_length: String? = null,
+    val iso: Int? = null
 ) {
-    constructor(): this("","","","","",-1)
+    constructor(): this(null,null,null,null,null,null)
 }
