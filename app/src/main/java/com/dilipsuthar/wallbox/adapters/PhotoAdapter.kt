@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
@@ -67,7 +68,7 @@ class PhotoAdapter
             photo?.let {
 
                 val txtPhotoBy = photo.user.first_name
-                if (it.user.last_name != null) txtPhotoBy + " ${it.user.last_name}"
+                if (it.user.last_name != "") txtPhotoBy + " ${it.user.last_name}"
 
                 holder.rootView.setBackgroundColor(Color.parseColor(it.color))
                 holder.textPhotoBy.text = "By, $txtPhotoBy"
@@ -84,11 +85,12 @@ class PhotoAdapter
                 }
                 holder.imagePhoto.loadUrl(url)
 
-                holder.imageUserProfile.loadUrl(
+                holder.imgPhotoBy.loadUrl(
                     it.user.profile_image.large,
                     R.drawable.placeholder_profile,
                     R.drawable.placeholder_profile)
 
+                // onClick listener
                 holder.imagePhoto.setOnLongClickListener { view ->
                     listener?.onItemLongClick(it, view!!, position, holder.imagePhoto)
                     true
@@ -96,6 +98,10 @@ class PhotoAdapter
 
                 holder.imagePhoto.setOnClickListener { view ->
                     listener?.onItemClick(it, view, position, holder.imagePhoto)
+                }
+
+                holder.lytPhotoBy.setOnClickListener { _ ->
+                    listener?.onUserProfileClick(it, position, holder.imgPhotoBy)
                 }
             }
 
@@ -110,11 +116,12 @@ class PhotoAdapter
         }
 
         @BindView(R.id.image_photo) lateinit var imagePhoto: ImageView
-        @BindView(R.id.image_user_profile) lateinit var imageUserProfile: CircularImageView
+        @BindView(R.id.img_photo_by) lateinit var imgPhotoBy: CircularImageView
         @BindView(R.id.text_photo_by) lateinit var textPhotoBy: TextView
         @BindView(R.id.text_likes) lateinit var textLikes: TextView
         @BindView(R.id.root_view) lateinit var rootView: View
         @BindView(R.id.btn_download) lateinit var btnDownload: ImageButton
+        @BindView(R.id.lyt_photo_by) lateinit var lytPhotoBy: LinearLayout
     }
 
     class LoadingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
@@ -138,6 +145,7 @@ class PhotoAdapter
 
     /** interface */
     interface OnItemClickListener {
+        fun onUserProfileClick(photo: Photo, pos: Int, imgPhotoBy: CircularImageView)
         fun onItemClick(photo: Photo, view: View, pos: Int, imageView: ImageView)
         fun onItemLongClick(photo: Photo, view: View, pos: Int, imageView: ImageView)
     }

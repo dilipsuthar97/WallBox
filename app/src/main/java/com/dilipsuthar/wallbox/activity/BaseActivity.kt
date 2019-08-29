@@ -8,12 +8,9 @@ import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.helpers.LocaleHelper
 import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.dilipsuthar.wallbox.utils.Tools
-
 /**
- * Created by,
- * @author DILIP SUTHAR 05/06/19
+ * Created by DILIP SUTHAR 05/06/19
  */
-
 abstract class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +33,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     }
 
+    /** @method customize status bar bg & icon color */
     private fun customizeStatusBar() {
         when(ThemeUtils.getTheme(this)) {
             ThemeUtils.LIGHT -> Tools.setSystemBarLight(this)

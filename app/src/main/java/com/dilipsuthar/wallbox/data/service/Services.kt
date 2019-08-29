@@ -13,8 +13,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import android.util.Log
 import com.dilipsuthar.wallbox.data.api.CollectionApi
+import com.dilipsuthar.wallbox.data.api.UserApi
 import com.dilipsuthar.wallbox.data.model.Collection
 import com.dilipsuthar.wallbox.data.model.PhotoStatistics
+import com.dilipsuthar.wallbox.data.model.User
 
 /**
  * Created by DILIP SUTHAR on 20/07/19
@@ -175,6 +177,22 @@ class Services {
         })
     }
 
+    /** User services */
+    fun requestUserProfile(username: String, listener: OnRequestUserProfileListener?) {
+        Log.d(TAG, "requestUserProfile: called >>>>>>>>>> Services")
+
+        val request = buildApi(buildClient(), UserApi::class.java).getUserProfile(username, BuildConfig.WALLBOX_ACCESS_KEY)
+        request.enqueue(object : Callback<User> {
+            override fun onResponse(call: Call<User>, response: Response<User>) {
+                listener?.onRequestUserProfileSuccess(call, response)
+            }
+
+            override fun onFailure(call: Call<User>, t: Throwable) {
+                listener?.onRequestUserProfileFailed(call, t)
+            }
+        })
+    }
+
     /** TODO: Authorization service */
 
     /*fun cancel() {
@@ -225,7 +243,6 @@ class Services {
         fun onRequestFailed(call: Call<PhotoStatistics>, t: Throwable)
     }
 
-
     // Collection listener
     interface OnRequestCollectionsListener {
         fun onRequestCollectionsSuccess(call: Call<List<Collection>>, response: Response<List<Collection>>)
@@ -234,6 +251,12 @@ class Services {
     interface OnRequestCollectionListener {
         fun onRequestCollectionSuccess(call: Call<Collection>, response: Response<Collection>)
         fun onRequestCollectionFailed(call: Call<Collection>, t: Throwable)
+    }
+
+    // User listener
+    interface OnRequestUserProfileListener {
+        fun onRequestUserProfileSuccess(call: Call<User>, response: Response<User>)
+        fun onRequestUserProfileFailed(call: Call<User>, t: Throwable)
     }
 
     /** Singleton pattern */

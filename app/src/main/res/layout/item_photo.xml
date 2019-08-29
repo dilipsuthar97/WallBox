@@ -21,30 +21,38 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
-            <com.mikhaellopez.circularimageview.CircularImageView
-                    android:id="@+id/image_user_profile"
-                    style="@style/CircularImageViewTheme"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:transitionName="profilePhoto"/>
-
-            <TextView
-                    android:id="@+id/text_photo_by"
+            <LinearLayout
+                    android:id="@+id/lyt_photo_by"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textColor="?attr/primaryTextColor"
-                    tools:text="By, beccatapert"
-                    app:layout_constraintStart_toEndOf="@+id/image_user_profile"
-                    android:layout_marginStart="8dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/text_likes"
-                    android:layout_marginEnd="8dp"
-                    android:transitionName="profileName"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                <com.mikhaellopez.circularimageview.CircularImageView
+                        android:id="@+id/img_photo_by"
+                        style="@style/CircularImageViewTheme"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:transitionName="profilePhoto" />
+
+                <TextView
+                        android:id="@+id/text_photo_by"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:textColor="?attr/primaryTextColor"
+                        android:transitionName="profileName"
+                        tools:text="By, beccatapert" />
+            </LinearLayout>
 
             <ImageButton
                     android:id="@+id/btn_download"

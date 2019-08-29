@@ -44,8 +44,7 @@ import retrofit2.Call
 import retrofit2.Response
 
 /**
- * Created by,
- * @author DILIP SUTHAR 05/06/19
+ * Created by DILIP SUTHAR 05/06/19
  */
 
 class PhotoDetailActivity : BaseActivity() {
@@ -217,7 +216,7 @@ class PhotoDetailActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            android.R.id.home -> finish()
+            android.R.id.home -> onBackPressed()
             R.id.action_photo_info -> {
                 if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED)
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED

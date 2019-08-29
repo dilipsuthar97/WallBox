@@ -38,10 +38,10 @@ data class User (
 
     val id: String,
     val updated_at: String,
-    val username: String,
+    val username: String = "",
     val name: String,
-    val first_name: String,
-    val last_name: String,
+    val first_name: String = "",
+    val last_name: String = "",
     val twitter_username: String,
     val portfolio_url: String = "",
     val bio: String = "",
@@ -56,12 +56,21 @@ data class User (
     val following_count: Int,
     val downloads: Int,
     val accepted_tos: Boolean,
-    val badge: Badge
+    val badge: Badge,
+    val tags: UserTags
 
 ) {
     constructor() : this("", "", "", "", "",
         "", "", "", "", "",
         UserLinks(), ProfileImage(), "", -1, -1,
         -1, -1, -1, -1, false,
-        Badge())
+        Badge(), UserTags()
+    )
+}
+
+data class UserTags(
+    val custom: List<Tag> = emptyList(),
+    val aggregated: List<Tag> = emptyList()
+) {
+    constructor(): this(emptyList(), emptyList())
 }

@@ -114,9 +114,7 @@ class HomeActivity : BaseActivity() {
         //Services.getService().cancel()  // Cancel all request's call on Activity destroy
     }
 
-    /**
-     * @method init toolbar settings
-     */
+    /** @method init toolbar settings */
     private fun initToolbar() {
         setSupportActionBar(mToolbar)
         val actionBar = supportActionBar
@@ -126,17 +124,15 @@ class HomeActivity : BaseActivity() {
         Tools.changeNavigationIconColor(mToolbar, ThemeUtils.getThemeAttrColor(this, R.attr.tabUnselectedColor))
     }
 
-    /**
-     * @method init tab layout settings
-     */
+    /** @method init tab layout settings */
     private fun initTabLayout() {
         /** Set mViewPager and link it with TabLayout */
         mViewPagerAdapter = SectionPagerAdapter(supportFragmentManager)
-        mViewPagerAdapter?.let {
-            it.addFragment(RecentWallFragment.newInstance("latest"), resources.getString(R.string.tab_title_recent_wall_fragment))
-            it.addFragment(CuratedWallFragment.newInstance("latest"), resources.getString(R.string.tab_title_curated_wall_fragment))
-            it.addFragment(CollectionsFragment.newInstance("featured"), resources.getString(R.string.tab_title_collections_fragment))
-            mViewPager.adapter = it
+        with(mViewPagerAdapter!!) {
+            addFragment(RecentWallFragment.newInstance("latest"), resources.getString(R.string.tab_title_recent_wall_fragment))
+            addFragment(CuratedWallFragment.newInstance("latest"), resources.getString(R.string.tab_title_curated_wall_fragment))
+            addFragment(CollectionsFragment.newInstance("featured"), resources.getString(R.string.tab_title_collections_fragment))
+            mViewPager.adapter = this
         }
         mViewPager.offscreenPageLimit = 2
         mTabLayout.setupWithViewPager(mViewPager)
@@ -195,9 +191,7 @@ class HomeActivity : BaseActivity() {
         drawerToggle.syncState()*/
     }
 
-    /**
-     * @method init navigation drawer settings
-     */
+    /** @method init navigation drawer settings */
     private fun initNavigationDrawer() {
         mNavigationView.setNavigationItemSelectedListener {
             when (it.itemId) {
@@ -287,9 +281,7 @@ class HomeActivity : BaseActivity() {
         return super.onOptionsItemSelected(item!!)
     }
 
-    /**
-     * @method handle sort menu items on different fragment
-     */
+    /** @method handle sort menu items on different fragment */
     private fun handleSortMenuItems(vararg value: Boolean) {
         for ((i, v) in value.withIndex()) {
             when (i) {

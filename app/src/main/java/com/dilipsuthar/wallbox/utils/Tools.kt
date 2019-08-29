@@ -23,6 +23,7 @@ import com.dilipsuthar.wallbox.R
 import java.nio.file.Files.size
 import java.text.NumberFormat
 import java.util.*
+import java.util.Map
 
 
 object Tools {
@@ -138,5 +139,7 @@ object Tools {
             .setPrimaryClip(ClipData.newPlainText(clip, data))
         PopupUtils.showToast(context, "$msg copied to clipboard", Toast.LENGTH_SHORT)
     }
+
+    fun formatLongNumbers(number: Any): String = ""
 
 }

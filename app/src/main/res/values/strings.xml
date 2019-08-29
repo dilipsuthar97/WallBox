@@ -100,4 +100,7 @@
     <!-- lorem ipsum -->
     <string name="dummy_description">Proin eget tortor risus. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

@@ -34,12 +34,9 @@ import com.google.gson.Gson
 import com.mikhaellopez.circularimageview.CircularImageView
 import retrofit2.Call
 import retrofit2.Response
-
 /**
- * Created by,
- * @author DILIP SUTHAR 05/06/19
+ * Created by DILIP SUTHAR 05/06/19
  */
-
 class CollectionDetailActivity : BaseActivity() {
     private val TAG = "WallBox.CollectionDetailAct"
 
@@ -65,7 +62,6 @@ class CollectionDetailActivity : BaseActivity() {
     @BindView(R.id.network_error_layout) lateinit var netWorkErrorLyt: View
     @BindView(R.id.http_error_layout) lateinit var httpErrorLyt: View
 
-    /** MAIN METHOD */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_collection_detail)
@@ -130,6 +126,13 @@ class CollectionDetailActivity : BaseActivity() {
 
             override fun onItemLongClick(photo: Photo, view: View, pos: Int, imageView: ImageView) {
                 PopupUtils.showToast(applicationContext, pos.toString(), Toast.LENGTH_SHORT)
+            }
+
+            override fun onUserProfileClick(photo: Photo, pos: Int, imgPhotoBy: CircularImageView) {
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this@CollectionDetailActivity, imgPhotoBy, ViewCompat.getTransitionName(imgPhotoBy)!!)
+                val intent = Intent(this@CollectionDetailActivity, UserActivity::class.java)
+                intent.putExtra(Preferences.USER, Gson().toJson(photo.user))
+                startActivity(intent, options.toBundle())
             }
         }
 

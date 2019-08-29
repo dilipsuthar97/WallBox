@@ -60,6 +60,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
+                        android:autoLink="map"
+                        android:linksClickable="true"
                         android:textColor="?attr/secondaryTextColor"
                         tools:text="Leipzig, germany" />
             </LinearLayout>
@@ -95,85 +97,43 @@
                         tools:text="Leipzig, germany" />
             </LinearLayout>
 
-            <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:text="Interests"
-                    android:textColor="?attr/primaryTextColor"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/img_user_profile" />
-
-            <HorizontalScrollView
-                    android:id="@+id/horizontalScrollView"
+            <LinearLayout
+                    android:id="@+id/lyt_interest_chips"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="16dp"
-                    android:scrollbars="none"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="vertical"
                     app:layout_constraintBottom_toTopOf="@+id/tv_profile_bio"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView2">
+                    app:layout_constraintTop_toBottomOf="@+id/img_user_profile"
+                    tools:visibility="visible">
 
-                <com.google.android.material.chip.ChipGroup
-                        android:id="@+id/chip_grp_interest"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:singleLine="true">
-
-                    <com.google.android.material.chip.Chip
-                            style="@style/Widget.MaterialComponents.Chip.Action"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Cofee"
-                            app:chipStrokeColor="?attr/colorAccent" />
-                    <com.google.android.material.chip.Chip
-                            style="@style/Widget.MaterialComponents.Chip.Action"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Cofee"
-                            app:chipStrokeColor="?attr/colorAccent" />
-                    <com.google.android.material.chip.Chip
-                            style="@style/Widget.MaterialComponents.Chip.Action"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Cofee"
-                            app:chipStrokeColor="?attr/colorAccent" />
-                    <com.google.android.material.chip.Chip
-                            style="@style/Widget.MaterialComponents.Chip.Action"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Cofee"
-                            app:chipStrokeColor="?attr/colorAccent" />
-                    <com.google.android.material.chip.Chip
-                            style="@style/Widget.MaterialComponents.Chip.Action"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Cofee"
-                            app:chipStrokeColor="?attr/colorAccent" />
-                    <com.google.android.material.chip.Chip
-                            style="@style/Widget.MaterialComponents.Chip.Action"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Cofee"
-                            app:chipStrokeColor="?attr/colorAccent" />
-                    <com.google.android.material.chip.Chip
-                            style="@style/Widget.MaterialComponents.Chip.Action"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Cofee"
-                            app:chipStrokeColor="?attr/colorAccent" />4<com.google.android.material.chip.Chip
-                        style="@style/Widget.MaterialComponents.Chip.Action"
+                <TextView
+                        android:id="@+id/textView2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Cofee"
-                        app:chipStrokeColor="?attr/colorAccent" />
-                </com.google.android.material.chip.ChipGroup>
-            </HorizontalScrollView>
+                        android:layout_marginBottom="8dp"
+                        android:text="Interests"
+                        android:textColor="?attr/primaryTextColor" />
+
+                <HorizontalScrollView
+                        android:id="@+id/horizontalScrollView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="none">
+
+                    <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/chip_grp_interest"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:singleLine="true">
+
+                    </com.google.android.material.chip.ChipGroup>
+                </HorizontalScrollView>
+            </LinearLayout>
 
             <TextView
                     android:id="@+id/tv_profile_bio"
@@ -182,6 +142,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
+                    android:paddingTop="8dp"
                     android:textColor="?attr/secondaryTextColor"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -190,6 +151,34 @@
                     tools:visibility="visible" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_layout"
+                style="@style/Widget.MaterialComponents.TabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/appBarColor"
+                app:tabTextColor="?attr/tabUnselectedColor"
+                app:tabSelectedTextColor="?attr/tabSelectedColor"
+                app:tabGravity="fill"
+                app:tabRippleColor="?attr/colorRipple"
+                app:tabIndicatorFullWidth="false"
+                app:tabIndicator="@drawable/indicator_tab_layout"
+                app:tabTextAppearance="@style/TextAppearance.AppCompat.Small"
+                app:tabIndicatorHeight="3dp"
+                app:tabMode="scrollable"/>
+
     </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.viewpager.widget.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="1dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

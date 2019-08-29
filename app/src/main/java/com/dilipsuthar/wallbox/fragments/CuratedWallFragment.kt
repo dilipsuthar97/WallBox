@@ -22,6 +22,7 @@ import butterknife.ButterKnife
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.WallBox
 import com.dilipsuthar.wallbox.activity.PhotoDetailActivity
+import com.dilipsuthar.wallbox.activity.UserActivity
 import com.dilipsuthar.wallbox.adapters.PhotoAdapter
 import com.dilipsuthar.wallbox.data.model.Photo
 import com.dilipsuthar.wallbox.data.service.Services
@@ -31,6 +32,7 @@ import com.dilipsuthar.wallbox.utils.*
 import com.dilipsuthar.wallbox.utils.itemDecorater.VerticalSpacingItemDecorator
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import com.mikhaellopez.circularimageview.CircularImageView
 import retrofit2.Call
 import retrofit2.Response
 
@@ -127,6 +129,13 @@ class CuratedWallFragment : Fragment() {
             override fun onItemLongClick(photo: Photo, view: View, pos: Int, imageView: ImageView) {
                 PopupUtils.showToast(context, "$pos", Toast.LENGTH_SHORT)
                 Log.d(WallBox.TAG, "mOnItemClickListener: onItemLongClick")
+            }
+
+            override fun onUserProfileClick(photo: Photo, pos: Int, imgPhotoBy: CircularImageView) {
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity!!, imgPhotoBy, ViewCompat.getTransitionName(imgPhotoBy)!!)
+                val intent = Intent(activity, UserActivity::class.java)
+                intent.putExtra(Preferences.USER, Gson().toJson(photo.user))
+                startActivity(intent, options.toBundle())
             }
         }
     }
