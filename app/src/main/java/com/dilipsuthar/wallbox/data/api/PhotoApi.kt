@@ -45,4 +45,18 @@ interface PhotoApi {
                                    @Query("client_id") client_id: String,
                                    @Query("page") page: Int,
                                    @Query("per_page") per_page: Int): Call<List<Photo>>
+
+    @GET("users/{username}/photos")
+    fun getUserPhotos(@Path("username") username: String,
+                      @Query("client_id") client_id: String,
+                      @Query("page") page: Int,
+                      @Query("per_page") per_page: Int,
+                      @Query("order_by") order_by: String): Call<List<Photo>>
+
+    @GET("users/{username}/likes")
+    fun getUserLikedPhotos(@Path("username") username: String,
+                           @Query("client_id") client_id: String,
+                           @Query("page") page: Int,
+                           @Query("per_page") per_page: Int,
+                           @Query("order_by") order_by: String): Call<List<Photo>>
 }

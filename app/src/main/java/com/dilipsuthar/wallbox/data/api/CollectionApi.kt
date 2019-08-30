@@ -30,6 +30,12 @@ interface CollectionApi {
                        @Query("page") page: Int,
                        @Query("per_page") per_page: Int): Call<List<Collection>>
 
+    @GET("users/{username}/collections")
+    fun getUserCollections(@Path("username") username: String,
+                           @Query("client_id") client_id: String,
+                           @Query("page") page: Int,
+                           @Query("per_page") per_page: Int): Call<List<Collection>>
+
     /**
      * Api for fetch collection for given id
      *

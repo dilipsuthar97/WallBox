@@ -32,6 +32,7 @@ class Services {
     /** Photo services ---------------------------------------------------------------------------------------------- */
     fun requestPhotos(page: Int, per_page: Int, order_by: String, listener: OnRequestPhotosListener?) {
         val requestCall = buildApi(buildClient(), PhotoApi::class.java).getPhotos(BuildConfig.WALLBOX_ACCESS_KEY, page, per_page, order_by)
+
         requestCall.enqueue(object : Callback<List<Photo>> {
             override fun onResponse(call: Call<List<Photo>>, response: Response<List<Photo>>) {
                 listener?.onRequestPhotosSuccess(call, response)
@@ -46,6 +47,7 @@ class Services {
 
     fun requestCuratedPhotos(page: Int, per_page: Int, order_by: String, listener: OnRequestPhotosListener?) {
         val requestCall = buildApi(buildClient(), PhotoApi::class.java).getCuratedPhotos(BuildConfig.WALLBOX_ACCESS_KEY, page, per_page, order_by)
+
         requestCall.enqueue(object : Callback<List<Photo>> {
             override fun onResponse(call: Call<List<Photo>>, response: Response<List<Photo>>) {
                 listener?.onRequestPhotosSuccess(call, response)
@@ -60,6 +62,7 @@ class Services {
 
     fun requestPhoto(id: String, listener: OnRequestPhotoListener?) {
         val request = buildApi(buildClient(), PhotoApi::class.java).getPhoto(id, BuildConfig.WALLBOX_ACCESS_KEY)
+
         request.enqueue(object : Callback<Photo> {
             override fun onResponse(call: Call<Photo>, response: Response<Photo>) {
                 listener?.onRequestPhotoSuccess(call, response)
@@ -74,6 +77,7 @@ class Services {
 
     fun requestPhotoStatistics(id: String, listener: OnRequestPhotoStatistics?) {
         val request = buildApi(buildClient(), PhotoApi::class.java).getPhotoStatistics(id, BuildConfig.WALLBOX_ACCESS_KEY)
+
         request.enqueue(object : Callback<PhotoStatistics> {
             override fun onResponse(call: Call<PhotoStatistics>, response: Response<PhotoStatistics>) {
                 listener?.onRequestSuccess(call, response)
@@ -87,7 +91,9 @@ class Services {
     }
 
     fun requestCollectionPhotos(id: String, page: Int, per_page: Int, listener: OnRequestPhotosListener?) {
-        val request = buildApi(buildClient(), PhotoApi::class.java).getCollectionPhotos(id, BuildConfig.WALLBOX_ACCESS_KEY, page, per_page)
+        val request = buildApi(buildClient(), PhotoApi::class.java)
+            .getCollectionPhotos(id, BuildConfig.WALLBOX_ACCESS_KEY, page, per_page)
+
         request.enqueue(object : Callback<List<Photo>> {
             override fun onResponse(call: Call<List<Photo>>, response: Response<List<Photo>>) {
                 listener?.onRequestPhotosSuccess(call, response)
@@ -100,7 +106,39 @@ class Services {
     }
 
     fun requestCuratedCollectionPhotos(id: String, page: Int, per_page: Int, listener: OnRequestPhotosListener?) {
-        val request = buildApi(buildClient(), PhotoApi::class.java).getCuratedCollectionPhotos(id, BuildConfig.WALLBOX_ACCESS_KEY, page, per_page)
+        val request = buildApi(buildClient(), PhotoApi::class.java)
+            .getCuratedCollectionPhotos(id, BuildConfig.WALLBOX_ACCESS_KEY, page, per_page)
+
+        request.enqueue(object : Callback<List<Photo>> {
+            override fun onResponse(call: Call<List<Photo>>, response: Response<List<Photo>>) {
+                listener?.onRequestPhotosSuccess(call, response)
+            }
+
+            override fun onFailure(call: Call<List<Photo>>, t: Throwable) {
+                listener?.onRequestPhotosFailed(call, t)
+            }
+        })
+    }
+
+    fun requestUserPhotos(user_name: String, page: Int, per_page: Int, order_by: String, listener: OnRequestPhotosListener?) {
+        val request = buildApi(buildClient(), PhotoApi::class.java)
+            .getUserPhotos(user_name, BuildConfig.WALLBOX_ACCESS_KEY, page, per_page, order_by)
+
+        request.enqueue(object : Callback<List<Photo>> {
+            override fun onResponse(call: Call<List<Photo>>, response: Response<List<Photo>>) {
+                listener?.onRequestPhotosSuccess(call, response)
+            }
+
+            override fun onFailure(call: Call<List<Photo>>, t: Throwable) {
+                listener?.onRequestPhotosFailed(call, t)
+            }
+        })
+    }
+
+    fun requestUserLikedPhotos(user_name: String, page: Int, per_page: Int, order_by: String, listener: OnRequestPhotosListener?) {
+        val request = buildApi(buildClient(), PhotoApi::class.java)
+            .getUserLikedPhotos(user_name, BuildConfig.WALLBOX_ACCESS_KEY, page, per_page, order_by)
+
         request.enqueue(object : Callback<List<Photo>> {
             override fun onResponse(call: Call<List<Photo>>, response: Response<List<Photo>>) {
                 listener?.onRequestPhotosSuccess(call, response)
@@ -117,7 +155,8 @@ class Services {
     fun requestCollections(page: Int, per_page: Int, listener: OnRequestCollectionsListener?) {
         Log.d(TAG, "requestCollections: called >>>>>>>>>> Services")
 
-        val requestCall = buildApi(buildClient(), CollectionApi::class.java).getCollections(BuildConfig.WALLBOX_ACCESS_KEY, page, per_page)
+        val requestCall = buildApi(buildClient(), CollectionApi::class.java)
+            .getCollections(BuildConfig.WALLBOX_ACCESS_KEY, page, per_page)
         requestCall.enqueue(object : Callback<List<Collection>> {
             override fun onResponse(call: Call<List<Collection>>, response: Response<List<Collection>>) {
                 listener?.onRequestCollectionsSuccess(call, response)
@@ -133,7 +172,8 @@ class Services {
     fun requestFeaturedCollections(page: Int, per_page: Int, listener: OnRequestCollectionsListener?) {
         Log.d(TAG, "requestFeaturedCollections: called >>>>>>>>>> Services")
 
-        val requestCall = buildApi(buildClient(), CollectionApi::class.java).getFeaturedCollections(BuildConfig.WALLBOX_ACCESS_KEY, page, per_page)
+        val requestCall = buildApi(buildClient(), CollectionApi::class.java)
+            .getFeaturedCollections(BuildConfig.WALLBOX_ACCESS_KEY, page, per_page)
         requestCall.enqueue(object : Callback<List<Collection>> {
             override fun onResponse(call: Call<List<Collection>>, response: Response<List<Collection>>) {
                 listener?.onRequestCollectionsSuccess(call, response)
@@ -149,7 +189,8 @@ class Services {
     fun requestCuratedCollections(page: Int, per_page: Int, listener: OnRequestCollectionsListener?) {
         Log.d(TAG, "requestCuratedCollections: called >>>>>>>>>> Services")
 
-        val requestCall = buildApi(buildClient(), CollectionApi::class.java).getCuratedCollections(BuildConfig.WALLBOX_ACCESS_KEY, page, per_page)
+        val requestCall = buildApi(buildClient(), CollectionApi::class.java)
+            .getCuratedCollections(BuildConfig.WALLBOX_ACCESS_KEY, page, per_page)
         requestCall.enqueue(object : Callback<List<Collection>> {
             override fun onResponse(call: Call<List<Collection>>, response: Response<List<Collection>>) {
                 listener?.onRequestCollectionsSuccess(call, response)
@@ -165,7 +206,8 @@ class Services {
     fun requestCollection(id: String, listener: OnRequestCollectionListener?) {
         Log.d(TAG, "requestCollection: called >>>>>>>>>> Services")
 
-        val request = buildApi(buildClient(), CollectionApi::class.java).getCollection(id, BuildConfig.WALLBOX_ACCESS_KEY)
+        val request = buildApi(buildClient(), CollectionApi::class.java)
+            .getCollection(id, BuildConfig.WALLBOX_ACCESS_KEY)
         request.enqueue(object : Callback<Collection> {
             override fun onResponse(call: Call<Collection>, response: Response<Collection>) {
                 listener?.onRequestCollectionSuccess(call, response)
@@ -173,6 +215,22 @@ class Services {
 
             override fun onFailure(call: Call<Collection>, t: Throwable) {
                 listener?.onRequestCollectionFailed(call, t)
+            }
+        })
+    }
+
+    fun requestUserCollections(user_name: String, page: Int, per_page: Int, listener: OnRequestCollectionsListener?) {
+        Log.d(TAG, "requestUserCollections: called >>>>>>>>>> Services")
+
+        val request = buildApi(buildClient(), CollectionApi::class.java)
+            .getUserCollections(user_name, BuildConfig.WALLBOX_ACCESS_KEY, page, per_page)
+        request.enqueue(object : Callback<List<Collection>> {
+            override fun onResponse(call: Call<List<Collection>>, response: Response<List<Collection>>) {
+                listener?.onRequestCollectionsSuccess(call, response)
+            }
+
+            override fun onFailure(call: Call<List<Collection>>, t: Throwable) {
+                listener?.onRequestCollectionsFailed(call, t)
             }
         })
     }

@@ -13,6 +13,7 @@ import androidx.viewpager.widget.ViewPager
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.dilipsuthar.wallbox.R
+import com.dilipsuthar.wallbox.WallBox
 import com.dilipsuthar.wallbox.adapters.SectionPagerAdapter
 import com.dilipsuthar.wallbox.data.model.User
 import com.dilipsuthar.wallbox.data.service.Services
@@ -138,10 +139,20 @@ class UserActivity : BaseActivity() {
     private fun initTabLayout() {
         /** Set mViewPager and link it with TabLayout */
         mViewPagerAdapter = SectionPagerAdapter(supportFragmentManager)
+
+        val userPhotoFragment = UserPhotosFragment.newInstance("latest")
+        userPhotoFragment.setUser(mUser!!)
+
+        val userLikedFragment = UserLikedFragment.newInstance("latest")
+        userLikedFragment.setUser(mUser!!)
+
+        val userCollectionsFragment = UserCollectionsFragment.newInstance("featured")
+        userCollectionsFragment.setUser(mUser)
+
         with(mViewPagerAdapter) {
-            addFragment(UserPhotosFragment.newInstance(), "${mUser?.total_photos} Photos")
-            addFragment(UserLikedFragment.newInstance(), "${mUser?.total_likes} Liked")
-            addFragment(UserCollectionsFragment.newInstance(), "${mUser?.total_collections} Collections")
+            addFragment(userPhotoFragment, "${mUser?.total_photos} Photos")
+            addFragment(userLikedFragment, "${mUser?.total_likes} Liked")
+            addFragment(userCollectionsFragment, "${mUser?.total_collections} Collections")
             mViewpager.adapter = this
         }
         mViewpager.offscreenPageLimit = 2

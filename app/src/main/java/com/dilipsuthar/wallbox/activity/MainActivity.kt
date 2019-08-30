@@ -11,12 +11,9 @@ import butterknife.ButterKnife
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.utils.ThemeUtils
 import kotlinx.android.synthetic.main.activity_main.*
-
 /**
- * Created by,
- * @author DILIP SUTHAR 05/06/19
+ * Created by DILIP SUTHAR 05/06/19
  */
-
 class MainActivity : BaseActivity() {
 
     @BindView(R.id.txt_bottom_msg) lateinit var txtBottomMsg: TextView

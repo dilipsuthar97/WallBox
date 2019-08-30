@@ -35,7 +35,7 @@ class CollectionAdapter
     }
 
     override fun getItemCount(): Int {
-        return if (mCollectionList == null) 0 else mCollectionList?.size!!
+        return if (mCollectionList!!.isEmpty()) 0 else mCollectionList?.size!!
     }
 
     /*override fun getItemViewType(position: Int): Int {
@@ -47,13 +47,16 @@ class CollectionAdapter
         if (holder is CollectionViewHolder) {
             collection?.let {
                 holder.tvCollectionTitle.text = it.title
-                val url = when (sharedPreferences?.getString(Preferences.WALLPAPER_QUALITY, WallBox.DEFAULT_WALLPAPER_QUALITY)) {
-                    "Full" -> it.cover_photo.urls.full
-                    "Regular" -> it.cover_photo.urls.regular
-                    "Small" -> it.cover_photo.urls.small
-                    else -> it.cover_photo.urls.thumb
+                if (it.cover_photo != null) {
+                    val url = when (sharedPreferences?.getString(Preferences.WALLPAPER_QUALITY, WallBox.DEFAULT_WALLPAPER_QUALITY)) {
+                        "Full" -> it.cover_photo.urls.full
+                        "Regular" -> it.cover_photo.urls.regular
+                        "Small" -> it.cover_photo.urls.small
+                        else -> it.cover_photo.urls.thumb
+                    }
+
+                    holder.imageCollection.loadUrl(url)
                 }
-                holder.imageCollection.loadUrl(url)
                 holder.tvWallpaperCount.text = "${it.total_photos} ${context!!.resources.getString(R.string.wallpapers)}"
 
                 holder.imageCollection.setOnClickListener { view ->

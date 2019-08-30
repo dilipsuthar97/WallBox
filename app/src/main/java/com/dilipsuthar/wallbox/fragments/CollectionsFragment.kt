@@ -30,11 +30,9 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Response
-
 /**
 * Created by DILIP SUTHAR on 28/07/19
 */
-
 class CollectionsFragment : Fragment() {
 
     companion object {
@@ -51,7 +49,6 @@ class CollectionsFragment : Fragment() {
         }
     }
 
-    // VARS
     private var mService: Services? = null
     private var mOnRequestCollectionsListener: Services.OnRequestCollectionsListener? = null
     private var mPage = 0
@@ -62,7 +59,6 @@ class CollectionsFragment : Fragment() {
     private var loadMore = false
     private var snackBar: Snackbar? = null
 
-    // VIEWS
     @BindView(R.id.collections_list) lateinit var mRecyclerView: RecyclerView
     @BindView(R.id.collections_swipe_refresh_layout) lateinit var mSwipeRefreshView: SwipeRefreshLayout
     @BindView(R.id.network_error_layout) lateinit var netWorkErrorLyt: View

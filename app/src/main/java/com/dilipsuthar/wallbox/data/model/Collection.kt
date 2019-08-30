@@ -187,7 +187,7 @@ data class Collection(
     val tags: List<Tag>,
     val links: CollectionLinks,
     val user: User,
-    val cover_photo: Photo,
+    val cover_photo: Photo? = null,
     val preview_photos: List<PreviewPhoto>
 
 )
