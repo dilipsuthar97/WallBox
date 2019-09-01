@@ -13,16 +13,17 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/WallBox.Primary.Base.Light">
-        <activity android:name=".activity.UserActivity"></activity>
-        <activity android:name=".activity.CollectionDetailActivity"></activity>
-        <activity android:name=".activity.PhotoDetailActivity"></activity>
-        <activity android:name=".activity.SupportUsActivity"></activity>
-        <activity android:name=".activity.AboutActivity"></activity>
-        <activity android:name=".activity.SettingsActivity"></activity>
-        <activity android:name=".activity.FavoritesActivity"></activity>
+        <activity android:name=".activity.SearchActivity"></activity>
+        <activity android:name=".activity.UserActivity" />
+        <activity android:name=".activity.CollectionDetailActivity" />
+        <activity android:name=".activity.PhotoDetailActivity" />
+        <activity android:name=".activity.SupportUsActivity" />
+        <activity android:name=".activity.AboutActivity" />
+        <activity android:name=".activity.SettingsActivity" />
+        <activity android:name=".activity.FavoritesActivity" />
         <activity
                 android:name=".activity.HomeActivity"
-                android:screenOrientation="portrait"></activity>
+                android:screenOrientation="portrait" />
         <activity
                 android:name=".activity.MainActivity"
                 android:screenOrientation="portrait">

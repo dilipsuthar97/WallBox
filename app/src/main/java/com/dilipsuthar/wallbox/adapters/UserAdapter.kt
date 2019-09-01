@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
@@ -59,7 +60,7 @@ class UserAdapter (
             ButterKnife.bind(this, view)
         }
 
-        @BindView(R.id.root_view) lateinit var rootView: View
+        @BindView(R.id.root_view) lateinit var rootView: ConstraintLayout
         @BindView(R.id.img_user_profile) lateinit var imgUserProfile: CircularImageView
         @BindView(R.id.tv_username) lateinit var tvUsername: TextView
         @BindView(R.id.tv_name) lateinit var tvName: TextView

@@ -94,7 +94,7 @@ class SearchCollectionFragment : Fragment() {
                         mRecyclerView.smoothScrollToPosition(mCollectionAdapter.itemCount.minus(mCollectionList.size))
                         Tools.visibleViews(mRecyclerView)
                         Tools.inVisibleViews(lytNetworkError, lytHttpError, lytNoItems, type = Tools.GONE)
-                    } else {
+                    } else if (response.body()!!.results.isEmpty() && mCollectionList.isEmpty()) {
                         Tools.visibleViews(lytNoItems)
                     }
                 } else {

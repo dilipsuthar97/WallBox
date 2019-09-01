@@ -4,7 +4,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_scrollFlags="scroll|snap|enterAlways">
 
     <androidx.cardview.widget.CardView
             android:id="@+id/search_bar"
@@ -27,7 +28,7 @@
                 android:orientation="horizontal">
 
             <ImageButton
-                    android:id="@+id/btn_close_sheet"
+                    android:id="@+id/btn_close"
                     android:layout_width="46dp"
                     android:layout_height="46dp"
                     android:background="?attr/selectableItemBackgroundBorderless"

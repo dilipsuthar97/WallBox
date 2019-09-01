@@ -46,23 +46,15 @@ class HomeActivity : BaseActivity() {
 
     @BindView(R.id.toolbar) lateinit var mToolbar: Toolbar
     @BindView(R.id.tab_layout) lateinit var mTabLayout: TabLayout
-    @BindView(R.id.search_tab_layout) lateinit var mTabLayoutSearch: TabLayout
     @BindView(R.id.view_pager) lateinit var mViewPager: ViewPager
-    @BindView(R.id.search_view_pager) lateinit var mViewPagerSearch: ViewPager
     @BindView(R.id.nav_view) lateinit var mNavigationView: NavigationView
     @BindView(R.id.drawer_layout) lateinit var mDrawerLayout: DrawerLayout
     @BindView(R.id.root_coordinator_layout) lateinit var mRootView: View
     /*@BindView(R.id.fab_scroll_to_top) lateinit var mFabScrollUp: FloatingActionButton*/
-    @BindView(R.id.bottom_sheet_search_root) lateinit var bottomSheetSearch: View
-    @BindView(R.id.et_search) lateinit var etSearch: EditText
-    @BindView(R.id.btn_close_sheet) lateinit var btnCloseSheet: ImageButton
-    @BindView(R.id.btn_speech_to_txt) lateinit var btnSpeechToTxt: ImageButton
 
     private var mViewPagerAdapter: SectionPagerAdapter? = null
-    private var mViewPagerAdapterSearch: SectionPagerAdapter? = null
     private lateinit var currentLanguage: Locale
     private lateinit var currentTheme: String
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
 
     // Wallpaper sort menu
     private var mSortRecentLatest: MenuItem? = null
@@ -101,7 +93,7 @@ class HomeActivity : BaseActivity() {
         }*/
 
         /** Bottom sheet */
-        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetSearch)
+        /*bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetSearch)
         bottomSheetBehavior.setBottomSheetCallback(object: BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {}
 
@@ -118,30 +110,7 @@ class HomeActivity : BaseActivity() {
         btnCloseSheet.setOnClickListener {
             if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED)
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        }
-
-        /** Search edit text */
-        etSearch.requestFocus()
-        etSearch.setOnEditorActionListener { textView, i, keyEvent ->
-            val transaction = supportFragmentManager.beginTransaction()
-
-            val query = etSearch.text.toString()
-            if (query.isNotEmpty()) {
-                Log.d(TAG, query)
-                /*transaction.replace(R.id.search_photo_fragment, SearchPhotoFragment.newInstance(query))
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()*/
-
-                setupSearchViewPager(query)
-            }
-
-            val view = this.currentFocus
-            if (view != null) {
-                val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(view.windowToken, 0)
-            }
-
-            true
-        }
+        }*/
 
     }
 
@@ -157,9 +126,10 @@ class HomeActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-        if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED)
+        super.onBackPressed()
+        /*if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED)
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        else super.onBackPressed()
+        else super.onBackPressed()*/
     }
 
     /*override fun onConfigurationChanged(newConfig: Configuration) {
@@ -232,10 +202,6 @@ class HomeActivity : BaseActivity() {
 
         })
 
-        // Search bottom sheet tab layout
-        /** Set mViewPager and link it with TabLayout */
-        setupSearchViewPager(null)
-
         /*// Link toggle with mDrawerLayout
         val drawerToggle: ActionBarDrawerToggle = object : ActionBarDrawerToggle(
             this,
@@ -296,10 +262,7 @@ class HomeActivity : BaseActivity() {
 
         when (item?.itemId) {
             R.id.action_search -> {
-                if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED)
-                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-                else
-                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                startActivity(Intent(this, SearchActivity::class.java))
             }
             R.id.action_sort -> {
                 when (mViewPager.currentItem) {
@@ -365,24 +328,6 @@ class HomeActivity : BaseActivity() {
                 8 -> mSortCollectionCurated?.isVisible = v
             }
         }
-    }
-
-    /**
-     * It setup view pager and fragments for search query in bottom sheet
-     *
-     * @param query user input keyword for search
-     */
-    private fun setupSearchViewPager(query: String?) {
-        /** Set mViewPager and link it with TabLayout */
-        mViewPagerAdapterSearch = SectionPagerAdapter(supportFragmentManager)
-        with(mViewPagerAdapterSearch!!) {
-            addFragment(SearchPhotoFragment.newInstance(query), "Photo")
-            addFragment(SearchCollectionFragment.newInstance(query), "Collection")
-            addFragment(SearchUserFragment.newInstance(query), "User")
-            mViewPagerSearch.adapter = this
-        }
-        mViewPagerSearch.offscreenPageLimit = 2
-        mTabLayoutSearch.setupWithViewPager(mViewPagerSearch)
     }
 }
 

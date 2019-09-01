@@ -97,8 +97,8 @@ class SearchPhotoFragment : Fragment() {
                         mRecyclerView.smoothScrollToPosition(mPhotoAdapter.itemCount.minus(mPhotosList.size))
                         Tools.visibleViews(mRecyclerView)
                         Tools.inVisibleViews(lytNetworkError, lytHttpError, lytNoItems, type = Tools.GONE)
-                    } else {
-                       Tools.visibleViews(lytNoItems)
+                    } else if (response.body()!!.results.isEmpty() && mPhotosList.isEmpty()) {
+                        Tools.visibleViews(lytNoItems)
                     }
                 } else {
                     mSwipeRefreshLayout setRefresh false

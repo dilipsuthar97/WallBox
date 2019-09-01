@@ -96,7 +96,7 @@ class SearchUserFragment : Fragment() {
                         mRecyclerView.smoothScrollToPosition(mUserAdapter.itemCount.minus(mUserList.size))
                         Tools.visibleViews(mRecyclerView)
                         Tools.inVisibleViews(lytNetworkError, lytHttpError, lytNoItems, type = Tools.GONE)
-                    } else if (response.body()!!.results.isEmpty()) {
+                    } else if (response.body()!!.results.isEmpty() && mUserList.isEmpty()) {
                         Tools.visibleViews(lytNoItems)
                     }
                 } else {

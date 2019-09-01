@@ -1,52 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/root_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/cardDialogColor"
         android:orientation="vertical">
 
-    <com.mikhaellopez.circularimageview.CircularImageView
-            android:id="@+id/img_user_profile"
-            style="@style/CircularImageViewTheme"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:transitionName="profilePhoto"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/root_view"
+            android:background="?attr/selectableItemBackground"
+            android:elevation="3dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <com.mikhaellopez.circularimageview.CircularImageView
+                android:id="@+id/img_user_profile"
+                style="@style/CircularImageViewTheme"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:transitionName="profilePhoto"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-            android:id="@+id/tv_username"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:textAppearance="@style/TextAppearance.Subhead.Bold"
-            android:textColor="?attr/primaryTextColor"
-            app:layout_constraintBottom_toTopOf="@+id/tv_name"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/img_user_profile"
-            app:layout_constraintTop_toTopOf="@+id/img_user_profile"
-            tools:text="dilipsuthar97" />
+        <TextView
+                android:id="@+id/tv_username"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:textAppearance="@style/TextAppearance.Subhead.Bold"
+                android:textColor="?attr/primaryTextColor"
+                app:layout_constraintBottom_toTopOf="@+id/tv_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/img_user_profile"
+                app:layout_constraintTop_toTopOf="@+id/img_user_profile"
+                tools:text="dilipsuthar97" />
 
-    <TextView
-            android:id="@+id/tv_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="?attr/secondaryTextColor"
-            app:layout_constraintBottom_toBottomOf="@+id/img_user_profile"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/img_user_profile"
-            app:layout_constraintTop_toBottomOf="@+id/tv_username"
-            tools:text="Dilip Suthar" />
+        <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="?attr/secondaryTextColor"
+                app:layout_constraintBottom_toBottomOf="@+id/img_user_profile"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/img_user_profile"
+                app:layout_constraintTop_toBottomOf="@+id/tv_username"
+                tools:text="Dilip Suthar" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
