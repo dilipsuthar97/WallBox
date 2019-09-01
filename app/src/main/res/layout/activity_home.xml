@@ -18,6 +18,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?attr/appBarColor"
+
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -52,7 +53,6 @@
                 android:id="@+id/view_pager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:elevation="1dp"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -72,6 +72,8 @@
             app:srcCompat="@drawable/ic_arrow_upward"
             app:tint="@color/white"
             app:rippleColor="?attr/colorPrimary"/>-->
+
+        <include layout="@layout/bottom_sheet_search"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
     

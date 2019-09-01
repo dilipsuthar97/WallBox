@@ -121,7 +121,6 @@ class UserCollectionsFragment : Fragment() {
         /** ADAPTER LISTENER */
         mOnCollectionClickListener = object : CollectionAdapter.OnCollectionClickListener {
             override fun onCollectionClick(collection: Collection, view: View, pos: Int) {
-                // TODO: open collection's detail activity here
                 val intent = Intent(activity!!, CollectionDetailActivity::class.java)
                 intent.putExtra(Preferences.COLLECTION, Gson().toJson(collection))
                 startActivity(intent)

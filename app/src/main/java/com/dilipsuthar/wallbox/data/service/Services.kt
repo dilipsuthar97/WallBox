@@ -1,10 +1,10 @@
 package com.dilipsuthar.wallbox.data.service
 
 import android.os.AsyncTask
+import android.os.MessageQueue
 import com.dilipsuthar.wallbox.BuildConfig
 import com.dilipsuthar.wallbox.WallBox
 import com.dilipsuthar.wallbox.data.api.PhotoApi
-import com.dilipsuthar.wallbox.data.model.Photo
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -13,10 +13,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import android.util.Log
 import com.dilipsuthar.wallbox.data.api.CollectionApi
+import com.dilipsuthar.wallbox.data.api.SearchApi
 import com.dilipsuthar.wallbox.data.api.UserApi
+import com.dilipsuthar.wallbox.data.model.*
 import com.dilipsuthar.wallbox.data.model.Collection
-import com.dilipsuthar.wallbox.data.model.PhotoStatistics
-import com.dilipsuthar.wallbox.data.model.User
 
 /**
  * Created by DILIP SUTHAR on 20/07/19
@@ -203,7 +203,7 @@ class Services {
         collectionsCall = requestCall
     }
 
-    fun requestCollection(id: String, listener: OnRequestCollectionListener?) {
+    /*fun requestCollection(id: String, listener: OnRequestCollectionListener?) {
         Log.d(TAG, "requestCollection: called >>>>>>>>>> Services")
 
         val request = buildApi(buildClient(), CollectionApi::class.java)
@@ -217,7 +217,7 @@ class Services {
                 listener?.onRequestCollectionFailed(call, t)
             }
         })
-    }
+    }*/
 
     fun requestUserCollections(user_name: String, page: Int, per_page: Int, listener: OnRequestCollectionsListener?) {
         Log.d(TAG, "requestUserCollections: called >>>>>>>>>> Services")
@@ -235,7 +235,7 @@ class Services {
         })
     }
 
-    /** User services */
+    /** User services -------------------------------------------------------------------------------------------------*/
     fun requestUserProfile(username: String, listener: OnRequestUserProfileListener?) {
         Log.d(TAG, "requestUserProfile: called >>>>>>>>>> Services")
 
@@ -247,6 +247,55 @@ class Services {
 
             override fun onFailure(call: Call<User>, t: Throwable) {
                 listener?.onRequestUserProfileFailed(call, t)
+            }
+        })
+    }
+
+    /** Search services -------------------------------------------------------------------------------------------------*/
+    fun searchPhotos(query: String, page: Int, per_page: Int, collections: String?, listener: OnSearchPhotosListener?) {
+        Log.d(TAG, "searchPhotos: called >>>>>>>>>> Services")
+
+        val request = buildApi(buildClient(),SearchApi::class.java)
+            .searchPhotos(BuildConfig.WALLBOX_ACCESS_KEY, query, page, per_page, collections)
+        request.enqueue(object : Callback<SearchPhotos> {
+            override fun onResponse(call: Call<SearchPhotos>, response: Response<SearchPhotos>) {
+                listener?.onSearchPhotoSuccess(call, response)
+            }
+
+            override fun onFailure(call: Call<SearchPhotos>, t: Throwable) {
+                listener?.onSearchPhotoFailed(call, t)
+            }
+        })
+    }
+
+    fun searchCollections(query: String, page: Int, per_page: Int, listener: OnSearchCollectionsListener?) {
+        Log.d(TAG, "searchCollections: called >>>>>>>>>> Services")
+
+        val request = buildApi(buildClient(), SearchApi::class.java)
+            .searchCollections(BuildConfig.WALLBOX_ACCESS_KEY, query, page, per_page)
+        request.enqueue(object : Callback<SearchCollections> {
+            override fun onResponse(call: Call<SearchCollections>, response: Response<SearchCollections>) {
+                listener?.onSearchCollectionsSuccess(call, response)
+            }
+
+            override fun onFailure(call: Call<SearchCollections>, t: Throwable) {
+                listener?.onSearchCollectionsFailed(call, t)
+            }
+        })
+    }
+
+    fun searchUsers(query: String, page: Int, per_page: Int, listener: OnSearchUsersListener?) {
+        Log.d(TAG, "searchUsers: called >>>>>>>>>> Services")
+
+        val request = buildApi(buildClient(), SearchApi::class.java)
+            .searchUsers(BuildConfig.WALLBOX_ACCESS_KEY, query, page, per_page)
+        request.enqueue(object : Callback<SearchUsers> {
+            override fun onResponse(call: Call<SearchUsers>, response: Response<SearchUsers>) {
+                listener?.onSearchUsersSuccess(call, response)
+            }
+
+            override fun onFailure(call: Call<SearchUsers>, t: Throwable) {
+                listener?.onSearchUsersFailed(call, t)
             }
         })
     }
@@ -315,6 +364,20 @@ class Services {
     interface OnRequestUserProfileListener {
         fun onRequestUserProfileSuccess(call: Call<User>, response: Response<User>)
         fun onRequestUserProfileFailed(call: Call<User>, t: Throwable)
+    }
+
+    // Search listener
+    interface OnSearchPhotosListener {
+        fun onSearchPhotoSuccess(call: Call<SearchPhotos>, response: Response<SearchPhotos>)
+        fun onSearchPhotoFailed(call: Call<SearchPhotos>, t: Throwable)
+    }
+    interface OnSearchCollectionsListener {
+        fun onSearchCollectionsSuccess(call: Call<SearchCollections>, response: Response<SearchCollections>)
+        fun onSearchCollectionsFailed(call: Call<SearchCollections>, t: Throwable)
+    }
+    interface OnSearchUsersListener {
+        fun onSearchUsersSuccess(call: Call<SearchUsers>, response: Response<SearchUsers>)
+        fun onSearchUsersFailed(call: Call<SearchUsers>, t: Throwable)
     }
 
     /** Singleton pattern */

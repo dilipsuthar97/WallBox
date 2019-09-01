@@ -40,7 +40,6 @@ dependencies {
     // Versions
     def butterKnifeVersion = "10.1.0"
     def retrofit2Version = "2.6.0"
-    def glideVersion = "4.9.0"
     def archLifecycleVersion = "1.1.1"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -72,7 +71,7 @@ dependencies {
     implementation 'com.github.chrisbanes:PhotoView:2.2.0'                      // PhotoView
     implementation 'com.github.danimahardhika.android-helpers:core:0.1.0'       // File helper
     implementation 'com.afollestad.material-dialogs:core:3.1.0'                 // Material dialog
-
+    implementation 'com.afollestad.material-dialogs:bottomsheets:3.1.0'         // Material bottom sheet
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-beta-2' // Leak canary
 
     // Blurry

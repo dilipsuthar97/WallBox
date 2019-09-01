@@ -1,8 +1,10 @@
 package com.dilipsuthar.wallbox.fragments
 
+
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,18 +14,19 @@ import android.widget.Toast
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import butterknife.BindView
 import butterknife.ButterKnife
+
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.WallBox
 import com.dilipsuthar.wallbox.activity.PhotoDetailActivity
 import com.dilipsuthar.wallbox.activity.UserActivity
 import com.dilipsuthar.wallbox.adapters.PhotoAdapter
 import com.dilipsuthar.wallbox.data.model.Photo
+import com.dilipsuthar.wallbox.data.model.SearchPhotos
 import com.dilipsuthar.wallbox.data.service.Services
 import com.dilipsuthar.wallbox.helpers.setRefresh
 import com.dilipsuthar.wallbox.preferences.Preferences
@@ -36,72 +39,88 @@ import com.mikhaellopez.circularimageview.CircularImageView
 import retrofit2.Call
 import retrofit2.Response
 
-abstract class BasePhotosFragment : Fragment() {
-    private val TAG = "BaseFragment"
+/**
+ * Created by DILIP SUTHAR on 31/08/19
+ */
+class SearchPhotoFragment : Fragment() {
+    private val TAG = "WallBox.SearchPhoto"
 
-    var mService: Services? = null
-    lateinit var mOnRequestPhotosListener: Services.OnRequestPhotosListener
-    var mPage = 0
-    var mSort: String? = null
-    lateinit var mPhotoAdapter: PhotoAdapter
-    var mOnItemClickListener: PhotoAdapter.OnItemClickListener? = null
-    var mPhotosList: ArrayList<Photo> = ArrayList()
-    var loadMore: Boolean = false
-    var snackBar: Snackbar? = null
+    companion object {
+        fun newInstance(query: String?): SearchPhotoFragment {
+            val fragment = SearchPhotoFragment()
+
+            val args = Bundle()
+            args.putString(Preferences.SEARCH_QUERY, query)
+            fragment.arguments = args
+
+            return fragment
+        }
+    }
+
+    private var mQuery: String? = null
+    private lateinit var mService: Services
+    private lateinit var mOnRequestPhotosListener: Services.OnSearchPhotosListener
+    private var mPage = 0
+    private lateinit var mPhotoAdapter: PhotoAdapter
+    private lateinit var mOnItemClickListener: PhotoAdapter.OnItemClickListener
+    private var mPhotosList: ArrayList<Photo> = ArrayList()
+    private var loadMore: Boolean = false
+    private var snackBar: Snackbar? = null
 
     @BindView(R.id.recycler_view) lateinit var mRecyclerView: RecyclerView
     @BindView(R.id.swipe_refresh_layout) lateinit var mSwipeRefreshLayout: SwipeRefreshLayout
     @BindView(R.id.network_error_layout) lateinit var lytNetworkError: LinearLayout
     @BindView(R.id.http_error_layout) lateinit var lytHttpError: LinearLayout
+    @BindView(R.id.no_items_layout) lateinit var lytNoItems: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setHasOptionsMenu(true)
         super.onCreate(savedInstanceState)
-
-        mSort = arguments?.getString(Preferences.SORT, WallBox.DEFAULT_SORT_PHOTOS)
+        mQuery = arguments!!.getString(Preferences.SEARCH_QUERY, "")
 
         /** SERVICES / API */
         mService = Services.getService()
 
         /** Listeners */
         // API request listener
-        mOnRequestPhotosListener = object : Services.OnRequestPhotosListener {
-            override fun onRequestPhotosSuccess(call: Call<List<Photo>>, response: Response<List<Photo>>) {
+        mOnRequestPhotosListener = object : Services.OnSearchPhotosListener {
+            override fun onSearchPhotoSuccess(call: Call<SearchPhotos>, response: Response<SearchPhotos>) {
 
                 Log.d(TAG, response.code().toString())
                 mSwipeRefreshLayout setRefresh false
                 if (!loadMore) PopupUtils.showToast(context, "Your photos :)", Toast.LENGTH_SHORT)
-                if (response.isSuccessful) {
-                    if (response.body() != null) {
+                if (response.code() == 200) {
+                    if (response.body()!!.results.isNotEmpty()) {
                         mPage++
                         loadMore = false
                         mPhotosList.clear()
-                        mPhotosList.addAll(ArrayList(response.body()!!))
+                        mPhotosList.addAll(ArrayList(response.body()!!.results))
                         updateAdapter(mPhotosList)
-                        mRecyclerView.smoothScrollToPosition(mPhotoAdapter.itemCount.minus(mPhotosList.size - 1))
+                        mRecyclerView.smoothScrollToPosition(mPhotoAdapter.itemCount.minus(mPhotosList.size))
                         Tools.visibleViews(mRecyclerView)
-                        Tools.inVisibleViews(lytNetworkError, lytHttpError, type = Tools.GONE)
+                        Tools.inVisibleViews(lytNetworkError, lytHttpError, lytNoItems, type = Tools.GONE)
+                    } else {
+                       Tools.visibleViews(lytNoItems)
                     }
                 } else {
                     mSwipeRefreshLayout setRefresh false
                     loadMore = false
                     if (mPhotosList.isEmpty()) {
                         Tools.visibleViews(lytHttpError)
-                        Tools.inVisibleViews(mRecyclerView, lytNetworkError, type = Tools.GONE)
-                    } else snackBar = PopupUtils.showHttpErrorSnackBar(mSwipeRefreshLayout) { loadPhotos(mRecyclerView.layoutManager?.itemCount!!) }
+                        Tools.inVisibleViews(mRecyclerView, lytNetworkError, lytNoItems, type = Tools.GONE)
+                    } else snackBar = PopupUtils.showHttpErrorSnackBar(mSwipeRefreshLayout) { load() }
                 }
 
             }
 
-            override fun onRequestPhotosFailed(call: Call<List<Photo>>, t: Throwable) {
+            override fun onSearchPhotoFailed(call: Call<SearchPhotos>, t: Throwable) {
 
                 Log.d(TAG, t.message!!)
                 mSwipeRefreshLayout setRefresh false
                 loadMore = false
                 if (mPhotosList.isEmpty()) {
                     Tools.visibleViews(lytNetworkError)
-                    Tools.inVisibleViews(mRecyclerView, lytHttpError, type = Tools.GONE)
-                } else snackBar = PopupUtils.showNetworkErrorSnackBar(mSwipeRefreshLayout) { loadPhotos(mRecyclerView.layoutManager?.itemCount!!) }
+                    Tools.inVisibleViews(mRecyclerView, lytHttpError, lytNoItems, type = Tools.GONE)
+                } else snackBar = PopupUtils.showNetworkErrorSnackBar(mSwipeRefreshLayout) { load() }
 
             }
         }
@@ -134,7 +153,7 @@ abstract class BasePhotosFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         retainInstance = true
-        val view = getView(inflater, container, savedInstanceState)
+        val view =  inflater.inflate(R.layout.fragment_search_photo, container, false)
         ButterKnife.bind(this, view)
 
         /** Recycler View */
@@ -146,7 +165,7 @@ abstract class BasePhotosFragment : Fragment() {
         mRecyclerView.adapter = mPhotoAdapter
 
         mPage = 1
-        loadPhotos(mRecyclerView.layoutManager?.itemCount!!)
+        load()
 
         /** Views listeners */
         // RecyclerView listener
@@ -172,7 +191,7 @@ abstract class BasePhotosFragment : Fragment() {
                 val endHasBeenReached = lastVisible.plus(1) >= totalItem   // Load more photos on last item
                 if (totalItem > 0 && endHasBeenReached && !loadMore) {
                     //loadMore = true
-                    loadPhotos(totalItem)
+                    load()
                 }
 
                 verticalOffset += dy
@@ -200,18 +219,18 @@ abstract class BasePhotosFragment : Fragment() {
         mSwipeRefreshLayout.setOnRefreshListener {
             mPage = 1
             mPhotosList.clear()
-            loadPhotos(mRecyclerView.layoutManager?.itemCount!!)
+            load()
             mPhotoAdapter = PhotoAdapter(ArrayList(), "list", context, mOnItemClickListener)
             mRecyclerView.adapter = mPhotoAdapter
         }
 
         /** Event listener */
         lytNetworkError.setOnClickListener {
-            loadPhotos(mRecyclerView.layoutManager?.itemCount!!)
+            load()
             it.visibility = View.GONE
         }
         lytHttpError.setOnClickListener {
-            loadPhotos(mRecyclerView.layoutManager?.itemCount!!)
+            load()
             it.visibility = View.GONE
         }
 
@@ -219,34 +238,20 @@ abstract class BasePhotosFragment : Fragment() {
     }
 
     /** Methods */
-    /*fun load() {
-        mSwipeRefreshLayout setRefresh true
-        loadMore = true
-        if (snackBar != null) snackBar?.dismiss()
-        loadPhotos()
-        //mService?.requestPhotos(mPage, WallBox.DEFAULT_PER_PAGE, mSort!!, mOnRequestPhotosListener)
-    }*/
+    private fun load() {
+        if (mQuery != "") {
+            Tools.inVisibleViews(lytNoItems, type = Tools.GONE)
+            mSwipeRefreshLayout setRefresh true
+            loadMore = true
+            if (snackBar != null) snackBar?.dismiss()
+            mService.searchPhotos(mQuery!!, mPage, WallBox.DEFAULT_PER_PAGE, null, mOnRequestPhotosListener)
+        } else {
+            mSwipeRefreshLayout setRefresh false
+        }
+    }
 
     private fun updateAdapter(photos: ArrayList<Photo>) {
         mPhotoAdapter.addAll(photos)
     }
-
-    /*fun scrollToTop() {
-        val layoutManager = mRecyclerView.layoutManager as LinearLayoutManager
-        if (mRecyclerView != null) {
-            if (layoutManager != null && layoutManager.findFirstVisibleItemPosition() > 5) {
-                mRecyclerView.scrollToPosition(5)
-            }
-            mRecyclerView.smoothScrollToPosition(0)
-        }
-
-    }*/
-
-    /** Abstract methods */
-    abstract fun loadPhotos(totalItem: Int)
-    /*abstract fun onPhotoClick(photo: Photo, view: View, pos: Int, imageView: ImageView)
-    abstract fun onPhotoLongClick(photo: Photo, view: View, pos: Int, imageView: ImageView)
-    abstract fun onPhotoUserProfileClick(photo: Photo, pos: Int, imgPhotoBy: CircularImageView)*/
-    abstract fun getView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View
 
 }

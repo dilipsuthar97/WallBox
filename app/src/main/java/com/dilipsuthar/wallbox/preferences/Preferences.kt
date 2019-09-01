@@ -12,6 +12,7 @@ class Preferences(context: Context) {
         const val FIRST_RUN = "first_run"
         const val SHOW_INTRO_TUTORIAL = "intro_tutorial"
         const val SORT = "sort"
+        const val SEARCH_QUERY = "search_query"
         const val THEME = "theme"
         const val LANGUAGE = "language"
         const val LANGUAGE_CODE = "language_code"
