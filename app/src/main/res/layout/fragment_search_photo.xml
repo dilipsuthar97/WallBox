@@ -31,6 +31,6 @@
     <include layout="@layout/include_http_error"
             android:visibility="gone"/>
 
-    <include layout="@layout/include_no_items" />
+    <include layout="@layout/include_no_items"/>
 
 </FrameLayout>

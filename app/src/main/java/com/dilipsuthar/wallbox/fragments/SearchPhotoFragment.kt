@@ -38,7 +38,6 @@ import com.google.gson.Gson
 import com.mikhaellopez.circularimageview.CircularImageView
 import retrofit2.Call
 import retrofit2.Response
-
 /**
  * Created by DILIP SUTHAR on 31/08/19
  */
@@ -59,7 +58,7 @@ class SearchPhotoFragment : Fragment() {
 
     private var mQuery: String? = null
     private lateinit var mService: Services
-    private lateinit var mOnRequestPhotosListener: Services.OnSearchPhotosListener
+    private lateinit var mOnSearchPhotosListener: Services.OnSearchPhotosListener
     private var mPage = 0
     private lateinit var mPhotoAdapter: PhotoAdapter
     private lateinit var mOnItemClickListener: PhotoAdapter.OnItemClickListener
@@ -82,7 +81,7 @@ class SearchPhotoFragment : Fragment() {
 
         /** Listeners */
         // API request listener
-        mOnRequestPhotosListener = object : Services.OnSearchPhotosListener {
+        mOnSearchPhotosListener = object : Services.OnSearchPhotosListener {
             override fun onSearchPhotoSuccess(call: Call<SearchPhotos>, response: Response<SearchPhotos>) {
 
                 Log.d(TAG, response.code().toString())
@@ -244,7 +243,7 @@ class SearchPhotoFragment : Fragment() {
             mSwipeRefreshLayout setRefresh true
             loadMore = true
             if (snackBar != null) snackBar?.dismiss()
-            mService.searchPhotos(mQuery!!, mPage, WallBox.DEFAULT_PER_PAGE, null, mOnRequestPhotosListener)
+            mService.searchPhotos(mQuery!!, mPage, WallBox.DEFAULT_PER_PAGE, null, mOnSearchPhotosListener)
         } else {
             mSwipeRefreshLayout setRefresh false
         }

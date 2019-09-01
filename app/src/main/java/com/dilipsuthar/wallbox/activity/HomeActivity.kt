@@ -7,17 +7,20 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageButton
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
+import androidx.core.view.MotionEventCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentTransaction
 import androidx.viewpager.widget.ViewPager
 import butterknife.BindView
 import butterknife.ButterKnife
+import com.afollestad.materialdialogs.bottomsheets.BottomSheet
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.adapters.SectionPagerAdapter
 import com.dilipsuthar.wallbox.fragments.*
@@ -100,14 +103,16 @@ class HomeActivity : BaseActivity() {
         /** Bottom sheet */
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetSearch)
         bottomSheetBehavior.setBottomSheetCallback(object: BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(view: View, newState: Int) {
-                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {}
 
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                bottomSheet.setOnTouchListener { _, motionEvent ->
+
+                    when (MotionEventCompat.getActionMasked(motionEvent)) {
+                        MotionEvent.ACTION_DOWN -> false
+                        else -> true
+                    }
                 }
-            }
-
-            override fun onSlide(p0: View, p1: Float) {
-
             }
         })
         btnCloseSheet.setOnClickListener {
@@ -372,8 +377,8 @@ class HomeActivity : BaseActivity() {
         mViewPagerAdapterSearch = SectionPagerAdapter(supportFragmentManager)
         with(mViewPagerAdapterSearch!!) {
             addFragment(SearchPhotoFragment.newInstance(query), "Photo")
-            addFragment(SearchCollectionFragment(), "Collection")
-            addFragment(SearchUserFragment(), "User")
+            addFragment(SearchCollectionFragment.newInstance(query), "Collection")
+            addFragment(SearchUserFragment.newInstance(query), "User")
             mViewPagerSearch.adapter = this
         }
         mViewPagerSearch.offscreenPageLimit = 2

@@ -6,7 +6,6 @@
         android:elevation="5dp"
         android:background="@drawable/container_bottom_sheet"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:orientation="vertical"
         app:behavior_hideable="false"
         app:behavior_peekHeight="0dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
@@ -43,8 +42,6 @@
             android:id="@+id/search_view_pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:focusable="true"
-            android:clickable="true"
             android:background="@android:color/transparent"
             android:elevation="1dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />

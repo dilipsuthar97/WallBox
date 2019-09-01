@@ -110,7 +110,6 @@ class PhotoAdapter
 
     /** view holders */
     class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
         init {
             ButterKnife.bind(this, itemView)
         }

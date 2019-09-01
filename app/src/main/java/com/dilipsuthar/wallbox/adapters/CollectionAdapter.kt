@@ -35,7 +35,7 @@ class CollectionAdapter
     }
 
     override fun getItemCount(): Int {
-        return if (mCollectionList!!.isEmpty()) 0 else mCollectionList?.size!!
+        return mCollectionList?.size ?: 0
     }
 
     /*override fun getItemViewType(position: Int): Int {
