@@ -1,5 +1,8 @@
 package com.dilipsuthar.wallbox.adapters
 
+import android.Manifest
+import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -15,8 +18,10 @@ import butterknife.ButterKnife
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.WallBox
 import com.dilipsuthar.wallbox.data.model.Photo
+import com.dilipsuthar.wallbox.helpers.PermissionsHelper
 import com.dilipsuthar.wallbox.preferences.Preferences
 import com.dilipsuthar.wallbox.helpers.loadUrl
+import com.dilipsuthar.wallbox.utils.Dialog
 import com.mikhaellopez.circularimageview.CircularImageView
 
 /**
@@ -32,6 +37,7 @@ class PhotoAdapter
         private var mPhotoList: ArrayList<Photo>?,
         private val layoutType: String,
         private val context: Context?,
+        private val activity: Activity?,
         private val listener: OnItemClickListener?
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -73,11 +79,20 @@ class PhotoAdapter
                 holder.rootView.setBackgroundColor(Color.parseColor(it.color))
                 holder.textPhotoBy.text = "By, $txtPhotoBy"
                 holder.textLikes.text = "${it.likes} Likes"
-                holder.btnDownload.setOnClickListener {
-                    // TODO: Download image from here
+                holder.btnDownload.setOnClickListener { _ ->
+                    if (PermissionsHelper.permissionGranted(context!!, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE))) {
+
+                        Dialog.showDownloadDialog(context, it)
+
+                    } else
+                        PermissionsHelper.requestPermission(
+                            activity!!,
+                            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        )
                 }
 
                 val url = when (sharedPreferences?.getString(Preferences.WALLPAPER_QUALITY, WallBox.DEFAULT_WALLPAPER_QUALITY)) {
+                    "Raw" -> it.urls.raw
                     "Full" -> it.urls.full
                     "Regular" -> it.urls.regular
                     "Small" -> it.urls.small

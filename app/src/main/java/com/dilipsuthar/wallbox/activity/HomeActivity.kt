@@ -1,33 +1,24 @@
 package com.dilipsuthar.wallbox.activity
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.PorterDuff
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.MotionEvent
 import android.view.View
-import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.ImageButton
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
-import androidx.core.view.MotionEventCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentTransaction
 import androidx.viewpager.widget.ViewPager
 import butterknife.BindView
 import butterknife.ButterKnife
-import com.afollestad.materialdialogs.bottomsheets.BottomSheet
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.adapters.SectionPagerAdapter
 import com.dilipsuthar.wallbox.fragments.*
 import com.dilipsuthar.wallbox.helpers.LocaleHelper
 import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.dilipsuthar.wallbox.utils.Tools
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
@@ -225,7 +216,7 @@ class HomeActivity : BaseActivity() {
     private fun initNavigationDrawer() {
         mNavigationView.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.nav_Favorites -> startActivity(Intent(applicationContext, FavoritesActivity::class.java))
+                //R.id.nav_Favorites -> startActivity(Intent(applicationContext, FavoritesActivity::class.java))
                 R.id.nav_settings -> startActivity(Intent(applicationContext, SettingsActivity::class.java))
                 R.id.nav_about -> startActivity(Intent(applicationContext, AboutActivity::class.java))
                 R.id.nav_support_us -> startActivity(Intent(applicationContext, SupportUsActivity::class.java))

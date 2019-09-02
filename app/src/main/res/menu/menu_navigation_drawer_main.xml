@@ -11,10 +11,10 @@
               android:icon="@drawable/ic_nav_wallpaper"
               android:title="@string/nav_title_wallpapers"/>
 
-        <item android:id="@+id/nav_Favorites"
+        <!--<item android:id="@+id/nav_Favorites"
               android:checkable="false"
               android:icon="@drawable/ic_nav_favorite"
-              android:title="@string/nav_title_favorites"/>
+              android:title="@string/nav_title_favorites"/>-->
 
         <item android:id="@+id/nav_settings"
               android:checkable="false"

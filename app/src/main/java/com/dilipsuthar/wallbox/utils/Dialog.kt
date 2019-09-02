@@ -1,50 +1,199 @@
 package com.dilipsuthar.wallbox.utils
 
-import android.app.Dialog
+import android.app.ProgressDialog
+import android.app.WallpaperManager
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.view.Window
-import android.view.WindowManager
-import android.widget.ImageButton
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.Drawable
+import android.os.AsyncTask
+import android.os.Environment
+import android.view.View
+import android.widget.Toast
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.list.listItems
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.dilipsuthar.wallbox.R
+import com.dilipsuthar.wallbox.WallBox
 import com.dilipsuthar.wallbox.data.model.Photo
-import com.google.android.material.button.MaterialButton
+import com.dilipsuthar.wallbox.helpers.DownloadHelper
+import com.google.android.material.snackbar.Snackbar
+import java.io.File
+import java.io.IOException
 
 object Dialog {
 
-    const val NETWORK_ERROR = 0
-    const val HTTP_ERROR = 1
+    fun showDownloadDialog(context: Context, photo: Photo) {
+        MaterialDialog(context).show {
+            title(text = "Select Download Quality")
+            cornerRadius(16f)
+            listItems(R.array.download_quality) { _, _, text ->
+                var fileName: String = ""
+                var url: String = ""
 
-    /*fun showErrorDialog(ctx: Context?, errorType: Int?, photoList: ArrayList<Photo>?, load: () -> Unit?, loadMore: () -> Unit?) {
-        val dialog = Dialog(ctx!!)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        when (errorType) {
-            NETWORK_ERROR -> dialog.setContentView(R.layout.dialog_network_error)
-            HTTP_ERROR -> dialog.setContentView(R.layout.dialog_http_error)
+                when (text) {
+                    "Raw" -> {
+                        fileName = photo.id + " " +  text + WallBox.DOWNLOAD_PHOTO_FORMAT
+                        url = photo.urls.raw
+                    }
+                    "Full" -> {
+                        fileName = photo.id + " " +  text + WallBox.DOWNLOAD_PHOTO_FORMAT
+                        url = photo.urls.full
+                    }
+                    "Regular" -> {
+                        fileName = photo.id + " " +  text + WallBox.DOWNLOAD_PHOTO_FORMAT
+                        url = photo.urls.regular
+                    }
+                    "Small" -> {
+                        fileName = photo.id + " " +  text + WallBox.DOWNLOAD_PHOTO_FORMAT
+                        url = photo.urls.small
+                    }
+                    "Thumb" -> {
+                        fileName = photo.id + " " +  text + WallBox.DOWNLOAD_PHOTO_FORMAT
+                        url = photo.urls.thumb
+                    }
+                }
+
+                if (DownloadHelper.getInstance(context)?.fileExists(fileName)!!) {
+                    PopupUtils.showToast(context, "File $fileName is already downloaded", Toast.LENGTH_SHORT)
+                } else {
+                    PopupUtils.showToast(context, "Downloading started...", Toast.LENGTH_SHORT)
+                    DownloadHelper.getInstance(context)?.addDownloadRequest(url, fileName)
+                }
+            }
         }
-        dialog.setCancelable(false)
+    }
 
-        val lp = WindowManager.LayoutParams()
-        lp.copyFrom(dialog.window?.attributes)
-        lp.width = WindowManager.LayoutParams.WRAP_CONTENT
-        lp.height = WindowManager.LayoutParams.WRAP_CONTENT
-        dialog.window?.attributes = lp
+    fun showSetWallpaperDialog(context: Context, view: View, photo: Photo) {
+        MaterialDialog(context).show {
+            title(text = "Select Quality")
+            cornerRadius(16f)
+            listItems(R.array.download_quality) { _, _, text ->
+                var fileName: String = ""
+                var url: String = ""
 
-        (dialog.findViewById<ImageButton>(R.id.btn_dismiss)).setOnClickListener {
-            dialog.cancel()
+                when (text) {
+                    "Raw" -> {
+                        fileName = photo.id + " " +  text + WallBox.DOWNLOAD_PHOTO_FORMAT
+                        url = photo.urls.raw
+                    }
+                    "Full" -> {
+                        fileName = photo.id + " " +  text + WallBox.DOWNLOAD_PHOTO_FORMAT
+                        url = photo.urls.full
+                    }
+                    "Regular" -> {
+                        fileName = photo.id + " " +  text + WallBox.DOWNLOAD_PHOTO_FORMAT
+                        url = photo.urls.regular
+                    }
+                    "Small" -> {
+                        fileName = photo.id + " " +  text + WallBox.DOWNLOAD_PHOTO_FORMAT
+                        url = photo.urls.small
+                    }
+                    "Thumb" -> {
+                        fileName = photo.id + " " +  text + WallBox.DOWNLOAD_PHOTO_FORMAT
+                        url = photo.urls.thumb
+                    }
+                }
+
+                SetWallpaperTask(fileName, url, photo, context, view).execute()
+
+            }
+        }
+    }
+
+    private class SetWallpaperTask(
+        private val fileName: String,
+        private val url: String,
+        private val photo: Photo,
+        private val context: Context,
+        private val view: View) : AsyncTask<Void, Void, Boolean>() {
+
+        private var pDialog: ProgressDialog? = null
+
+        override fun onPreExecute() {
+            super.onPreExecute()
+            pDialog = ProgressDialog(context)
+            with(pDialog!!) {
+                setMessage("Please wait...")
+                setProgressStyle(ProgressDialog.STYLE_SPINNER)
+                setCancelable(false)
+                show()
+            }
         }
 
-        (dialog.findViewById<MaterialButton>(R.id.btn_retry)).setOnClickListener {
-            dialog.cancel()
-            if (photoList?.isEmpty()!!)
-                load()
-            else
-                loadMore()
+        override fun doInBackground(vararg p0: Void?): Boolean? {
+            var bitmap: Bitmap? = null
+
+            if (DownloadHelper.getInstance(context)?.fileExists(fileName)!!) {
+
+                /*val uri = FileProvider.getUriForFile(
+                    context,
+                    BuildConfig.APPLICATION_ID + ".fileprovider",
+                    File(Environment.getExternalStorageDirectory().absolutePath + WallBox.DOWNLOAD_PATH + fileName)
+                )*/
+                return try {
+                    val file = File(Environment.getExternalStorageDirectory().absolutePath + WallBox.DOWNLOAD_PATH + fileName)
+                    bitmap = BitmapFactory.decodeFile(file.absolutePath)
+                    val manager = WallpaperManager.getInstance(context)
+                    manager.setBitmap(bitmap)
+                    pDialog?.dismiss()
+
+                    true
+                } catch (e: IOException) {
+                    e.printStackTrace()
+
+                    false
+                }
+
+            } else {
+
+                try {
+
+                    //bitmap = Picasso.get().load(url).get()
+                    Glide.with(context)
+                        .asBitmap()
+                        .load(url)
+                        .into(object : CustomTarget<Bitmap>() {
+                            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                                bitmap = resource
+                                val manager = WallpaperManager.getInstance(context)
+                                manager.setBitmap(bitmap)
+                                pDialog?.dismiss()
+                                PopupUtils.showToast(context, "Wallpaper set successfully", Toast.LENGTH_SHORT)
+                            }
+
+                            override fun onLoadCleared(placeholder: Drawable?) {
+
+                            }
+
+                            override fun onLoadFailed(errorDrawable: Drawable?) {
+                                pDialog?.dismiss()
+                                Snackbar.make(view, "Failed to load wallpaper", Snackbar.LENGTH_SHORT)
+                                    .setAction("DOWNLOAD") {
+                                        showDownloadDialog(context, photo)
+                                    }
+                                    .show()
+                            }
+                        })
+
+                    return true
+
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                    return false
+                }
+
+            }
         }
 
-        dialog.show()
-    }*/
+        override fun onPostExecute(result: Boolean?) {
+            super.onPostExecute(result)
+            /*if (result == true) PopupUtils.showToast(context, "Wallpaper set successfully", Toast.LENGTH_SHORT)
+            else PopupUtils.showToast(context, "Wallpaper not set", Toast.LENGTH_SHORT)
+            pDialog?.dismiss()*/
+        }
+    }
 
 }

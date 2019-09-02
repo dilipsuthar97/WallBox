@@ -23,10 +23,10 @@
     <string name="msg_more_photos">更多照片..</string>
     <string name="msg_no_more_photos">沒有更多照片 :(</string>
     <string name="msg_reset_tutorial">教程重置成功</string>
-    <string name="msg_no_photo_info">No photo info!</string>
+    <string name="msg_no_photo_info">沒有照片信息!</string>
     <string name="nav_title_about">關於</string>
     <string name="nav_title_favorites">最愛</string>
-    <string name="nav_title_rate_review">rate &amp; Review</string>
+    <string name="nav_title_rate_review">評分和評論</string>
     <string name="nav_title_settings">設置</string>
     <string name="nav_title_share_app">分享應用程序</string>
     <string name="nav_title_support_us">支持我們</string>
@@ -41,6 +41,9 @@
     <string name="tab_title_collections_fragment">集合</string>
     <string name="tab_title_curated_wall_fragment">策劃</string>
     <string name="tab_title_recent_wall_fragment">新鮮</string>
+    <string name="tab_title_search_photo_fragment">相片</string>
+    <string name="tab_title_search_collection_fragment">集合</string>
+    <string name="tab_title_search_user_fragment">用戶</string>
     <string name="tap_to_retry">點按即可重試</string>
     <string name="title_Theme">主題</string>
     <string name="title_clear_cache">清除緩存</string>
@@ -63,4 +66,8 @@
     <string name="unsplash">Unsplash</string>
     <string name="wallpaper_by">"by, "</string>
     <string name="wallpapers">壁紙</string>
+    <string name="hint_search_bar">在這裡搜索</string>
+    <string name="desc_no_items">嘗試搜索一些東西…</string>
+    <string name="title_no_items">什麼都沒有顯示!</string>
+    <string name="msg_no_speech_to_text_support">您的設備不支持語音輸入</string>
 </resources>

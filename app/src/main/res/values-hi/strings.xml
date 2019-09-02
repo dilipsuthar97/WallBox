@@ -25,6 +25,9 @@
     <string name="tab_title_recent_wall_fragment">ताज़ा</string>
     <string name="tab_title_curated_wall_fragment">क्यूरेटेड</string>
     <string name="tab_title_collections_fragment">कलेक्शन</string>
+    <string name="tab_title_search_photo_fragment">तस्वीरें</string>
+    <string name="tab_title_search_collection_fragment">कलेक्शन</string>
+    <string name="tab_title_search_user_fragment">उपयोगकर्ता</string>
 
     <!-- Nav drawer -->
     <string name="nav_title_wallpapers">वॉलपेपर्स</string>
@@ -40,8 +43,11 @@
     <string name="desc_network_error">धीमा या कोई इंटरनेट कनेक्शन नहीं। कृपया जाँच करें और पुनः प्रयास करें।</string>
     <string name="title_http_error">404</string>
     <string name="desc_http_error">कुछ गलत हो गया।</string>
+    <string name="title_no_items">दिखाने के लिए कुछ भी नहीं!</string>
+    <string name="desc_no_items">कुछ खोजने की कोशिश करो…</string>
     <string name="msg_more_photos">और अधिक तस्वीरें..</string>
     <string name="msg_no_more_photos">और कोई फ़ोटो उपलब्ध नहीं है :(</string>
+    <string name="msg_no_speech_to_text_support">आपका उपकरण भाषण इनपुट का समर्थन नहीं करता है</string>
     <string name="retry">पुन: प्रयास करें</string>
     <string name="tap_to_retry">फिर से कोशिश करने के लिये स्क्रीन को छुइए</string>
     <string name="photo_statistics_error">आंकड़े लोड करने में विफल</string>
@@ -71,7 +77,9 @@
 
     <string name="msg_clear_cache">कैश सफलतापूर्वक साफ़ हो गया</string>
     <string name="msg_reset_tutorial">ट्यूटोरियल सफलतापूर्वक रीसेट हो गया</string>
-    <string name="msg_no_photo_info">No photo info!</string>
+    <string name="msg_no_photo_info">कोई फोटो जानकारी नहीं!</string>
+
+    <string name="hint_search_bar">यहाँ ढूँढे</string>
 
     <!-- Extras -->
     <string name="wallpapers">वॉलपेपर्स</string>

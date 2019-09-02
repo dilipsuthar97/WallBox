@@ -1,5 +1,6 @@
 package com.dilipsuthar.wallbox.activity
 
+import android.Manifest
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
@@ -26,11 +27,7 @@ import com.dilipsuthar.wallbox.WallBox
 import com.dilipsuthar.wallbox.data.model.Photo
 import com.dilipsuthar.wallbox.data.model.PhotoStatistics
 import com.dilipsuthar.wallbox.data.service.Services
-import com.dilipsuthar.wallbox.fragments.dialog.PhotoInfoDialog
-import com.dilipsuthar.wallbox.helpers.eq
-import com.dilipsuthar.wallbox.helpers.getFormattedNumber
-import com.dilipsuthar.wallbox.helpers.isDark
-import com.dilipsuthar.wallbox.helpers.loadUrl
+import com.dilipsuthar.wallbox.helpers.*
 import com.dilipsuthar.wallbox.preferences.Preferences
 import com.dilipsuthar.wallbox.utils.*
 import com.github.chrisbanes.photoview.PhotoView
@@ -38,8 +35,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 import com.mikhaellopez.circularimageview.CircularImageView
-import kotlinx.android.synthetic.main.bottom_sheet_photo_detail.*
-import kotlinx.android.synthetic.main.item_photo_grid.*
 import retrofit2.Call
 import retrofit2.Response
 
@@ -87,6 +82,7 @@ class PhotoDetailActivity : BaseActivity() {
         /** Set mPhoto data */
         imgPhoto.setBackgroundColor(Color.parseColor("#000000"))
         val url = when (sharedPreferences?.getString(Preferences.WALLPAPER_QUALITY, WallBox.DEFAULT_WALLPAPER_QUALITY)) {
+            "Raw" -> mPhoto.urls.raw
             "Full" -> mPhoto.urls.full
             "Regular" -> mPhoto.urls.regular
             "Small" -> mPhoto.urls.small
@@ -180,14 +176,45 @@ class PhotoDetailActivity : BaseActivity() {
         })
 
         /** OnClick listener */
+        // Show photo info dialog
         fabPhotoInfo.setOnClickListener {
             /*val dialog = PhotoInfoDialog(mPhoto)
                 dialog.show(supportFragmentManager, null)*/
             showInfoDialog()
         }
+
+        // Download photo
+        btnDownload.setOnClickListener {
+            if (PermissionsHelper.permissionGranted(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE))) {
+
+                Dialog.showDownloadDialog(this, mPhoto)
+
+            } else
+                PermissionsHelper.requestPermission(
+                    this,
+                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                )
+        }
+
+        // Set Photo
+        btnSetWallpaper.setOnClickListener {
+            if (PermissionsHelper.permissionGranted(this, arrayOf(Manifest.permission.SET_WALLPAPER, Manifest.permission.SET_WALLPAPER_HINTS))) {
+
+                Dialog.showSetWallpaperDialog(this, findViewById<View>(R.id.root_view), mPhoto)
+
+            } else
+                PermissionsHelper.requestPermission(
+                    this,
+                    arrayOf(Manifest.permission.SET_WALLPAPER, Manifest.permission.SET_WALLPAPER_HINTS)
+                )
+        }
+
+        // Copy color HEX code
         (findViewById<View>(R.id.lyt_color)).setOnClickListener {
             Tools.copyToClipboard(this, tvColor.text.toString(), "Code ${tvColor.text}")
         }
+
+        // Navigate to profile activity
         (findViewById<View>(R.id.btn_profile)).setOnClickListener {
             val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, imgUser, ViewCompat.getTransitionName(imgUser)!!)
             val intent = Intent(this@PhotoDetailActivity, UserActivity::class.java)
@@ -300,9 +327,9 @@ class PhotoDetailActivity : BaseActivity() {
 
         val view = dialog.getCustomView()
 
-        val lytProgress: LinearLayout = view.findViewById(R.id.lyt_progress)
+       /* val lytProgress: LinearLayout = view.findViewById(R.id.lyt_progress)
         val lytInfo: LinearLayout = view.findViewById(R.id.lyt_info)
-        val lytNoInfo: LinearLayout = view.findViewById(R.id.lyt_no_info)
+        val lytNoInfo: LinearLayout = view.findViewById(R.id.lyt_no_info)*/
         val tvCameraMake: TextView = view.findViewById(R.id.tv_camera_make)
         val tvCameraModel: TextView = view.findViewById(R.id.tv_camera_model)
         val tvFocalLength: TextView = view.findViewById(R.id.tv_focal_length)
@@ -311,17 +338,18 @@ class PhotoDetailActivity : BaseActivity() {
         val tvIso: TextView = view.findViewById(R.id.tv_iso)
         val tvDimensions: TextView = view.findViewById(R.id.tv_dimensions)
 
-        tvCameraMake.text = if (mPhoto.exif.make == null) "--" else mPhoto.exif.make
-        tvCameraModel.text = if (mPhoto.exif.model == null) "--" else mPhoto.exif.model
-        tvFocalLength.text = if (mPhoto.exif.focal_length == null) "--" else "${mPhoto.exif.focal_length}mm"
-        tvAperture.text = if (mPhoto.exif.aperture == null) "--" else "ƒ/${mPhoto.exif.aperture}"
-        tvShutterSpeed.text = if (mPhoto.exif.exposure_time == null) "--" else "${mPhoto.exif.exposure_time}s"
-        tvIso.text = if (mPhoto.exif.iso == null) "--" else mPhoto.exif.iso.toString()
+        with(mPhoto.exif!!) {
+            tvCameraMake.text = make ?: "--"
+            tvCameraModel.text = model ?: "--"
+            tvFocalLength.text = if (focal_length == null) "--" else "${focal_length}mm"
+            tvAperture.text = if (aperture == null) "--" else "ƒ/${aperture}"
+            tvShutterSpeed.text = if (exposure_time == null) "--" else "${exposure_time}s"
+            tvIso.text = iso?.toString() ?: "--"
+        }
         tvDimensions.text =
             if ((mPhoto.width == 0) or (mPhoto.height == 0)) "--" else "${mPhoto.width} x ${mPhoto.height}"
 
 
         dialog.show()
     }
-
 }

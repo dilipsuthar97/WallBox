@@ -35,15 +35,15 @@ class UserAdapter (
         user?.let {
             if (holder is ViewHolder) {
                 holder.imgUserProfile.loadUrl(
-                    it.profile_image.large,
+                    it.profile_image.medium,
                     R.drawable.placeholder_profile,
                     R.drawable.placeholder_profile
                 )
 
                 holder.tvUsername.text = it.username
 
-                var name = it.first_name
-                if (it.last_name != null || it.last_name != "") name += it.last_name
+                val name = it.first_name
+                if (it.last_name != "") name + " ${it.last_name}"
                 holder.tvName.text = name
 
                 holder.rootView.setOnClickListener { view ->

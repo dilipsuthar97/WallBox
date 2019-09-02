@@ -45,10 +45,9 @@
                     android:inputType="text"
                     android:background="@android:color/transparent"
                     android:gravity="center_vertical"
-                    android:hint="Search here"
+                    android:hint="@string/hint_search_bar"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-                    android:textColor="?attr/primaryTextColor"
-                    android:textColorHint="?attr/secondaryTextColor"/>
+                    android:textColor="?attr/primaryTextColor"/>
 
             <ImageButton
                     android:id="@+id/btn_speech_to_txt"

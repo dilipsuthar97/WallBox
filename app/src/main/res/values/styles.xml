@@ -57,7 +57,7 @@
         <item name="android:windowContentTransitions">true</item> <!-- For view transition between activities -->
         <!--<item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>--> <!-- Activity transition -->
 
-        <item name="md_color_button_text">@color/colorAccent_night</item>
+        <item name="md_color_button_text">@color/colorAccent</item>
     </style>
 
     <!-- Text styles theme -->

@@ -25,6 +25,9 @@
     <string name="tab_title_recent_wall_fragment">Fresh</string>
     <string name="tab_title_curated_wall_fragment">Curated</string>
     <string name="tab_title_collections_fragment">Collections</string>
+    <string name="tab_title_search_photo_fragment">Photos</string>
+    <string name="tab_title_search_collection_fragment">Collections</string>
+    <string name="tab_title_search_user_fragment">Users</string>
 
     <!-- Nav drawer -->
     <string name="nav_title_wallpapers">Wallpapers</string>
@@ -40,8 +43,11 @@
     <string name="desc_network_error">Slow or no internet connection. Please check and try again.</string>
     <string name="title_http_error">404</string>
     <string name="desc_http_error">Something went wrong.</string>
+    <string name="title_no_items">Nothing to show!</string>
+    <string name="desc_no_items">Try searching for something…</string>
     <string name="msg_more_photos">More photos..</string>
     <string name="msg_no_more_photos">No more photos available :(</string>
+    <string name="msg_no_speech_to_text_support">Your device doesn\'t support speech input</string>
     <string name="retry">Retry</string>
     <string name="tap_to_retry">Tap to retry</string>
     <string name="photo_statistics_error">Failed to load statistics</string>
@@ -73,6 +79,8 @@
     <string name="msg_reset_tutorial">Tutorial reset successfully</string>
     <string name="msg_no_photo_info">No photo info!</string>
 
+    <string name="hint_search_bar">Search here</string>
+
     <string-array name="languages_name">
         <item>English</item>
         <item>हिंदी</item>
@@ -85,6 +93,15 @@
     </string-array>
 
     <string-array name="wallpaper_quality">
+        <item>Raw</item>
+        <item>Full</item>
+        <item>Regular</item>
+        <item>Small</item>
+        <item>Thumb</item>
+    </string-array>
+
+    <string-array name="download_quality">
+        <item>Raw</item>
         <item>Full</item>
         <item>Regular</item>
         <item>Small</item>
@@ -99,8 +116,5 @@
 
     <!-- lorem ipsum -->
     <string name="dummy_description">Proin eget tortor risus. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

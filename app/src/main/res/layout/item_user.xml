@@ -9,20 +9,21 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/root_view"
-            android:background="?attr/selectableItemBackground"
-            android:elevation="3dp"
-            android:clickable="true"
-            android:focusable="true"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:elevation="3dp"
+            android:focusable="true">
+
         <com.mikhaellopez.circularimageview.CircularImageView
                 android:id="@+id/img_user_profile"
                 style="@style/CircularImageViewTheme"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:transitionName="profilePhoto"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -55,6 +56,16 @@
                 app:layout_constraintStart_toEndOf="@+id/img_user_profile"
                 app:layout_constraintTop_toBottomOf="@+id/tv_username"
                 tools:text="Dilip Suthar" />
+
+        <View
+                android:id="@+id/divider2"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/img_user_profile" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

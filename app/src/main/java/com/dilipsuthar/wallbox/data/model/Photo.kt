@@ -72,7 +72,7 @@ data class Photo (
     val color: String,
     val description: String? = null,
     val alt_description: String? = null,
-    val exif: Exif,
+    val exif: Exif? = null,
     val location: Location,
     val tags: List<Tag>,
     val current_user_collections: List<Collection>,

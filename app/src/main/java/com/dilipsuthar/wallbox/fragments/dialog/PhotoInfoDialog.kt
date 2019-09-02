@@ -33,7 +33,7 @@ class PhotoInfoDialog(photo: Photo) : DialogFragment() {
     }
 
     private fun initInfoData() {
-        if (mPhoto != null) {
+        /*if (mPhoto != null) {
             tvCameraMake.text = if (mPhoto.exif.make == null) "--" else mPhoto.exif.make
             tvCameraModel.text = if (mPhoto.exif.model == null) "--" else mPhoto.exif.model
             tvFocalLength.text = if (mPhoto.exif.focal_length == null) "--" else mPhoto.exif.focal_length
@@ -42,7 +42,7 @@ class PhotoInfoDialog(photo: Photo) : DialogFragment() {
             tvIso.text = if (mPhoto.exif.iso == null) "--" else mPhoto.exif.iso.toString()
             tvDimensions.text =
                 if ((mPhoto.width == 0) or (mPhoto.height == 0)) "--" else "${mPhoto.width} x ${mPhoto.height}"
-        }
+        }*/
     }
 
 }

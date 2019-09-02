@@ -3,7 +3,8 @@ package com.dilipsuthar.wallbox.helpers
 import android.widget.ImageView
 import androidx.core.graphics.ColorUtils
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import java.text.NumberFormat
 import java.util.*
 
@@ -13,8 +14,12 @@ import java.util.*
  * @param url The url from where the photo will be load
  */
 fun ImageView.loadUrl(url: String) {
-    Picasso.get()
+    /*Picasso.get()
         .load(url)
+        .into(this)*/
+    Glide.with(this)
+        .load(url)
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
         .into(this)
 }
 
@@ -26,8 +31,14 @@ fun ImageView.loadUrl(url: String) {
  * @param errorHolder The res id of errorHolder drawable
  */
 fun ImageView.loadUrl(url: String, placeHolder: Int = 0 , errorHolder: Int = 0) {
-    Picasso.get()
+    /*Picasso.get()
         .load(url)
+        .placeholder(placeHolder)
+        .error(errorHolder)
+        .into(this)*/
+    Glide.with(this)
+        .load(url)
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
         .placeholder(placeHolder)
         .error(errorHolder)
         .into(this)

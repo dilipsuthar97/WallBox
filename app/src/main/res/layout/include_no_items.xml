@@ -19,12 +19,12 @@
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nothing to show!"
+            android:text="@string/title_no_items"
             android:textAppearance="@style/TextAppearance.Large.Bold"/>
     <TextView
             android:layout_marginTop="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Try searching something..."/>
+            android:text="@string/desc_no_items"/>
 
 </LinearLayout>

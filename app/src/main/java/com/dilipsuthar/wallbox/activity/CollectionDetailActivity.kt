@@ -143,7 +143,7 @@ class CollectionDetailActivity : BaseActivity() {
             mPage = 1
             mPhotoList.clear()
             load()
-            mPhotoAdapter = PhotoAdapter(ArrayList(), "list", this, mOnItemClickListener)
+            mPhotoAdapter = PhotoAdapter(ArrayList(), "list", this, this, mOnItemClickListener)
             mRecyclerView.adapter = mPhotoAdapter
         }
 
@@ -189,7 +189,7 @@ class CollectionDetailActivity : BaseActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) finish()
+        if (item.itemId == android.R.id.home) onBackPressed()
         return super.onOptionsItemSelected(item)
     }
 
@@ -210,7 +210,7 @@ class CollectionDetailActivity : BaseActivity() {
         mRecyclerView.addItemDecoration(VerticalSpacingItemDecorator(22))
         mRecyclerView.setHasFixedSize(true)
         mRecyclerView.setItemViewCacheSize(5)
-        mPhotoAdapter = PhotoAdapter(ArrayList(), "list", this, mOnItemClickListener)
+        mPhotoAdapter = PhotoAdapter(ArrayList(), "list", this, this, mOnItemClickListener)
         mRecyclerView.adapter = mPhotoAdapter
 
         /** First load request */

@@ -42,9 +42,9 @@ class SearchActivity : BaseActivity() {
         /** Set mViewPager and link it with TabLayout */
         mViewPagerAdapter = SectionPagerAdapter(supportFragmentManager)
         with(mViewPagerAdapter!!) {
-            addFragment(SearchPhotoFragment.newInstance(""), "Photo")
-            addFragment(SearchCollectionFragment.newInstance(""), "Collection")
-            addFragment(SearchUserFragment.newInstance(""), "User")
+            addFragment(SearchPhotoFragment.newInstance(""), resources.getString(R.string.tab_title_search_photo_fragment))
+            addFragment(SearchCollectionFragment.newInstance(""), resources.getString(R.string.tab_title_search_collection_fragment))
+            addFragment(SearchUserFragment.newInstance(""), resources.getString(R.string.tab_title_search_user_fragment))
             mViewPager.adapter = this
         }
         mViewPager.offscreenPageLimit = 2
@@ -55,11 +55,10 @@ class SearchActivity : BaseActivity() {
         etSearch.setOnEditorActionListener { textView, i, keyEvent ->
 
             searchQuery()
-
             true
         }
 
-        /** Listener */
+        /** Listeners */
         btnClose.setOnClickListener {
             onBackPressed()
         }
@@ -73,7 +72,7 @@ class SearchActivity : BaseActivity() {
 
             if (speechIntent.resolveActivity(packageManager) != null)
                 startActivityForResult(speechIntent, 101)
-            else PopupUtils.showToast(this, "Your device don't support speech input", Toast.LENGTH_SHORT)
+            else PopupUtils.showToast(this, resources.getString(R.string.msg_no_speech_to_text_support), Toast.LENGTH_SHORT)
         }
 
     }

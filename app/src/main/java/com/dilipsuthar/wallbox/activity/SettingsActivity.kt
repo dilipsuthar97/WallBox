@@ -1,6 +1,7 @@
 package com.dilipsuthar.wallbox.activity
 
 import android.os.Bundle
+import android.os.Environment
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
@@ -85,7 +86,7 @@ class SettingsActivity : BaseActivity() {
         mSettingList.add(Setting(
             Setting.Type.WALLPAPER_SAVE_LOCATION,
             resources.getString(R.string.title_wallpaper_save_location),
-            WallBox.DOWNLOAD_PATH
+            Environment.getExternalStorageDirectory().absolutePath + WallBox.DOWNLOAD_PATH
         ))
 
         mSettingList.add(Setting(
@@ -106,9 +107,7 @@ class SettingsActivity : BaseActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item?.itemId == android.R.id.home) {
-            finish()
-        }
+        if (item?.itemId == android.R.id.home) onBackPressed()
         return true
     }
 

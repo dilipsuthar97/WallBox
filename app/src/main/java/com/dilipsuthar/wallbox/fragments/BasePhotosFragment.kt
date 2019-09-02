@@ -142,7 +142,7 @@ abstract class BasePhotosFragment : Fragment() {
         mRecyclerView.setHasFixedSize(true)
         mRecyclerView.addItemDecoration(VerticalSpacingItemDecorator(22))
         mRecyclerView.setItemViewCacheSize(5)
-        mPhotoAdapter = PhotoAdapter(ArrayList(), "list", context, mOnItemClickListener)
+        mPhotoAdapter = PhotoAdapter(ArrayList(), "list", context, activity, mOnItemClickListener)
         mRecyclerView.adapter = mPhotoAdapter
 
         mPage = 1
@@ -201,7 +201,7 @@ abstract class BasePhotosFragment : Fragment() {
             mPage = 1
             mPhotosList.clear()
             loadPhotos(mRecyclerView.layoutManager?.itemCount!!)
-            mPhotoAdapter = PhotoAdapter(ArrayList(), "list", context, mOnItemClickListener)
+            mPhotoAdapter = PhotoAdapter(ArrayList(), "list", context, activity, mOnItemClickListener)
             mRecyclerView.adapter = mPhotoAdapter
         }
 

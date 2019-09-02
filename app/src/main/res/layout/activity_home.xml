@@ -73,8 +73,6 @@
             app:tint="@color/white"
             app:rippleColor="?attr/colorPrimary"/>-->
 
-        <include layout="@layout/bottom_sheet_search"/>
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
     
     <com.google.android.material.navigation.NavigationView
