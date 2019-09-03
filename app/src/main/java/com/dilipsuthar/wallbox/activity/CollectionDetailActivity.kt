@@ -21,9 +21,9 @@ import butterknife.ButterKnife
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.WallBox
 import com.dilipsuthar.wallbox.adapters.PhotoAdapter
-import com.dilipsuthar.wallbox.data.model.Collection
-import com.dilipsuthar.wallbox.data.model.Photo
-import com.dilipsuthar.wallbox.data.service.Services
+import com.dilipsuthar.wallbox.data_source.model.Collection
+import com.dilipsuthar.wallbox.data_source.model.Photo
+import com.dilipsuthar.wallbox.data_source.service.Services
 import com.dilipsuthar.wallbox.helpers.loadUrl
 import com.dilipsuthar.wallbox.helpers.setRefresh
 import com.dilipsuthar.wallbox.preferences.Preferences

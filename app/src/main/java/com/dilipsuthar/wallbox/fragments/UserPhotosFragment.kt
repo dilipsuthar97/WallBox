@@ -7,7 +7,7 @@ import android.view.ViewGroup
 
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.WallBox
-import com.dilipsuthar.wallbox.data.model.User
+import com.dilipsuthar.wallbox.data_source.model.User
 import com.dilipsuthar.wallbox.helpers.setRefresh
 import com.dilipsuthar.wallbox.preferences.Preferences
 import com.dilipsuthar.wallbox.utils.Tools

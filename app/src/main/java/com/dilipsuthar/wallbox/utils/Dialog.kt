@@ -17,13 +17,14 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.WallBox
-import com.dilipsuthar.wallbox.data.model.Photo
+import com.dilipsuthar.wallbox.data_source.model.Photo
 import com.dilipsuthar.wallbox.helpers.DownloadHelper
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import java.io.IOException
 
-object Dialog {
+object
+Dialog {
 
     fun showDownloadDialog(context: Context, photo: Photo) {
         MaterialDialog(context).show {

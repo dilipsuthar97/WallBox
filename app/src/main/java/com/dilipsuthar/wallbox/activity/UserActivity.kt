@@ -6,23 +6,20 @@ import android.util.Log
 import android.view.MenuItem
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.dilipsuthar.wallbox.R
-import com.dilipsuthar.wallbox.WallBox
 import com.dilipsuthar.wallbox.adapters.SectionPagerAdapter
-import com.dilipsuthar.wallbox.data.model.User
-import com.dilipsuthar.wallbox.data.service.Services
+import com.dilipsuthar.wallbox.data_source.model.User
+import com.dilipsuthar.wallbox.data_source.service.Services
 import com.dilipsuthar.wallbox.fragments.UserCollectionsFragment
 import com.dilipsuthar.wallbox.fragments.UserLikedFragment
 import com.dilipsuthar.wallbox.fragments.UserPhotosFragment
 import com.dilipsuthar.wallbox.helpers.loadUrl
 import com.dilipsuthar.wallbox.preferences.Preferences
-import com.dilipsuthar.wallbox.utils.PopupUtils
 import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.dilipsuthar.wallbox.utils.Tools
 import com.google.android.material.chip.Chip
@@ -32,7 +29,6 @@ import com.google.gson.Gson
 import com.mikhaellopez.circularimageview.CircularImageView
 import retrofit2.Call
 import retrofit2.Response
-
 /**
  * Created by DILIP SUTHAR 27/08/19
  */

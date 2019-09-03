@@ -2,7 +2,6 @@ package com.dilipsuthar.wallbox.adapters
 
 import android.Manifest
 import android.app.Activity
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -17,7 +16,7 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.WallBox
-import com.dilipsuthar.wallbox.data.model.Photo
+import com.dilipsuthar.wallbox.data_source.model.Photo
 import com.dilipsuthar.wallbox.helpers.PermissionsHelper
 import com.dilipsuthar.wallbox.preferences.Preferences
 import com.dilipsuthar.wallbox.helpers.loadUrl

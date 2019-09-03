@@ -9,8 +9,7 @@ import androidx.fragment.app.DialogFragment
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.dilipsuthar.wallbox.R
-import com.dilipsuthar.wallbox.data.model.Photo
-import org.w3c.dom.Text
+import com.dilipsuthar.wallbox.data_source.model.Photo
 
 class PhotoInfoDialog(photo: Photo) : DialogFragment() {
 

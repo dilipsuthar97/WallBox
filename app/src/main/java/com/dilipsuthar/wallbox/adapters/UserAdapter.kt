@@ -10,8 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.dilipsuthar.wallbox.R
-import com.dilipsuthar.wallbox.data.model.Collection
-import com.dilipsuthar.wallbox.data.model.User
+import com.dilipsuthar.wallbox.data_source.model.User
 import com.dilipsuthar.wallbox.helpers.loadUrl
 import com.mikhaellopez.circularimageview.CircularImageView
 
@@ -42,8 +41,8 @@ class UserAdapter (
 
                 holder.tvUsername.text = it.username
 
-                val name = it.first_name
-                if (it.last_name != "") name + " ${it.last_name}"
+                var name = it.first_name
+                name = if (it.last_name != "") "$name ${it.last_name}" else ""
                 holder.tvName.text = name
 
                 holder.rootView.setOnClickListener { view ->

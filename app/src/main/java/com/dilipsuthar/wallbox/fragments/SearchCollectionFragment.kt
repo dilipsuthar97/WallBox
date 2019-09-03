@@ -21,14 +21,13 @@ import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.WallBox
 import com.dilipsuthar.wallbox.activity.CollectionDetailActivity
 import com.dilipsuthar.wallbox.adapters.CollectionAdapter
-import com.dilipsuthar.wallbox.data.model.Collection
-import com.dilipsuthar.wallbox.data.model.SearchCollections
-import com.dilipsuthar.wallbox.data.service.Services
+import com.dilipsuthar.wallbox.data_source.model.Collection
+import com.dilipsuthar.wallbox.data_source.model.SearchCollections
+import com.dilipsuthar.wallbox.data_source.service.Services
 import com.dilipsuthar.wallbox.helpers.setRefresh
 import com.dilipsuthar.wallbox.preferences.Preferences
 import com.dilipsuthar.wallbox.utils.PopupUtils
 import com.dilipsuthar.wallbox.utils.Tools
-import com.dilipsuthar.wallbox.utils.itemDecorater.VerticalSpacingItemDecorator
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import retrofit2.Call

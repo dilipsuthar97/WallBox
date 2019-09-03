@@ -24,9 +24,9 @@ import com.afollestad.materialdialogs.customview.customView
 import com.afollestad.materialdialogs.customview.getCustomView
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.WallBox
-import com.dilipsuthar.wallbox.data.model.Photo
-import com.dilipsuthar.wallbox.data.model.PhotoStatistics
-import com.dilipsuthar.wallbox.data.service.Services
+import com.dilipsuthar.wallbox.data_source.model.Photo
+import com.dilipsuthar.wallbox.data_source.model.PhotoStatistics
+import com.dilipsuthar.wallbox.data_source.service.Services
 import com.dilipsuthar.wallbox.helpers.*
 import com.dilipsuthar.wallbox.preferences.Preferences
 import com.dilipsuthar.wallbox.utils.*
