@@ -11,6 +11,8 @@ import com.dilipsuthar.wallbox.databinding.ActivityAboutBinding
 import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.dilipsuthar.wallbox.utils.Tools
 import kotlinx.android.synthetic.main.activity_about.*
+import java.math.BigInteger
+
 /**
  * Created by DILIP SUTHAR 05/06/19
  */

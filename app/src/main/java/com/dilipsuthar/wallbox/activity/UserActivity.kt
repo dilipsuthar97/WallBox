@@ -1,13 +1,16 @@
 package com.dilipsuthar.wallbox.activity
 
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.core.view.get
 import androidx.viewpager.widget.ViewPager
 import butterknife.BindView
 import butterknife.ButterKnife
@@ -20,6 +23,7 @@ import com.dilipsuthar.wallbox.fragments.UserLikedFragment
 import com.dilipsuthar.wallbox.fragments.UserPhotosFragment
 import com.dilipsuthar.wallbox.helpers.loadUrl
 import com.dilipsuthar.wallbox.preferences.Preferences
+import com.dilipsuthar.wallbox.utils.PopupUtils
 import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.dilipsuthar.wallbox.utils.Tools
 import com.google.android.material.chip.Chip
@@ -88,11 +92,19 @@ class UserActivity : BaseActivity() {
                             for (tag in user.tags.custom) {
                                 val chip = Chip(this@UserActivity)
                                 chip.text = tag.title
+                                /*chip.isClickable = true
+                                chip.setOnClickListener {
+                                    val intent = Intent(this@UserActivity, SearchActivity::class.java)
+                                    intent.putExtra("keyword", chip.text.toString())
+                                    startActivity(intent)
+                                }*/
                                 chip.chipBackgroundColor = ColorStateList.valueOf(ThemeUtils.getThemeAttrColor(this@UserActivity, R.attr.primaryTextColor))
                                 chip.setTextColor(ThemeUtils.getThemeAttrColor(this@UserActivity, R.attr.colorPrimary))
                                 chipGrpInterest.addView(chip)
                             }
                         } else Tools.inVisibleViews(lytInterestChips, type = Tools.GONE)
+
+
 
                     }
                 }
@@ -128,7 +140,15 @@ class UserActivity : BaseActivity() {
     }
 
     private fun initComponent() {
-
+        chipGrpInterest.setOnCheckedChangeListener { chipGroup, i ->
+            val chip: Chip = chipGrpInterest.findViewById(i)
+            /*chip.setOnClickListener {
+                val intent = Intent(this, SearchActivity::class.java)
+                intent.putExtra("keyword", chip.text.toString())
+                startActivity(intent)
+            }*/
+            PopupUtils.showToast(this, chip.text.toString(), Toast.LENGTH_SHORT)
+        }
     }
 
     /** @method init tab layout settings */

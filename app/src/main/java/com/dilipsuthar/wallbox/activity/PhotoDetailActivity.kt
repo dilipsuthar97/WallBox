@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
@@ -22,6 +23,12 @@ import butterknife.ButterKnife
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.afollestad.materialdialogs.customview.getCustomView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
+import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.WallBox
 import com.dilipsuthar.wallbox.data_source.model.Photo
@@ -244,6 +251,27 @@ class PhotoDetailActivity : BaseActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> onBackPressed()
+            R.id.action_load_full_photo -> {
+
+                Tools.visibleViews(findViewById(R.id.progress_bar))
+
+                Glide.with(this)
+                    .load(mPhoto.urls.full)
+                    .placeholder(imgPhoto.drawable)
+                    .listener(object : RequestListener<Drawable> {
+
+                        override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                            Tools.inVisibleViews(findViewById(R.id.progress_bar), type = Tools.GONE)
+                            return false
+                        }
+
+                        override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                            Tools.inVisibleViews(findViewById(R.id.progress_bar), type = Tools.GONE)
+                            return false
+                        }
+                    })
+                    .into(imgPhoto)
+            }
             R.id.action_photo_info -> {
                 if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED)
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED

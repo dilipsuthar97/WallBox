@@ -36,6 +36,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="?attr/appBarColor"
+                    app:layout_scrollFlags="scroll|snap|enterAlways"
                     app:tabTextColor="?attr/tabUnselectedColor"
                     app:tabSelectedTextColor="?attr/tabSelectedColor"
                     app:tabIconTint="?attr/tabUnselectedColor"

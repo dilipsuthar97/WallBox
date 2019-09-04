@@ -18,7 +18,7 @@ import com.dilipsuthar.wallbox.data_source.model.*
 import com.dilipsuthar.wallbox.data_source.model.Collection
 
 /**
- * Created by DILIP SUTHAR on 20/07/19
+ * Created by Dilip Suthar on 20/07/19
  * */
 
 class Services {

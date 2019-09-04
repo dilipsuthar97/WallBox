@@ -28,7 +28,7 @@ Dialog {
 
     fun showDownloadDialog(context: Context, photo: Photo) {
         MaterialDialog(context).show {
-            title(text = "Select Download Quality")
+            title(R.string.title_select_download_quality)
             cornerRadius(16f)
             listItems(R.array.download_quality) { _, _, text ->
                 var fileName: String = ""
@@ -57,10 +57,11 @@ Dialog {
                     }
                 }
 
+                dismiss()
                 if (DownloadHelper.getInstance(context)?.fileExists(fileName)!!) {
                     PopupUtils.showToast(context, "File $fileName is already downloaded", Toast.LENGTH_SHORT)
                 } else {
-                    PopupUtils.showToast(context, "Downloading started...", Toast.LENGTH_SHORT)
+                    PopupUtils.showToast(context, context.resources.getString(R.string.msg_download_start), Toast.LENGTH_SHORT)
                     DownloadHelper.getInstance(context)?.addDownloadRequest(url, fileName)
                 }
             }
@@ -69,7 +70,7 @@ Dialog {
 
     fun showSetWallpaperDialog(context: Context, view: View, photo: Photo) {
         MaterialDialog(context).show {
-            title(text = "Select Quality")
+            title(R.string.title_select_quality)
             cornerRadius(16f)
             listItems(R.array.download_quality) { _, _, text ->
                 var fileName: String = ""
@@ -98,6 +99,7 @@ Dialog {
                     }
                 }
 
+                dismiss()
                 SetWallpaperTask(fileName, url, photo, context, view).execute()
 
             }
@@ -117,7 +119,7 @@ Dialog {
             super.onPreExecute()
             pDialog = ProgressDialog(context)
             with(pDialog!!) {
-                setMessage("Please wait...")
+                setMessage(context.resources.getString(R.string.msg_please_wait))
                 setProgressStyle(ProgressDialog.STYLE_SPINNER)
                 setCancelable(false)
                 show()
@@ -140,6 +142,7 @@ Dialog {
                     val manager = WallpaperManager.getInstance(context)
                     manager.setBitmap(bitmap)
                     pDialog?.dismiss()
+                    PopupUtils.showToast(context, context.resources.getString(R.string.msg_wallpaper_set_success), Toast.LENGTH_SHORT)
 
                     true
                 } catch (e: IOException) {
@@ -162,7 +165,7 @@ Dialog {
                                 val manager = WallpaperManager.getInstance(context)
                                 manager.setBitmap(bitmap)
                                 pDialog?.dismiss()
-                                PopupUtils.showToast(context, "Wallpaper set successfully", Toast.LENGTH_SHORT)
+                                PopupUtils.showToast(context, context.resources.getString(R.string.msg_wallpaper_set_success), Toast.LENGTH_SHORT)
                             }
 
                             override fun onLoadCleared(placeholder: Drawable?) {
@@ -171,7 +174,7 @@ Dialog {
 
                             override fun onLoadFailed(errorDrawable: Drawable?) {
                                 pDialog?.dismiss()
-                                Snackbar.make(view, "Failed to load wallpaper", Snackbar.LENGTH_SHORT)
+                                Snackbar.make(view, context.resources.getString(R.string.msg_wallpaper_set_failed), Snackbar.LENGTH_SHORT)
                                     .setAction("DOWNLOAD") {
                                         showDownloadDialog(context, photo)
                                     }

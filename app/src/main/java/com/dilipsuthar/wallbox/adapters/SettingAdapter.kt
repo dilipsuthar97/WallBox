@@ -127,9 +127,36 @@ class SettingAdapter(
                                 cornerRadius(16f)
                                 listItems(R.array.wallpaper_quality) { _, _, text ->
                                     sharedPreferences!!.edit().putString(Preferences.WALLPAPER_QUALITY, text).apply()
-                                    setting.subTitle = text
 
-                                    notifyItemChanged(position)
+                                    // Check if user select HIGH quality
+                                    if (text == "Raw" || text == "Full") {
+
+                                        MaterialDialog(context).show {
+                                            title(text = "Warning")
+                                            cornerRadius(16f)
+                                            message(text = "It will use high amount of data\nAre you sure?")
+                                            positiveButton(text = "YES") { warnDialog ->
+                                                setting.subTitle = text
+
+                                                notifyItemChanged(position)
+
+                                                warnDialog.dismiss()
+                                                dismiss()
+                                            }
+
+                                            negativeButton(text = "NO") { warnDialog ->
+                                                warnDialog.dismiss()
+                                            }
+                                        }
+
+                                    } else {
+
+                                        setting.subTitle = text
+
+                                        notifyItemChanged(position)
+
+                                    }
+
                                 }
                             }
 

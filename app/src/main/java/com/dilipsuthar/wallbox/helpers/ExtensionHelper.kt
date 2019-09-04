@@ -19,7 +19,7 @@ fun ImageView.loadUrl(url: String) {
         .into(this)*/
     Glide.with(this)
         .load(url)
-        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .diskCacheStrategy(DiskCacheStrategy.ALL)   // Save image cache load from cache in future
         .into(this)
 }
 
@@ -38,7 +38,7 @@ fun ImageView.loadUrl(url: String, placeHolder: Int = 0 , errorHolder: Int = 0) 
         .into(this)*/
     Glide.with(this)
         .load(url)
-        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .diskCacheStrategy(DiskCacheStrategy.ALL)   // Save image cache load from cache in future
         .placeholder(placeHolder)
         .error(errorHolder)
         .into(this)

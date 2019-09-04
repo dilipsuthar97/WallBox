@@ -12,8 +12,9 @@ import java.util.*
 import androidx.core.os.ConfigurationCompat.getLocales
 import com.dilipsuthar.wallbox.R
 import kotlin.collections.ArrayList
-
-
+/**
+ * Created by DILIP SUTHAR
+ */
 object LocaleHelper {
     fun loadLocal(context: Context?) {
         val sharedPreferences = Preferences.getSharedPreferences(context)

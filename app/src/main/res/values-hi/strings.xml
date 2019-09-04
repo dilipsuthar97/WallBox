@@ -45,14 +45,22 @@
     <string name="desc_http_error">कुछ गलत हो गया।</string>
     <string name="title_no_items">दिखाने के लिए कुछ भी नहीं!</string>
     <string name="desc_no_items">कुछ खोजने की कोशिश करो…</string>
-    <string name="msg_more_photos">और अधिक तस्वीरें..</string>
-    <string name="msg_no_more_photos">और कोई फ़ोटो उपलब्ध नहीं है :(</string>
-    <string name="msg_no_speech_to_text_support">आपका उपकरण भाषण इनपुट का समर्थन नहीं करता है</string>
     <string name="retry">पुन: प्रयास करें</string>
     <string name="tap_to_retry">फिर से कोशिश करने के लिये स्क्रीन को छुइए</string>
     <string name="photo_statistics_error">आंकड़े लोड करने में विफल</string>
     <string name="photo_error">फ़ोटो विवरण लोड करने में विफल</string>
     <string name="cancel">कैंसिल</string>
+
+    <string name="msg_more_photos">और अधिक तस्वीरें..</string>
+    <string name="msg_no_more_photos">और कोई फ़ोटो उपलब्ध नहीं है :(</string>
+    <string name="msg_clear_cache">कैश सफलतापूर्वक साफ़ हो गया</string>
+    <string name="msg_reset_tutorial">ट्यूटोरियल सफलतापूर्वक रीसेट हो गया</string>
+    <string name="msg_no_photo_info">कोई फोटो जानकारी नहीं!</string>
+    <string name="msg_no_speech_to_text_support">आपका उपकरण भाषण इनपुट का समर्थन नहीं करता है</string>
+    <string name="msg_wallpaper_set_success">वॉलपेपर सफलतापूर्वक सेट किया गया</string>
+    <string name="msg_wallpaper_set_failed">वॉलपेपर लोड करने में विफल</string>
+    <string name="msg_please_wait">कृपया प्रतीक्षा करें…</string>
+    <string name="msg_download_start">डाउनलोडिंग शुरू हुई…</string>
 
     <string name="powered_by">powered by </string>
     <string name="unsplash">Unsplash</string>
@@ -68,16 +76,14 @@
     <string name="title_info">जानकारी</string>
     <string name="title_photo_info">कैमरा</string>
     <string name="title_color_palette">रंगों के प्रकार</string>
+    <string name="title_select_download_quality">डाउनलोड गुणवत्ता का चयन करें</string>
+    <string name="title_select_quality">गुणवत्ता का चयन करें</string>
 
     <string name="desc_no_location">कोई स्थान नहीं</string>
     <string name="desc_no_description">कोई विवरण नहीं</string>
-    <string name="desc_theme">Get that whiteness out of my sight</string>
+    <string name="desc_theme">इस सफेदी को मेरी दृष्टि से बाहर निकालो!</string>
     <string name="desc_clear_cache">क्लाउड वॉलपेपर लोड करने के बाद अपने स्टोरेज में बनाए गए इमेज कैश को निकालें</string>
     <string name="desc_reset_tutorial">स्टार्टअप इंट्रो ट्यूटोरियल को रीसेट करें</string>
-
-    <string name="msg_clear_cache">कैश सफलतापूर्वक साफ़ हो गया</string>
-    <string name="msg_reset_tutorial">ट्यूटोरियल सफलतापूर्वक रीसेट हो गया</string>
-    <string name="msg_no_photo_info">कोई फोटो जानकारी नहीं!</string>
 
     <string name="hint_search_bar">यहाँ ढूँढे</string>
 

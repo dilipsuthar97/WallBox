@@ -50,7 +50,7 @@
                     android:textColor="?attr/primaryTextColor"/>
 
             <ImageButton
-                    android:id="@+id/btn_speech_to_txt"
+                    android:id="@+id/btn_voice_search"
                     android:layout_width="46dp"
                     android:layout_height="46dp"
                     android:background="?attr/selectableItemBackgroundBorderless"

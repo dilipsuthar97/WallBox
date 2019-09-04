@@ -3,7 +3,6 @@ package com.dilipsuthar.wallbox.activity
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.util.Log
@@ -30,9 +29,10 @@ class SearchActivity : BaseActivity() {
     @BindView(R.id.search_view_pager) lateinit var mViewPager: ViewPager
     @BindView(R.id.et_search) lateinit var etSearch: EditText
     @BindView(R.id.btn_close) lateinit var btnClose: ImageButton
-    @BindView(R.id.btn_speech_to_txt) lateinit var btnSpeechToTxt: ImageButton
+    @BindView(R.id.btn_voice_search) lateinit var btnVoiceSearch: ImageButton
 
     private var mViewPagerAdapter: SectionPagerAdapter? = null
+    private var keyWord: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +50,8 @@ class SearchActivity : BaseActivity() {
         mViewPager.offscreenPageLimit = 2
         mTabLayout.setupWithViewPager(mViewPager)
 
+        //val extra = intent.extras
+
         /** Search edit text */
         etSearch.requestFocus()
         etSearch.setOnEditorActionListener { textView, i, keyEvent ->
@@ -59,12 +61,13 @@ class SearchActivity : BaseActivity() {
         }
 
         /** Listeners */
+        // Button close
         btnClose.setOnClickListener {
             onBackPressed()
         }
 
         // Button google Speech-to-text listener
-        btnSpeechToTxt.setOnClickListener {
+        btnVoiceSearch.setOnClickListener {
             /** This will open google's speech-to-text activity */
             val speechIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
             speechIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH)
@@ -75,6 +78,11 @@ class SearchActivity : BaseActivity() {
             else PopupUtils.showToast(this, resources.getString(R.string.msg_no_speech_to_text_support), Toast.LENGTH_SHORT)
         }
 
+        /*keyWord = extra?.getString("keyword", "")
+        if (keyWord != "") {
+            etSearch.setText(keyWord)
+            searchQuery()
+        }*/
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
