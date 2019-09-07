@@ -4,13 +4,6 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-<<<<<<< Updated upstream
-=======
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.SET_WALLPAPER" />
-    <uses-permission android:name="android.permission.SET_WALLPAPER_HINTS" />
->>>>>>> Stashed changes
 
     <application
             android:name=".WallBox"
@@ -20,7 +13,6 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/WallBox.Primary.Base.Light">
-<<<<<<< Updated upstream
         <activity android:name=".activity.UserActivity"></activity>
         <activity android:name=".activity.CollectionDetailActivity"></activity>
         <activity android:name=".activity.PhotoDetailActivity"></activity>
@@ -28,17 +20,6 @@
         <activity android:name=".activity.AboutActivity"></activity>
         <activity android:name=".activity.SettingsActivity"></activity>
         <activity android:name=".activity.FavoritesActivity"></activity>
-=======
-        <activity android:name=".activity.OpenSourceLicensesActivity"></activity>
-        <activity android:name=".activity.SearchActivity" />
-        <activity android:name=".activity.UserActivity" />
-        <activity android:name=".activity.CollectionDetailActivity" />
-        <activity android:name=".activity.PhotoDetailActivity" />
-        <activity android:name=".activity.SupportUsActivity" />
-        <activity android:name=".activity.AboutActivity" />
-        <activity android:name=".activity.SettingsActivity" />
-        <activity android:name=".activity.FavoritesActivity" />
->>>>>>> Stashed changes
         <activity
                 android:name=".activity.HomeActivity"
                 android:screenOrientation="portrait"></activity>

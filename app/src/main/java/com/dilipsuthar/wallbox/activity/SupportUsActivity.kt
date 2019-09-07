@@ -16,6 +16,7 @@ import com.dilipsuthar.wallbox.utils.Tools
 
 class SupportUsActivity : BaseActivity() {
 
+    // View
     @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -22,19 +22,9 @@
     <string name="toolbar_title_settings">सेटिंग्स</string>
     <string name="toolbar_title_about">ऐप के बारे में</string>
     <string name="toolbar_title_support_us">हमें सहयोग दीजिये</string>
-    <string name="toolbar_title_open_source_licenses">ओपन-सोर्स लाइसेंस</string>
     <string name="tab_title_recent_wall_fragment">ताज़ा</string>
     <string name="tab_title_curated_wall_fragment">क्यूरेटेड</string>
     <string name="tab_title_collections_fragment">कलेक्शन</string>
-<<<<<<< Updated upstream
-=======
-    <string name="tab_title_search_photo_fragment">तस्वीरें</string>
-    <string name="tab_title_search_collection_fragment">कलेक्शन</string>
-    <string name="tab_title_search_user_fragment">उपयोगकर्ता</string>
-    <string name="tab_title_user_photos_fragment">तस्वीरें</string>
-    <string name="tab_title_user_liked_fragment">पसंदीदा</string>
-    <string name="tab_title_user_collections_fragment">कलेक्शन</string>
->>>>>>> Stashed changes
 
     <!-- Nav drawer -->
     <string name="nav_title_wallpapers">वॉलपेपर्स</string>
@@ -72,14 +62,6 @@
     <string name="title_info">जानकारी</string>
     <string name="title_photo_info">कैमरा</string>
     <string name="title_color_palette">रंगों के प्रकार</string>
-<<<<<<< Updated upstream
-=======
-    <string name="title_select_download_quality">डाउनलोड गुणवत्ता का चयन करें</string>
-    <string name="title_select_quality">गुणवत्ता का चयन करें</string>
-    <string name="title_privacy_policy">गोपनीयता नीति</string>
-    <string name="title_find_us_on">हमें यहाँ तलाशें</string>
-    <string name="title_interests">रूचियाँ</string>
->>>>>>> Stashed changes
 
     <string name="desc_no_location">कोई स्थान नहीं</string>
     <string name="desc_no_description">कोई विवरण नहीं</string>

@@ -10,9 +10,6 @@ class Preferences(context: Context) {
         // Preferences
         private const val PREF = "com.dilipsuthar.wallbox"
         const val FIRST_RUN = "first_run"
-        const val ACT_HOME_INTRO = "act_home_intro"
-        const val ACT_SEARCH_INTRO = "act_search_intro"
-        const val ACT_SETTING_INTRO = "act_setting_intro"
         const val SHOW_INTRO_TUTORIAL = "intro_tutorial"
         const val SORT = "sort"
         const val SEARCH_QUERY = "search_query"
