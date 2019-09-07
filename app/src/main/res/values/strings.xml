@@ -22,9 +22,19 @@
     <string name="toolbar_title_settings">Settings</string>
     <string name="toolbar_title_about">About</string>
     <string name="toolbar_title_support_us">Support Us</string>
+    <string name="toolbar_title_open_source_licenses">Open-source licenses</string>
     <string name="tab_title_recent_wall_fragment">Fresh</string>
     <string name="tab_title_curated_wall_fragment">Curated</string>
     <string name="tab_title_collections_fragment">Collections</string>
+<<<<<<< Updated upstream
+=======
+    <string name="tab_title_search_photo_fragment">Photos</string>
+    <string name="tab_title_search_collection_fragment">Collections</string>
+    <string name="tab_title_search_user_fragment">Users</string>
+    <string name="tab_title_user_photos_fragment">Photos</string>
+    <string name="tab_title_user_liked_fragment">Liked</string>
+    <string name="tab_title_user_collections_fragment">Collections</string>
+>>>>>>> Stashed changes
 
     <!-- Nav drawer -->
     <string name="nav_title_wallpapers">Wallpapers</string>
@@ -62,6 +72,14 @@
     <string name="title_info">Info</string>
     <string name="title_photo_info">Camera</string>
     <string name="title_color_palette">Color Palette</string>
+<<<<<<< Updated upstream
+=======
+    <string name="title_select_download_quality">Select Download Quality</string>
+    <string name="title_select_quality">Select Quality</string>
+    <string name="title_privacy_policy">Privacy policy</string>
+    <string name="title_find_us_on">Find us on</string>
+    <string name="title_interests">Interests</string>
+>>>>>>> Stashed changes
 
     <string name="desc_no_location">No location</string>
     <string name="desc_no_description">No description</string>

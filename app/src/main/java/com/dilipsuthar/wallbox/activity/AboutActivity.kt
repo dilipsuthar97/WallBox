@@ -1,20 +1,39 @@
 package com.dilipsuthar.wallbox.activity
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
+import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
-import androidx.databinding.DataBindingUtil
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.dilipsuthar.wallbox.R
-import com.dilipsuthar.wallbox.databinding.ActivityAboutBinding
+import com.dilipsuthar.wallbox.WallBox
+import com.dilipsuthar.wallbox.helpers.loadUrl
 import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.dilipsuthar.wallbox.utils.Tools
+<<<<<<< Updated upstream
 import kotlinx.android.synthetic.main.activity_about.*
+=======
+import com.mikhaellopez.circularimageview.CircularImageView
+>>>>>>> Stashed changes
 /**
  * Created by DILIP SUTHAR 05/06/19
  */
-class AboutActivity : BaseActivity() {
+class AboutActivity : BaseActivity(), View.OnClickListener {
+
+    @BindView(R.id.img_me) lateinit var imgMe: CircularImageView
+    @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
+    @BindView(R.id.tv_app_version) lateinit var tvAppVersion: TextView
+    @BindView(R.id.btn_github) lateinit var btnGitHub: View
+    @BindView(R.id.btn_twitter) lateinit var btnTwitter: View
+    @BindView(R.id.btn_instagram) lateinit var btnInsta: View
+    @BindView(R.id.btn_medium) lateinit var btnMedium: View
+    @BindView(R.id.btn_unsplash) lateinit var btnUnsplash: View
+    @BindView(R.id.btn_policy) lateinit var btnPolicy: View
+    @BindView(R.id.btn_open_source_license) lateinit var btnOpenSourceLicense: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -25,7 +44,30 @@ class AboutActivity : BaseActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_about)
+        ButterKnife.bind(this)
+
         initToolbar()
+        initComponent()
+    }
+
+    override fun onClick(p0: View?) {
+        var url = ""
+        when (p0?.id) {
+            R.id.btn_github -> url = "https://github.com/dilipsuthar1997"
+            R.id.btn_twitter -> url = "https://twitter.com/dilipsuthar97"
+            R.id.btn_instagram -> url = "https://instagram.com/dilipsuthar97"
+            R.id.btn_medium -> url = "https://medium.com/@dilipsuthar97"
+            R.id.btn_unsplash -> url = WallBox.UNSPLASH_URL
+            R.id.btn_policy -> url = "https://wallbox.flycricket.io/privacy.html"
+            R.id.btn_open_source_license -> {
+                startActivity(Intent(this, OpenSourceLicensesActivity::class.java))
+            }
+        }
+
+        if (p0?.id != R.id.btn_open_source_license) {
+            val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            startActivity(i)
+        }
     }
 
     /** @method init toolbar settings */
@@ -36,6 +78,23 @@ class AboutActivity : BaseActivity() {
         actionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
         actionBar?.setDisplayHomeAsUpEnabled(true)
         Tools.changeNavigationIconColor(toolbar, ThemeUtils.getThemeAttrColor(this, R.attr.colorAccent))
+    }
+
+    /** @method init all components */
+    private fun initComponent() {
+        imgMe.loadUrl("https://avatars1.githubusercontent.com/u/35637341?s=460&v=4",
+            R.drawable.placeholder_profile,
+            R.drawable.placeholder_profile)
+
+        tvAppVersion.text = "v${Tools.getAppVersion(this)}"
+
+        btnGitHub.setOnClickListener(this)
+        btnTwitter.setOnClickListener(this)
+        btnInsta.setOnClickListener(this)
+        btnMedium.setOnClickListener(this)
+        btnUnsplash.setOnClickListener(this)
+        btnOpenSourceLicense.setOnClickListener(this)
+        btnPolicy.setOnClickListener(this)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

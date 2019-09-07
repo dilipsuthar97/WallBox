@@ -110,7 +110,6 @@ class UserActivity : BaseActivity() {
         mService?.requestUserProfile(mUser!!.username, mOnRequestUserProfileListener)
 
         initToolbar()
-        initComponent()
         initTabLayout()
     }
 
@@ -131,9 +130,13 @@ class UserActivity : BaseActivity() {
         Tools.changeNavigationIconColor(toolbar, ContextCompat.getColor(this, R.color.colorAccent))
     }
 
+<<<<<<< Updated upstream
     private fun initComponent() {
 
     }
+=======
+    private fun initComponent() {}
+>>>>>>> Stashed changes
 
     /** @method init tab layout settings */
     private fun initTabLayout() {
@@ -150,9 +153,9 @@ class UserActivity : BaseActivity() {
         userCollectionsFragment.setUser(mUser)
 
         with(mViewPagerAdapter) {
-            addFragment(userPhotoFragment, "${mUser?.total_photos} Photos")
-            addFragment(userLikedFragment, "${mUser?.total_likes} Liked")
-            addFragment(userCollectionsFragment, "${mUser?.total_collections} Collections")
+            addFragment(userPhotoFragment, "${mUser?.total_photos} ${resources.getString(R.string.tab_title_user_photos_fragment)}")
+            addFragment(userLikedFragment, "${mUser?.total_likes} ${resources.getString(R.string.tab_title_user_liked_fragment)}")
+            addFragment(userCollectionsFragment, "${mUser?.total_collections} ${resources.getString(R.string.tab_title_user_collections_fragment)}")
             mViewpager.adapter = this
         }
         mViewpager.offscreenPageLimit = 2

@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.graphics.PorterDuff
 import android.os.Build
 import android.view.View
@@ -140,6 +142,16 @@ object Tools {
         PopupUtils.showToast(context, "$msg copied to clipboard", Toast.LENGTH_SHORT)
     }
 
-    fun formatLongNumbers(number: Any): String = ""
+    fun getAppVersion(context: Context): String? {
+        val packageManager = context.packageManager
+        var packageInfo: PackageInfo? = null
+        try {
+            packageInfo = packageManager.getPackageInfo(context.packageName, 0)
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+        }
+
+        return packageInfo?.versionName ?: "1.0.0"
+    }
 
 }
