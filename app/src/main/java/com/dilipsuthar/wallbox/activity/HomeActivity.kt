@@ -2,10 +2,12 @@ package com.dilipsuthar.wallbox.activity
 
 import android.content.Intent
 import android.graphics.PorterDuff
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -17,8 +19,11 @@ import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.adapters.SectionPagerAdapter
 import com.dilipsuthar.wallbox.fragments.*
 import com.dilipsuthar.wallbox.helpers.LocaleHelper
+import com.dilipsuthar.wallbox.preferences.Preferences
 import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.dilipsuthar.wallbox.utils.Tools
+import com.getkeepsafe.taptargetview.TapTarget
+import com.getkeepsafe.taptargetview.TapTargetSequence
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
@@ -57,6 +62,8 @@ class HomeActivity : BaseActivity() {
     private var mSortCollectionAll: MenuItem? = null
     private var mSortCollectionFeatured: MenuItem? = null
     private var mSortCollectionCurated: MenuItem? = null
+
+    private var actionSortMenu: MenuItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,7 +114,10 @@ class HomeActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (currentLanguage != LocaleHelper.getLocale(this)) {
+        if (currentLanguage != LocaleHelper.getLocale(this) && currentTheme != ThemeUtils.getTheme(this)) {
+            recreate()
+            mDrawerLayout.closeDrawers()
+        } else if (currentLanguage != LocaleHelper.getLocale(this)) {
             recreate()
             mDrawerLayout.closeDrawers()
         } else if (currentTheme != ThemeUtils.getTheme(this)) {
@@ -176,7 +186,6 @@ class HomeActivity : BaseActivity() {
 
         mTabLayout.setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
             override fun onTabReselected(p0: TabLayout.Tab?) {
-
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -192,6 +201,10 @@ class HomeActivity : BaseActivity() {
             }
 
         })
+    }
+
+    /** @method init navigation drawer settings */
+    private fun initNavigationDrawer() {
 
         /*// Link toggle with mDrawerLayout
         val drawerToggle: ActionBarDrawerToggle = object : ActionBarDrawerToggle(
@@ -210,22 +223,34 @@ class HomeActivity : BaseActivity() {
         drawerToggle.isDrawerIndicatorEnabled = false
         mDrawerLayout.setDrawerListener(drawerToggle)
         drawerToggle.syncState()*/
-    }
 
-    /** @method init navigation drawer settings */
-    private fun initNavigationDrawer() {
         mNavigationView.setNavigationItemSelectedListener {
+            val url = "https://play.google.com/store/apps/details?id=${packageName}"
+
             when (it.itemId) {
                 //R.id.nav_Favorites -> startActivity(Intent(applicationContext, FavoritesActivity::class.java))
                 R.id.nav_settings -> startActivity(Intent(applicationContext, SettingsActivity::class.java))
                 R.id.nav_about -> startActivity(Intent(applicationContext, AboutActivity::class.java))
                 R.id.nav_support_us -> startActivity(Intent(applicationContext, SupportUsActivity::class.java))
-                else -> showSnackBar(it.title.toString(), Snackbar.LENGTH_SHORT)
+                R.id.nav_share_app -> {
+                    val i = Intent(Intent.ACTION_SEND)
+                    i.type = "text/plain"
+                    i.putExtra(Intent.EXTRA_TEXT, "You should give a try to WallBox for Android, it's freaking cool!\n\n$url")
+                    startActivity(Intent.createChooser(i, "Share WallBox using"))
+                }
+                R.id.nav_rate_review -> {
+                    val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                    startActivity(i)
+                }
             }
 
             mDrawerLayout.closeDrawers()
             true
         }
+
+        // Set app version code to navigation header text
+        val drawerHeader = mNavigationView.getHeaderView(0)
+        drawerHeader.findViewById<TextView>(R.id.tv_version_code).text = "v${Tools.getAppVersion(this)}"
     }
 
     /** @method show snack bar */
@@ -245,6 +270,8 @@ class HomeActivity : BaseActivity() {
         mSortCollectionAll = menu.findItem(R.id.menu_sort_collection_all)
         mSortCollectionFeatured = menu.findItem(R.id.menu_sort_collection_featured)
         mSortCollectionCurated = menu.findItem(R.id.menu_sort_collection_curated)
+
+        actionSortMenu = menu.findItem(R.id.action_sort)
         return true
     }
 
@@ -319,6 +346,33 @@ class HomeActivity : BaseActivity() {
                 8 -> mSortCollectionCurated?.isVisible = v
             }
         }
+    }
+
+    private fun runTutorial() {
+        TapTargetSequence(this)
+            .targets(
+                TapTarget.forView(actionSortMenu as View, "Sort Photos", "Tap here to sort photos")
+                    .outerCircleColor(R.color.colorAccent)
+                    .outerCircleAlpha(0.80f)
+                    .targetCircleColor(R.color.white)
+                    .titleTextColor(R.color.primaryTextColor)
+            )
+            .listener(object : TapTargetSequence.Listener {
+                override fun onSequenceFinish() {
+                    Preferences.getSharedPreferences(this@HomeActivity)!!
+                        .edit().putBoolean(Preferences.ACT_HOME_INTRO, false)
+                        .apply()
+                }
+
+                override fun onSequenceStep(lastTarget: TapTarget?, targetClicked: Boolean) {
+
+                }
+
+                override fun onSequenceCanceled(lastTarget: TapTarget?) {
+
+                }
+            })
+            .start()
     }
 }
 

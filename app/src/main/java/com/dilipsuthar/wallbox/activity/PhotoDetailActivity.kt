@@ -256,7 +256,7 @@ class PhotoDetailActivity : BaseActivity() {
                 Tools.visibleViews(findViewById(R.id.progress_bar))
 
                 Glide.with(this)
-                    .load(mPhoto.urls.full)
+                    .load(mPhoto.urls.raw)
                     .placeholder(imgPhoto.drawable)
                     .listener(object : RequestListener<Drawable> {
 

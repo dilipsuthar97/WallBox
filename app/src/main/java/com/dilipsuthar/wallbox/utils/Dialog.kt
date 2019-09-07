@@ -23,8 +23,7 @@ import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import java.io.IOException
 
-object
-Dialog {
+object Dialog {
 
     fun showDownloadDialog(context: Context, photo: Photo) {
         MaterialDialog(context).show {

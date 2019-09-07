@@ -8,12 +8,9 @@ import butterknife.ButterKnife
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.dilipsuthar.wallbox.utils.Tools
-
 /**
- * Created by,
- * @author DILIP SUTHAR 05/06/19
+ * Created by DILIP SUTHAR 05/06/19
  */
-
 class SupportUsActivity : BaseActivity() {
 
     // View

@@ -18,12 +18,9 @@ import com.dilipsuthar.wallbox.preferences.Preferences
 import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.dilipsuthar.wallbox.utils.Tools
 import java.text.DecimalFormat
-
 /**
- * Created by,
- * @author DILIP SUTHAR 05/06/19
+ * Created by DILIP SUTHAR 05/06/19
  */
-
 class SettingsActivity : BaseActivity() {
 
     private var mSettingList: ArrayList<Setting> = ArrayList()
@@ -110,13 +107,6 @@ class SettingsActivity : BaseActivity() {
         if (item?.itemId == android.R.id.home) onBackPressed()
         return true
     }
-
-    /*fun restartActivity() {
-        val intent = Intent(this@SettingsActivity, SettingsActivity::class.java)
-        startActivity(intent)
-        finish()
-        activityRestarted = true
-    }*/
 
     companion object {
         fun get(): SettingsActivity {
