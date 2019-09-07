@@ -217,6 +217,30 @@ class PhotoDetailActivity : BaseActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> onBackPressed()
+<<<<<<< Updated upstream
+=======
+            R.id.action_load_full_photo -> {
+
+                Tools.visibleViews(findViewById(R.id.progress_bar))
+
+                Glide.with(this)
+                    .load(mPhoto.urls.raw)
+                    .placeholder(imgPhoto.drawable)
+                    .listener(object : RequestListener<Drawable> {
+
+                        override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                            Tools.inVisibleViews(findViewById(R.id.progress_bar), type = Tools.GONE)
+                            return false
+                        }
+
+                        override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                            Tools.inVisibleViews(findViewById(R.id.progress_bar), type = Tools.GONE)
+                            return false
+                        }
+                    })
+                    .into(imgPhoto)
+            }
+>>>>>>> Stashed changes
             R.id.action_photo_info -> {
                 if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED)
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED

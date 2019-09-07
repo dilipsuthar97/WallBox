@@ -19,7 +19,7 @@
         <item name="toastSnackBarColor">@color/toastSnackBarColor</item>
         <item name="colorRipple">@color/colorRipple</item>
 
-        <item name="colorControlHighlight">@color/overlay_dark_50</item> <!-- Ripple color -->
+        <item name="colorControlHighlight">@color/overlay_dark_40</item> <!-- Ripple color -->
         <item name="android:windowBackground">@color/windowColor</item>
         <item name="android:fontFamily">@font/google_sans_regular</item>
         <!--<item name="android:windowTranslucentStatus">true</item>
@@ -48,7 +48,7 @@
         <item name="toastSnackBarColor">@color/toastSnackBarColor_night</item>
         <item name="colorRipple">@color/colorRipple</item>
 
-        <item name="colorControlHighlight">@color/overlay_light_50</item> <!-- Ripple color -->
+        <item name="colorControlHighlight">@color/overlay_light_30</item> <!-- Ripple color -->
         <item name="android:windowBackground">@color/windowColor_night</item>
         <item name="android:fontFamily">@font/google_sans_regular</item>
         <!--<item name="android:windowTranslucentStatus">true</item>

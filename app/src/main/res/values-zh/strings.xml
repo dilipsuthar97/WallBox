@@ -41,6 +41,15 @@
     <string name="tab_title_collections_fragment">集合</string>
     <string name="tab_title_curated_wall_fragment">策劃</string>
     <string name="tab_title_recent_wall_fragment">新鮮</string>
+<<<<<<< Updated upstream
+=======
+    <string name="tab_title_search_photo_fragment">相片</string>
+    <string name="tab_title_search_collection_fragment">集合</string>
+    <string name="tab_title_search_user_fragment">用戶</string>
+    <string name="tab_title_user_photos_fragment">相片</string>
+    <string name="tab_title_user_liked_fragment">喜爱</string>
+    <string name="tab_title_user_collections_fragment">集合</string>
+>>>>>>> Stashed changes
     <string name="tap_to_retry">點按即可重試</string>
     <string name="title_Theme">主題</string>
     <string name="title_clear_cache">清除緩存</string>
@@ -52,15 +61,32 @@
     <string name="title_network_error">沒有網絡</string>
     <string name="title_official_site">去官方網站</string>
     <string name="title_reset_tutorial">重置教程</string>
+    <string name="title_select_download_quality">选择下载质量</string>
+    <string name="title_select_quality">选择质量</string>
+    <string name="title_privacy_policy">隐私政策</string>
     <string name="title_wallpaper_preview_quality">壁紙預覽質量</string>
     <string name="title_wallpaper_save_location">壁紙保存位置</string>
     <string name="title_photo_info">相機</string>
+    <string name="title_find_us_on">在 - 找到我们</string>
+    <string name="title_interests">兴趣</string>
     <string name="toolbar_title_about">關於</string>
     <string name="toolbar_title_favorites">最愛</string>
     <string name="toolbar_title_settings">設置</string>
     <string name="toolbar_title_support_us">支持我們</string>
+    <string name="toolbar_title_open_source_licenses">Open-source 许可证</string>
     <string name="total_cache">總緩存</string>
     <string name="unsplash">Unsplash</string>
     <string name="wallpaper_by">"by, "</string>
     <string name="wallpapers">壁紙</string>
+<<<<<<< Updated upstream
+=======
+    <string name="hint_search_bar">在這裡搜索</string>
+    <string name="desc_no_items">嘗試搜索一些東西…</string>
+    <string name="title_no_items">什麼都沒有顯示!</string>
+    <string name="msg_no_speech_to_text_support">您的設備不支持語音輸入</string>
+    <string name="msg_wallpaper_set_success">壁纸设置成功</string>
+    <string name="msg_wallpaper_set_failed">无法加载壁纸</string>
+    <string name="msg_please_wait">请耐心等待…</string>
+    <string name="msg_download_start">下载开始…</string>
+>>>>>>> Stashed changes
 </resources>

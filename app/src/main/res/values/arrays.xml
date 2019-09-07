@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="license_names">
+        <item>ButterKnife</item>
+        <item>CircularImageView</item>
+        <item>Glide</item>
+        <item>Retrofit-OkHttp</item>
+        <item>Lottie Android</item>
+        <item>PhotoView</item>
+        <item>Android-Helpers</item>
+        <item>Material-Dialogs</item>
+        <item>TapTargetView</item>
+    </string-array>
+
+    <string-array name="license_owner_names">
+        <item>Jake Wharton</item>
+        <item>Lops Power</item>
+        <item>Bumptech</item>
+        <item>Square</item>
+        <item>Airbnb</item>
+        <item>Chris Banes</item>
+        <item>Danimahardhika</item>
+        <item>Afollestad</item>
+        <item>KeepSafe</item>
+    </string-array>
+
+    <string-array name="license_versions">
+        <item>Apache V2.0</item>
+        <item>Apache V2.0</item>
+        <item>Apache V2.0, MIT and BSD</item>
+        <item>Apache V2.0</item>
+        <item>Apache V2.0</item>
+        <item>Apache V2.0</item>
+        <item>Apache V2.0</item>
+        <item>Apache V2.0</item>
+        <item>Apache V2.0</item>
+    </string-array>
+
+    <string-array name="license_urls">
+        <item>https://github.com/JakeWharton/butterknife</item>
+        <item>https://github.com/lopspower/CircularImageView</item>
+        <item>https://github.com/bumptech/glide</item>
+        <item>https://square.github.io/retrofit/</item>
+        <item>https://github.com/airbnb/lottie-android</item>
+        <item>https://github.com/chrisbanes/PhotoView</item>
+        <item>https://github.com/danimahardhika/android-helpers</item>
+        <item>https://github.com/afollestad/material-dialogs</item>
+        <item>https://github.com/KeepSafe/TapTargetView</item>
+    </string-array>
+</resources>
