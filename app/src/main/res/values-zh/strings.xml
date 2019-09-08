@@ -81,6 +81,7 @@
     <string name="msg_wallpaper_set_failed">无法加载壁纸</string>
     <string name="msg_please_wait">请耐心等待…</string>
     <string name="msg_download_start">下载开始…</string>
+    <string name="msg_photo_downloaded">已下载</string>
     <string name="title_select_download_quality">选择下载质量</string>
     <string name="title_select_quality">选择质量</string>
 </resources>

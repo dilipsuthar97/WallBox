@@ -1,4 +1,4 @@
-package com.dilipsuthar.wallbox.data_source.service
+package com.dilipsuthar.wallbox.data_source
 
 import android.os.AsyncTask
 import com.dilipsuthar.wallbox.BuildConfig

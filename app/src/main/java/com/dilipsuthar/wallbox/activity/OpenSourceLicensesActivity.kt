@@ -39,7 +39,7 @@ class OpenSourceLicensesActivity : BaseActivity() {
         initComponent()
     }
 
-    /** @mthod init toolbar settings */
+    /** @method init toolbar settings */
     private fun initToolbar() {
         setSupportActionBar(toolbar)
         val actionBar = supportActionBar
@@ -49,7 +49,7 @@ class OpenSourceLicensesActivity : BaseActivity() {
         Tools.changeNavigationIconColor(toolbar, ThemeUtils.getThemeAttrColor(this, R.attr.colorAccent))
     }
 
-    /** @mtethos init all components */
+    /** @method init all components */
     private fun initComponent() {
         mRecyclerView.layoutManager = LinearLayoutManager(this)
         mRecyclerView.setHasFixedSize(true)

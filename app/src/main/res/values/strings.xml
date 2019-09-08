@@ -65,6 +65,7 @@
     <string name="msg_wallpaper_set_failed">Failed to load wallpaper</string>
     <string name="msg_please_wait">Please wait…</string>
     <string name="msg_download_start">Downloading started…</string>
+    <string name="msg_photo_downloaded">is already downloaded</string>
 
     <string name="powered_by">powered by </string>
     <string name="unsplash">Unsplash</string>

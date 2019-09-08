@@ -65,6 +65,7 @@
     <string name="msg_wallpaper_set_failed">वॉलपेपर लोड करने में विफल</string>
     <string name="msg_please_wait">कृपया प्रतीक्षा करें…</string>
     <string name="msg_download_start">डाउनलोडिंग शुरू हुई…</string>
+    <string name="msg_photo_downloaded">पहले से डाउनलोड है</string>
 
     <string name="powered_by">powered by </string>
     <string name="unsplash">Unsplash</string>

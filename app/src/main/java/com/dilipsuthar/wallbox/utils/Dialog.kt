@@ -58,7 +58,7 @@ object Dialog {
 
                 dismiss()
                 if (DownloadHelper.getInstance(context)?.fileExists(fileName)!!) {
-                    PopupUtils.showToast(context, "File $fileName is already downloaded", Toast.LENGTH_SHORT)
+                    PopupUtils.showToast(context, "$fileName ${context.resources.getString(R.string.msg_photo_downloaded)}", Toast.LENGTH_SHORT)
                 } else {
                     PopupUtils.showToast(context, context.resources.getString(R.string.msg_download_start), Toast.LENGTH_SHORT)
                     DownloadHelper.getInstance(context)?.addDownloadRequest(url, fileName)

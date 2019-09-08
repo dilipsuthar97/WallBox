@@ -4,9 +4,9 @@ import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
+import com.dilipsuthar.wallbox.WallBox
 
 object PermissionsHelper {
-    private const val REQUEST_CODE = 201
 
     fun permissionGranted(context: Context, permissions: Array<String>): Boolean {
         return permissions.all { permission ->
@@ -15,7 +15,7 @@ object PermissionsHelper {
     }
 
     fun requestPermission(activity: Activity, permissions: Array<String>) {
-        ActivityCompat.requestPermissions(activity, permissions, REQUEST_CODE)
+        ActivityCompat.requestPermissions(activity, permissions, WallBox.REQUEST_CODE)
     }
 
 }

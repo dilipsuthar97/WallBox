@@ -1,6 +1,5 @@
 package com.dilipsuthar.wallbox.activity
 
-import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
@@ -10,14 +9,13 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
-import androidx.core.view.get
 import androidx.viewpager.widget.ViewPager
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.adapters.SectionPagerAdapter
 import com.dilipsuthar.wallbox.data_source.model.User
-import com.dilipsuthar.wallbox.data_source.service.Services
+import com.dilipsuthar.wallbox.data_source.Services
 import com.dilipsuthar.wallbox.fragments.UserCollectionsFragment
 import com.dilipsuthar.wallbox.fragments.UserLikedFragment
 import com.dilipsuthar.wallbox.fragments.UserPhotosFragment

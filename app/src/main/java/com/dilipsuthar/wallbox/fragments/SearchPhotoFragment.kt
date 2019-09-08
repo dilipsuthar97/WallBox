@@ -27,7 +27,7 @@ import com.dilipsuthar.wallbox.activity.UserActivity
 import com.dilipsuthar.wallbox.adapters.PhotoAdapter
 import com.dilipsuthar.wallbox.data_source.model.Photo
 import com.dilipsuthar.wallbox.data_source.model.SearchPhotos
-import com.dilipsuthar.wallbox.data_source.service.Services
+import com.dilipsuthar.wallbox.data_source.Services
 import com.dilipsuthar.wallbox.helpers.setRefresh
 import com.dilipsuthar.wallbox.preferences.Preferences
 import com.dilipsuthar.wallbox.utils.PopupUtils

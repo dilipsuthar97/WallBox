@@ -25,7 +25,7 @@ class WallBox : Application() {
         const val DOWNLOAD_PHOTO_FORMAT = ".jpg"
 
         // Permission code
-        const val WRITE_EXTERNAL_STORAGE = 100
+        const val REQUEST_CODE = 101
 
         private lateinit var instance: WallBox
 

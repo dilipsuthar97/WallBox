@@ -22,7 +22,7 @@ import com.dilipsuthar.wallbox.activity.CollectionDetailActivity
 import com.dilipsuthar.wallbox.adapters.CollectionAdapter
 import com.dilipsuthar.wallbox.data_source.model.Collection
 import com.dilipsuthar.wallbox.data_source.model.User
-import com.dilipsuthar.wallbox.data_source.service.Services
+import com.dilipsuthar.wallbox.data_source.Services
 import com.dilipsuthar.wallbox.helpers.setRefresh
 import com.dilipsuthar.wallbox.preferences.Preferences
 import com.dilipsuthar.wallbox.utils.PopupUtils
