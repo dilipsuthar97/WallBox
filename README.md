@@ -1,4 +1,4 @@
-# WallBox - Powered by Unsplash API ![Version](https://img.shields.io/badge/version-1.0.0-beta-blue?logo=verizon)
+# WallBox - Powered by Unsplash API ![Version](https://img.shields.io/badge/version-1.0.0-blue?logo=verizon)
 ## In Maintenance...
 
 WallBox, a beautiful and google material design based wallpaper app, that is based on Unsplash API, you can access thousands of wallpaper in this app.
@@ -19,8 +19,29 @@ WallBox, a beautiful and google material design based wallpaper app, that is bas
     <img src="https://github.com/dilipsuthar1997/WallBox/blob/search_using_searchActivity/screenshots/light/Screenshot_3.png" width="200" height="400" alt="ss_3">
     <img src="https://github.com/dilipsuthar1997/WallBox/blob/search_using_searchActivity/screenshots/light/Screenshot_4.png" width="200" height="400" alt="ss_4">
     <img src="https://github.com/dilipsuthar1997/WallBox/blob/search_using_searchActivity/screenshots/light/Screenshot_5.png" width="200" height="400" alt="ss_5">
-    <img src="https://github.com/dilipsuthar1997/WallBox/blob/search_using_searchActivity/screenshots/light/Screenshot_1.png" width="200" height="400" alt="ss_6">
+    <img src="https://github.com/dilipsuthar1997/WallBox/blob/search_using_searchActivity/screenshots/light/Screenshot_6.png" width="200" height="400" alt="ss_6">
 </p>
+
+#### Dark
+<p align="center">
+    <img src="https://github.com/dilipsuthar1997/WallBox/blob/search_using_searchActivity/screenshots/dark/Screenshot_1.png" width="200" height="400" alt="ss_1">
+    <img src="https://github.com/dilipsuthar1997/WallBox/blob/search_using_searchActivity/screenshots/dark/Screenshot_2.png" width="200" height="400" alt="ss_2">
+    <img src="https://github.com/dilipsuthar1997/WallBox/blob/search_using_searchActivity/screenshots/dark/Screenshot_3.png" width="200" height="400" alt="ss_3">
+    <img src="https://github.com/dilipsuthar1997/WallBox/blob/search_using_searchActivity/screenshots/dark/Screenshot_4.png" width="200" height="400" alt="ss_4">
+    <img src="https://github.com/dilipsuthar1997/WallBox/blob/search_using_searchActivity/screenshots/dark/Screenshot_5.png" width="200" height="400" alt="ss_5">
+    <img src="https://github.com/dilipsuthar1997/WallBox/blob/search_using_searchActivity/screenshots/dark/Screenshot_6.png" width="200" height="400" alt="ss_6">
+    <img src="https://github.com/dilipsuthar1997/WallBox/blob/search_using_searchActivity/screenshots/dark/Screenshot_7.png" width="200" height="400" alt="ss_7">
+    <img src="https://github.com/dilipsuthar1997/WallBox/blob/search_using_searchActivity/screenshots/dark/Screenshot_8.png" width="200" height="400" alt="ss_8">
+    <img src="https://github.com/dilipsuthar1997/WallBox/blob/search_using_searchActivity/screenshots/dark/Screenshot_9.png" width="200" height="400" alt="ss_9">
+</p>
+
+## Support Development
+<a href="https://www.buymeacoffee.com/dilipsuthar97">
+    <img src="https://raw.githubusercontent.com/ravjanisz/imagecrypt/master/docs/assets/bmc.png" alt="Buy me a coffee ☕">
+</a>
+
+## Social
+![Tweeting](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)(https://twitter.com/dilipsuthar97)
 
 ## License
 ```
