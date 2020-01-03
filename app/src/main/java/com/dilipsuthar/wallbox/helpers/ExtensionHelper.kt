@@ -61,9 +61,7 @@ fun Int.isDark(): Boolean = ColorUtils.calculateLuminance(this) < 0.5
  *
  * @param value The boolean value to check predicate
  */
-infix fun Boolean.eq(value: Boolean): Boolean {
-    return this == value
-}
+infix fun Boolean.eq(value: Boolean): Boolean = this == value
 
 fun Int.getFormattedNumber(): String {
     return NumberFormat.getNumberInstance(Locale.US).format(this)

@@ -21,7 +21,7 @@ import butterknife.ButterKnife
 
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.WallBox
-import com.dilipsuthar.wallbox.activity.UserActivity
+import com.dilipsuthar.wallbox.activity.ProfileActivity
 import com.dilipsuthar.wallbox.adapters.UserAdapter
 import com.dilipsuthar.wallbox.data_source.model.SearchUsers
 import com.dilipsuthar.wallbox.data_source.model.User
@@ -123,7 +123,7 @@ class SearchUserFragment : Fragment() {
         mOnUserClickListener = object : UserAdapter.OnUserClickListener {
             override fun onUserClick(user: User, view: View, imgUserProfile: View, pos: Int) {
                 val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity!!, imgUserProfile, ViewCompat.getTransitionName(imgUserProfile)!!)
-                val intent = Intent(activity, UserActivity::class.java)
+                val intent = Intent(activity, ProfileActivity::class.java)
                 intent.putExtra(Preferences.USER, Gson().toJson(user))
                 startActivity(intent, options.toBundle())
             }

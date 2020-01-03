@@ -21,7 +21,7 @@ import butterknife.ButterKnife
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.WallBox
 import com.dilipsuthar.wallbox.activity.PhotoDetailActivity
-import com.dilipsuthar.wallbox.activity.UserActivity
+import com.dilipsuthar.wallbox.activity.ProfileActivity
 import com.dilipsuthar.wallbox.adapters.PhotoAdapter
 import com.dilipsuthar.wallbox.data_source.model.Photo
 import com.dilipsuthar.wallbox.data_source.Services
@@ -125,7 +125,7 @@ abstract class BasePhotosFragment : Fragment() {
             override fun onUserProfileClick(photo: Photo, pos: Int, imgPhotoBy: CircularImageView) {
                 //onPhotoUserProfileClick(photo, pos, imgPhotoBy)
                 val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity!!, imgPhotoBy, ViewCompat.getTransitionName(imgPhotoBy)!!)
-                val intent = Intent(activity, UserActivity::class.java)
+                val intent = Intent(activity, ProfileActivity::class.java)
                 intent.putExtra(Preferences.USER, Gson().toJson(photo.user))
                 startActivity(intent, options.toBundle())
             }

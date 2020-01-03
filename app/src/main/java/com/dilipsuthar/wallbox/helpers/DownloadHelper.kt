@@ -7,6 +7,9 @@ import android.os.Environment
 import com.dilipsuthar.wallbox.WallBox
 import java.io.File
 
+/**
+ * Singleton pattern
+ */
 class DownloadHelper constructor(context: Context) {
 
     private var mDownloadManager: DownloadManager? = null
@@ -33,7 +36,7 @@ class DownloadHelper constructor(context: Context) {
             .setTitle(fileName)
             .setDestinationInExternalPublicDir(WallBox.DOWNLOAD_PATH, fileName)
             .setVisibleInDownloadsUi(true)
-            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
+            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
 
         request.allowScanningByMediaScanner()
 

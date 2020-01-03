@@ -25,6 +25,13 @@ import java.util.*
 
 class SearchActivity : BaseActivity() {
 
+    /**
+     * Static
+     */
+    companion object {
+        const val RC_SPEECH_TO_TEXT = 101
+    }
+
     @BindView(R.id.search_tab_layout) lateinit var mTabLayout: TabLayout
     @BindView(R.id.search_view_pager) lateinit var mViewPager: ViewPager
     @BindView(R.id.et_search) lateinit var etSearch: EditText
@@ -74,7 +81,7 @@ class SearchActivity : BaseActivity() {
             speechIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
 
             if (speechIntent.resolveActivity(packageManager) != null)
-                startActivityForResult(speechIntent, 101)
+                startActivityForResult(speechIntent, RC_SPEECH_TO_TEXT)
             else PopupUtils.showToast(this, resources.getString(R.string.msg_no_speech_to_text_support), Toast.LENGTH_SHORT)
         }
 
@@ -89,7 +96,7 @@ class SearchActivity : BaseActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         when (requestCode) {
-            101 -> {
+            RC_SPEECH_TO_TEXT -> {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     val result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
                     etSearch.setText(result?.get(0) ?: "")
@@ -115,9 +122,7 @@ class SearchActivity : BaseActivity() {
         }
 
         val view = this.currentFocus
-        if (view != null) {
-            val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(view.windowToken, 0)
-        }
+        val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 }

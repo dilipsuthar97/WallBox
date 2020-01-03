@@ -2,6 +2,9 @@
 <resources>
     <string name="app_name">WallBox</string>
     <string name="cancel">取消</string>
+    <string name="yes">是</string>
+    <string name="no">没有</string>
+    <string name="error">错误</string>
     <string name="desc_clear_cache">從加載雲壁紙後創建的存儲中刪除圖像緩存</string>
     <string name="desc_http_error">有些不對勁</string>
     <string name="desc_network_error">網絡連接速度慢或沒有。 請檢查並重試。</string>
@@ -9,6 +12,7 @@
     <string name="desc_no_location">沒有位置</string>
     <string name="desc_reset_tutorial">重置啟動介紹教程</string>
     <string name="desc_theme">從我的視線中獲得白度</string>
+    <string name="desc_quality_warn_dialog">它会占用大量的互联网，确定吗？</string>
     <string name="dummy_description">Proin eget tortor risus. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.</string>
     <string name="menu_search">搜索</string>
     <string name="menu_sort">分類</string>
@@ -36,7 +40,7 @@
     <string name="owner_name">DILIP SUTHAR</string>
     <string name="photo_error">無法加載照片詳細信息</string>
     <string name="photo_statistics_error">無法加載統計信息</string>
-    <string name="powered_by">"powered by "</string>
+    <string name="photos_on">"photos on "</string>
     <string name="retry">重試</string>
     <string name="tab_title_collections_fragment">集合</string>
     <string name="tab_title_curated_wall_fragment">策劃</string>
@@ -63,7 +67,8 @@
     <string name="title_photo_info">相機</string>
     <string name="title_privacy_policy">隐私政策</string>
     <string name="title_find_us_on">在 - 找到我们</string>
-    <string name="title_interests">兴趣</string>
+    <string name="title_about">關於</string>
+    <string name="title_warning">警告</string>
     <string name="toolbar_title_about">關於</string>
     <string name="toolbar_title_favorites">最愛</string>
     <string name="toolbar_title_settings">設置</string>

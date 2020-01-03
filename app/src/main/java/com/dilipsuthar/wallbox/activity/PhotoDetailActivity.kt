@@ -223,7 +223,7 @@ class PhotoDetailActivity : BaseActivity() {
         // Navigate to profile activity
         (findViewById<View>(R.id.btn_profile)).setOnClickListener {
             val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, imgUser, ViewCompat.getTransitionName(imgUser)!!)
-            val intent = Intent(this@PhotoDetailActivity, UserActivity::class.java)
+            val intent = Intent(this@PhotoDetailActivity, ProfileActivity::class.java)
             intent.putExtra(Preferences.USER, Gson().toJson(mPhoto.user))
             startActivity(intent, options.toBundle())
         }

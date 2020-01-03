@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/backgroundColor"
+        tools:context=".activity.ProfileActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar"
+            android:background="?attr/appBarColor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.MaterialComponents">
+        <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:background="?attr/appBarColor"
+                style="@style/WallBoxToolbarTheme"
+                android:gravity="center"
+                app:layout_scrollFlags="scroll|snap|enterAlwaysCollapsed">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Profile"
+                    android:textAppearance="@style/TextAppearance.Medium.Bold"
+                    android:gravity="center"
+                    android:layout_marginEnd="16dp"
+                    android:textColor="?attr/primaryTextColor"/>
+        </androidx.appcompat.widget.Toolbar>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/lyt_profile_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_scrollFlags="scroll|snap|enterAlwaysCollapsed">
+
+            <com.mikhaellopez.circularimageview.CircularImageView
+                    android:id="@+id/img_user_profile"
+                    style="@style/CircularImageViewTheme"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:transitionName="profilePhoto"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            <!--<LinearLayout
+                    android:id="@+id/lyt_interest_chips"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toTopOf="@+id/tv_profile_bio"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/img_user_profile"
+                    tools:visibility="visible">
+
+                <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/title_interests"
+                        android:textColor="?attr/primaryTextColor" />
+
+                <HorizontalScrollView
+                        android:id="@+id/horizontalScrollView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="none">
+
+                    <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/chip_grp_interest"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:singleLine="true">
+
+                    </com.google.android.material.chip.ChipGroup>
+                </HorizontalScrollView>
+            </LinearLayout>-->
+
+            <TextView
+                    android:id="@+id/tv_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textAppearance="@style/TextAppearance.Large.Bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/img_user_profile"
+                    tools:text="Amanda Martinez" />
+
+            <TextView
+                    android:id="@+id/tv_profile_bio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:paddingTop="8dp"
+                    android:textColor="?attr/secondaryTextColor"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_username"
+                    tools:text="@string/dummy_description"
+                    tools:visibility="visible" />
+
+            <LinearLayout
+                    android:id="@+id/lyt_location_link_info"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_profile_bio">
+
+                <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_place"
+                        android:tint="?attr/colorAccent" />
+
+                <TextView
+                        android:id="@+id/tv_user_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:autoLink="map"
+                        android:linksClickable="true"
+                        android:textColor="?attr/secondaryTextColor"
+                        android:textSize="12sp"
+                        tools:text="Leipzig, germany" />
+
+                <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginBottom="4dp"
+                        android:background="@android:color/darker_gray" />
+
+                <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_public"
+                        android:tint="?attr/colorAccent" />
+
+                <TextView
+                        android:id="@+id/tv_user_website"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:autoLink="web"
+                        android:linksClickable="true"
+                        android:textColor="?attr/secondaryTextColor"
+                        android:textColorLink="?attr/secondaryTextColor"
+                        android:textSize="12sp"
+                        tools:text="Leipzig, germany" />
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="24dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="@+id/img_user_profile"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/img_user_profile"
+                    app:layout_constraintTop_toTopOf="@+id/img_user_profile">
+
+                <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                    <TextView
+                            android:id="@+id/tv_followers_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.Medium.Bold"
+                            android:textColor="?attr/primaryTextColor"
+                            tools:layout_editor_absoluteX="156dp"
+                            tools:layout_editor_absoluteY="35dp"
+                            android:text="-" />
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Followers"
+                            android:textSize="12sp"
+                            android:textColor="?attr/secondaryTextColor"/>
+                </LinearLayout>
+
+                <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@android:color/darker_gray" />
+
+                <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight='1'
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                    <TextView
+                            android:id="@+id/tv_following_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.Medium.Bold"
+                            android:textColor="?attr/primaryTextColor"
+                            tools:layout_editor_absoluteX="156dp"
+                            tools:layout_editor_absoluteY="35dp"
+                            android:text="-" />
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Following"
+                            android:textSize="12sp"
+                            android:textColor="?attr/secondaryTextColor"/>
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_layout"
+                style="@style/Widget.MaterialComponents.TabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/appBarColor"
+                app:tabTextColor="?attr/tabUnselectedColor"
+                app:tabSelectedTextColor="?attr/tabSelectedColor"
+                app:tabGravity="fill"
+                app:tabRippleColor="?attr/colorRipple"
+                app:tabIndicatorFullWidth="false"
+                app:tabIndicator="@drawable/indicator_tab_layout"
+                app:tabTextAppearance="@style/TextAppearance.AppCompat.Small"
+                app:tabIndicatorHeight="3dp"
+                app:tabMode="scrollable"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.viewpager.widget.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="1dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

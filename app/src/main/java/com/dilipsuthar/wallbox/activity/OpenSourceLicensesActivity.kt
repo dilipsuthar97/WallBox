@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +16,7 @@ import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.adapters.OpenSourceLicenseAdapter
 import com.dilipsuthar.wallbox.data_source.DataGenerator
 import com.dilipsuthar.wallbox.items.OpenSourceLicense
+import com.dilipsuthar.wallbox.utils.PopupUtils
 import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.dilipsuthar.wallbox.utils.Tools
 
@@ -57,7 +59,7 @@ class OpenSourceLicensesActivity : BaseActivity() {
         listLicenses = DataGenerator.getLicenseData(this)
         OnLicenseClickListener = object : OpenSourceLicenseAdapter.OnLicenseClickListener {
             override fun onLicenseClick(openSourceLicense: OpenSourceLicense, view: View) {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(openSourceLicense.url)))
+                goToUrl(openSourceLicense.url)
             }
         }
 
@@ -69,5 +71,13 @@ class OpenSourceLicensesActivity : BaseActivity() {
         if (item?.itemId == android.R.id.home) onBackPressed()
 
         return true
+    }
+
+    fun goToUrl(url: String) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        if (intent.resolveActivity(packageManager) != null)
+            startActivity(intent)
+        else
+            PopupUtils.showToast(this, getString(R.string.error), Toast.LENGTH_SHORT)
     }
 }

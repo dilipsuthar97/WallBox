@@ -26,6 +26,7 @@ import java.nio.file.Files.size
 import java.text.NumberFormat
 import java.util.*
 import java.util.Map
+import kotlin.math.abs
 
 
 object Tools {
@@ -154,4 +155,11 @@ object Tools {
         return packageInfo?.versionName ?: "1.0.0"
     }
 
+    fun formatLongNumbers(number: Long): String? {
+        return when {
+            abs(number / 1000000) > 1 -> (number / 1000000).toString() + "M"
+            abs(number / 1000) > 1 -> (number / 1000).toString() + "K"
+            else -> number.toString()   // deal with easy case
+        }
+    }
 }

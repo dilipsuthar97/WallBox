@@ -33,8 +33,6 @@
                       android:title="@string/menu_sort_all"/>
                 <item android:id="@+id/menu_sort_collection_featured"
                       android:title="@string/menu_sort_featured"/>
-                <item android:id="@+id/menu_sort_collection_curated"
-                      android:title="@string/menu_sort_curated"/>
             </group>
         </menu>
     </item>

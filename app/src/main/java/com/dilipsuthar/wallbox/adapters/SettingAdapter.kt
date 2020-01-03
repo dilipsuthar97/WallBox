@@ -131,10 +131,10 @@ class SettingAdapter(
                                     if (text == "Raw" || text == "Full") {
 
                                         MaterialDialog(context).show {
-                                            title(text = "Warning")
+                                            title(R.string.title_warning)
                                             cornerRadius(16f)
-                                            message(text = "It will use high amount of data\nAre you sure?")
-                                            positiveButton(text = "YES") { warnDialog ->
+                                            message(R.string.desc_quality_warn_dialog)
+                                            positiveButton(R.string.yes) { warnDialog ->
 
                                                 sharedPreferences!!.edit().putString(Preferences.WALLPAPER_QUALITY, text).apply()
                                                 setting.subTitle = text
@@ -143,7 +143,7 @@ class SettingAdapter(
                                                 warnDialog.dismiss()
                                             }
 
-                                            negativeButton(text = "NO") { warnDialog ->
+                                            negativeButton(R.string.no) { warnDialog ->
                                                 warnDialog.dismiss()
                                             }
                                         }

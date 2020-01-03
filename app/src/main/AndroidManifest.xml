@@ -19,7 +19,7 @@
             android:theme="@style/WallBox.Primary.Base.Light">
         <activity android:name=".activity.OpenSourceLicensesActivity"></activity>
         <activity android:name=".activity.SearchActivity" />
-        <activity android:name=".activity.UserActivity" />
+        <activity android:name=".activity.ProfileActivity" />
         <activity android:name=".activity.CollectionDetailActivity" />
         <activity android:name=".activity.PhotoDetailActivity" />
         <activity android:name=".activity.SupportUsActivity" />

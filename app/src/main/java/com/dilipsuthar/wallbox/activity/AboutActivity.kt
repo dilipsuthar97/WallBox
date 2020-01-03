@@ -30,7 +30,7 @@ class AboutActivity : BaseActivity(), View.OnClickListener {
     @BindView(R.id.btn_unsplash) lateinit var btnUnsplash: View
     @BindView(R.id.btn_policy) lateinit var btnPolicy: View
     @BindView(R.id.btn_open_source_license) lateinit var btnOpenSourceLicense: View
-
+    @BindView(R.id.txt_bottom_msg) lateinit var txtBottomMsg: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -47,9 +47,9 @@ class AboutActivity : BaseActivity(), View.OnClickListener {
         initComponent()
     }
 
-    override fun onClick(p0: View?) {
+    override fun onClick(view: View?) {
         var url = ""
-        when (p0?.id) {
+        when (view?.id) {
             R.id.btn_github -> url = "https://github.com/dilipsuthar1997"
             R.id.btn_twitter -> url = "https://twitter.com/dilipsuthar97"
             R.id.btn_instagram -> url = "https://instagram.com/dilipsuthar97"
@@ -61,7 +61,7 @@ class AboutActivity : BaseActivity(), View.OnClickListener {
             }
         }
 
-        if (p0?.id != R.id.btn_open_source_license) {
+        if (view?.id != R.id.btn_open_source_license) {
             val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             startActivity(i)
         }
@@ -92,6 +92,11 @@ class AboutActivity : BaseActivity(), View.OnClickListener {
         btnUnsplash.setOnClickListener(this)
         btnOpenSourceLicense.setOnClickListener(this)
         btnPolicy.setOnClickListener(this)
+
+        txtBottomMsg.text = (StringBuilder()
+            .append("Made with ")
+            .append(String(Character.toChars(0x2764)))
+            .append(" by ${resources.getString(R.string.owner_name)}"))
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

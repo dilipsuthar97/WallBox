@@ -13,7 +13,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="?attr/secondaryTextColor"
-            android:text="@string/powered_by"/>
+            android:text="@string/photos_on"/>
     <View
             android:layout_width="5dp"
             android:layout_height="0dp"/>

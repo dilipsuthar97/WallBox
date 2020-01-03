@@ -399,6 +399,14 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <TextView
+                    android:layout_margin="16dp"
+                    android:id="@+id/txt_bottom_msg"
+                    android:textColor="?attr/primaryTextColor"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

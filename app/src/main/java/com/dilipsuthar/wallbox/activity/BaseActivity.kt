@@ -2,7 +2,6 @@ package com.dilipsuthar.wallbox.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.emoji.bundled.BundledEmojiCompatConfig
 import androidx.emoji.text.EmojiCompat
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.helpers.LocaleHelper
@@ -21,8 +20,8 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         // Initialize emoji first
-        val config: EmojiCompat.Config = BundledEmojiCompatConfig(this)
-        EmojiCompat.init(config)
+        /*val config: EmojiCompat.Config = BundledEmojiCompatConfig(this)
+        EmojiCompat.init(config)*/
 
         // Init app language
         LocaleHelper.loadLocal(this)

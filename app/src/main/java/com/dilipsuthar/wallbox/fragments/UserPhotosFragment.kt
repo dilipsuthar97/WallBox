@@ -54,7 +54,7 @@ class UserPhotosFragment : BasePhotosFragment() {
                 mService?.requestUserPhotos(mUser.username, mPage, WallBox.DEFAULT_PER_PAGE, mSort!!, mOnRequestPhotosListener)
             }
 
-        }else {
+        } else {
             Tools.visibleViews(lytHttpError)
             Tools.inVisibleViews(mRecyclerView, lytNetworkError, type = Tools.GONE)
             mSwipeRefreshLayout setRefresh false

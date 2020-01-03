@@ -54,6 +54,9 @@
     <string name="photo_statistics_error">Failed to load statistics</string>
     <string name="photo_error">Failed to load photo details</string>
     <string name="cancel">Cancel</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
+    <string name="error">Error</string>
 
     <string name="msg_more_photos">More photos..</string>
     <string name="msg_no_more_photos">No more photos available :(</string>
@@ -67,7 +70,7 @@
     <string name="msg_download_start">Downloading started…</string>
     <string name="msg_photo_downloaded">is already downloaded</string>
 
-    <string name="powered_by">powered by </string>
+    <string name="photos_on">photos on </string>
     <string name="unsplash">Unsplash</string>
 
     <string name="title_language">Language</string>
@@ -85,13 +88,15 @@
     <string name="title_select_quality">Select Quality</string>
     <string name="title_privacy_policy">Privacy policy</string>
     <string name="title_find_us_on">Find us on</string>
-    <string name="title_interests">Interests</string>
+    <string name="title_about">About</string>
+    <string name="title_warning">Warning</string>
 
     <string name="desc_no_location">No location</string>
     <string name="desc_no_description">No description</string>
     <string name="desc_theme">Get that whiteness out of my sight!</string>
     <string name="desc_clear_cache">Remove image cache from your storage created after loading cloud wallpaper</string>
     <string name="desc_reset_tutorial">Reset startup intro tutorial</string>
+    <string name="desc_quality_warn_dialog">It will use a high amount of data, Are you sure?</string>
 
     <string name="hint_search_bar">Search here</string>
 

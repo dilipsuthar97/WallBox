@@ -54,6 +54,9 @@
     <string name="photo_statistics_error">आंकड़े लोड करने में विफल</string>
     <string name="photo_error">फ़ोटो विवरण लोड करने में विफल</string>
     <string name="cancel">कैंसिल</string>
+    <string name="yes">हाँ</string>
+    <string name="no">नहीं</string>
+    <string name="error">एरर</string>
 
     <string name="msg_more_photos">और अधिक तस्वीरें..</string>
     <string name="msg_no_more_photos">और कोई फ़ोटो उपलब्ध नहीं है :(</string>
@@ -67,7 +70,7 @@
     <string name="msg_download_start">डाउनलोडिंग शुरू हुई…</string>
     <string name="msg_photo_downloaded">पहले से डाउनलोड है</string>
 
-    <string name="powered_by">powered by </string>
+    <string name="photos_on">photos on </string>
     <string name="unsplash">Unsplash</string>
 
     <string name="title_language">भाषा</string>
@@ -85,13 +88,15 @@
     <string name="title_select_quality">गुणवत्ता का चयन करें</string>
     <string name="title_privacy_policy">गोपनीयता नीति</string>
     <string name="title_find_us_on">हमें यहाँ तलाशें</string>
-    <string name="title_interests">रूचियाँ</string>
+    <string name="title_about">बारे में</string>
+    <string name="title_warning">चेतावनी</string>
 
     <string name="desc_no_location">कोई स्थान नहीं</string>
     <string name="desc_no_description">कोई विवरण नहीं</string>
     <string name="desc_theme">इस सफेदी को मेरी दृष्टि से बाहर निकालो!</string>
     <string name="desc_clear_cache">क्लाउड वॉलपेपर लोड करने के बाद अपने स्टोरेज में बनाए गए इमेज कैश को निकालें</string>
     <string name="desc_reset_tutorial">स्टार्टअप इंट्रो ट्यूटोरियल को रीसेट करें</string>
+    <string name="desc_quality_warn_dialog">यह उच्च मात्रा में इंटरनेट का उपयोग करेगा, क्या आप सुनिश्चित हैं?</string>
 
     <string name="hint_search_bar">यहाँ ढूँढे</string>
 

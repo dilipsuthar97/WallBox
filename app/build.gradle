@@ -9,8 +9,8 @@ android {
         applicationId "com.dilipsuthar.wallbox"
         minSdkVersion 22
         targetSdkVersion 29
-        versionCode 100
-        versionName "1.0.0"
+        versionCode 220010000
+        versionName "1.0.0-beta"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -38,7 +38,7 @@ android {
 dependencies {
 
     // Versions
-    def butterKnifeVersion = "10.1.0"
+    def butterKnifeVersion = "10.2.0"
     def retrofit2Version = "2.6.0"
     def glideVersion = "4.9.0"
 
@@ -51,7 +51,7 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.emoji:emoji:1.0.0'
-    implementation 'androidx.emoji:emoji-bundled:1.0.0'                         // Emoji handler
+    //implementation 'androidx.emoji:emoji-bundled:1.0.0'                         // Emoji handler
     implementation 'com.android.billingclient:billing:1.2'                      // Billing
 
     testImplementation 'junit:junit:4.12'
@@ -71,5 +71,6 @@ dependencies {
     implementation 'com.github.danimahardhika.android-helpers:core:0.1.0'       // File helper
     implementation 'com.afollestad.material-dialogs:core:3.1.0'                 // Material dialog
     implementation 'com.getkeepsafe.taptargetview:taptargetview:1.13.0'         // Tap target view
+    //implementation 'com.github.sephiroth74:android-target-tooltip:2.0.4'        // Tooltip
 
 }

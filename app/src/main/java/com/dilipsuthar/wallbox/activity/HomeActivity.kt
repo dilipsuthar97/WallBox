@@ -115,14 +115,14 @@ class HomeActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
         if (currentLanguage != LocaleHelper.getLocale(this) && currentTheme != ThemeUtils.getTheme(this)) {
-            recreate()
             mDrawerLayout.closeDrawers()
+            recreate()
         } else if (currentLanguage != LocaleHelper.getLocale(this)) {
-            recreate()
             mDrawerLayout.closeDrawers()
+            recreate()
         } else if (currentTheme != ThemeUtils.getTheme(this)) {
-            recreate()
             mDrawerLayout.closeDrawers()
+            recreate()
         }
     }
 
@@ -269,7 +269,6 @@ class HomeActivity : BaseActivity() {
         mSortCuratedPopular = menu.findItem(R.id.menu_sort_curated_popular)
         mSortCollectionAll = menu.findItem(R.id.menu_sort_collection_all)
         mSortCollectionFeatured = menu.findItem(R.id.menu_sort_collection_featured)
-        mSortCollectionCurated = menu.findItem(R.id.menu_sort_collection_curated)
 
         actionSortMenu = menu.findItem(R.id.action_sort)
         return true
@@ -321,10 +320,6 @@ class HomeActivity : BaseActivity() {
                 transaction.replace(R.id.collections_container, CollectionsFragment.newInstance("featured")).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
                 showSnackBar("Collections sorted by Featured", Snackbar.LENGTH_SHORT)
             }
-            R.id.menu_sort_collection_curated -> {
-                transaction.replace(R.id.collections_container, CollectionsFragment.newInstance("curated")).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
-                showSnackBar("Collections sorted by Curated", Snackbar.LENGTH_SHORT)
-            }
             else -> mDrawerLayout.openDrawer(GravityCompat.START)
         }
 
@@ -374,5 +369,6 @@ class HomeActivity : BaseActivity() {
             })
             .start()
     }
+
 }
 

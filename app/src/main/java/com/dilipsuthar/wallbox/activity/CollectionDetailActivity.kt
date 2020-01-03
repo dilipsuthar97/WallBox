@@ -130,7 +130,7 @@ class CollectionDetailActivity : BaseActivity() {
 
             override fun onUserProfileClick(photo: Photo, pos: Int, imgPhotoBy: CircularImageView) {
                 val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this@CollectionDetailActivity, imgPhotoBy, ViewCompat.getTransitionName(imgPhotoBy)!!)
-                val intent = Intent(this@CollectionDetailActivity, UserActivity::class.java)
+                val intent = Intent(this@CollectionDetailActivity, ProfileActivity::class.java)
                 intent.putExtra(Preferences.USER, Gson().toJson(photo.user))
                 startActivity(intent, options.toBundle())
             }
@@ -178,7 +178,7 @@ class CollectionDetailActivity : BaseActivity() {
         }
         btnProfile.setOnClickListener {
             val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, imgUserProfile, ViewCompat.getTransitionName(imgUserProfile)!!)
-            val intent = Intent(this, UserActivity::class.java)
+            val intent = Intent(this, ProfileActivity::class.java)
             intent.putExtra(Preferences.USER, Gson().toJson(mCollection?.user))
             startActivity(intent, options.toBundle())
         }
