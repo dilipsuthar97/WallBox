@@ -54,6 +54,9 @@ infix fun SwipeRefreshLayout.setRefresh(refreshing: Boolean) {
     else if (this.isRefreshing) this.isRefreshing = refreshing
 }
 
+/**
+ * check if the color's luminance value is dark or light
+ */
 fun Int.isDark(): Boolean = ColorUtils.calculateLuminance(this) < 0.5
 
 /**

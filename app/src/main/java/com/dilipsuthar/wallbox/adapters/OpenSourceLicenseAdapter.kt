@@ -10,6 +10,7 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.items.OpenSourceLicense
+import com.dilipsuthar.wallbox.viewholders.LicenseViewHolder
 
 class OpenSourceLicenseAdapter(
     private val listLicenses: ArrayList<OpenSourceLicense>?,
@@ -18,7 +19,7 @@ class OpenSourceLicenseAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_open_source_license, parent, false)
-        return ViewHolder(view)
+        return LicenseViewHolder(view)
     }
 
     override fun getItemCount(): Int {
@@ -27,28 +28,9 @@ class OpenSourceLicenseAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val openSourceLicense = listLicenses?.get(position) ?: OpenSourceLicense()
-        if (holder is ViewHolder) {
-            holder.licenseName.text = openSourceLicense.name
-            holder.licenseOwner.text = openSourceLicense.ownerName
-            holder.licenseVersion.text = openSourceLicense.version
-
-            holder.rootView.setOnClickListener { view ->
-                listener?.onLicenseClick(openSourceLicense, view)
-            }
+        if (holder is LicenseViewHolder) {
+            holder.bind(openSourceLicense, listener)
         }
-    }
-
-    /** View holder */
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        init {
-            ButterKnife.bind(this, view)
-        }
-
-        @BindView(R.id.tv_license_name) lateinit var licenseName: TextView
-        @BindView(R.id.tv_license_owner) lateinit var licenseOwner: TextView
-        @BindView(R.id.tv_license_version) lateinit var licenseVersion: TextView
-        @BindView(R.id.root_view) lateinit var rootView: LinearLayout
-
     }
 
     /** Interface */

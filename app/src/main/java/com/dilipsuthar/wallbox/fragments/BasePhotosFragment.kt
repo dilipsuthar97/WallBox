@@ -13,6 +13,7 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -29,6 +30,7 @@ import com.dilipsuthar.wallbox.helpers.setRefresh
 import com.dilipsuthar.wallbox.preferences.Preferences
 import com.dilipsuthar.wallbox.utils.PopupUtils
 import com.dilipsuthar.wallbox.utils.Tools
+import com.dilipsuthar.wallbox.utils.itemDecorater.HorizontalSpacingItemDecorator
 import com.dilipsuthar.wallbox.utils.itemDecorater.VerticalSpacingItemDecorator
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
@@ -36,15 +38,15 @@ import com.mikhaellopez.circularimageview.CircularImageView
 import retrofit2.Call
 import retrofit2.Response
 
-abstract class BasePhotosFragment : Fragment() {
-    private val TAG = "BaseFragment"
+abstract class BasePhotosFragment : Fragment(), Services.OnRequestPhotosListener, PhotoAdapter.OnItemClickListener {
+    private val TAG = BasePhotosFragment::class.java.simpleName
 
     var mService: Services? = null
-    lateinit var mOnRequestPhotosListener: Services.OnRequestPhotosListener
+    //lateinit var mOnRequestPhotosListener: Services.OnRequestPhotosListener
     var mPage = 0
     var mSort: String? = null
     lateinit var mPhotoAdapter: PhotoAdapter
-    var mOnItemClickListener: PhotoAdapter.OnItemClickListener? = null
+    //var mOnItemClickListener: PhotoAdapter.OnItemClickListener? = null
     var mPhotosList: ArrayList<Photo> = ArrayList()
     var loadMore: Boolean = false
     var snackBar: Snackbar? = null
@@ -62,74 +64,6 @@ abstract class BasePhotosFragment : Fragment() {
 
         /** SERVICES / API */
         mService = Services.getService()
-
-        /** Listeners */
-        // API request listener
-        mOnRequestPhotosListener = object : Services.OnRequestPhotosListener {
-            override fun onRequestPhotosSuccess(call: Call<List<Photo>>, response: Response<List<Photo>>) {
-
-                Log.d(TAG, response.code().toString())
-                mSwipeRefreshLayout setRefresh false
-                if (!loadMore) PopupUtils.showToast(context, "Your photos :)", Toast.LENGTH_SHORT)
-                if (response.isSuccessful) {
-                    if (response.body() != null) {
-                        mPage++
-                        loadMore = false
-                        mPhotosList.clear()
-                        mPhotosList.addAll(ArrayList(response.body()!!))
-                        updateAdapter(mPhotosList)
-                        mRecyclerView.smoothScrollToPosition(mPhotoAdapter.itemCount.minus(mPhotosList.size - 1))
-                        Tools.visibleViews(mRecyclerView)
-                        Tools.inVisibleViews(lytNetworkError, lytHttpError, type = Tools.GONE)
-                    }
-                } else {
-                    mSwipeRefreshLayout setRefresh false
-                    loadMore = false
-                    if (mPhotosList.isEmpty()) {
-                        Tools.visibleViews(lytHttpError)
-                        Tools.inVisibleViews(mRecyclerView, lytNetworkError, type = Tools.GONE)
-                    } else snackBar = PopupUtils.showHttpErrorSnackBar(mSwipeRefreshLayout) { loadPhotos(mRecyclerView.layoutManager?.itemCount!!) }
-                }
-
-            }
-
-            override fun onRequestPhotosFailed(call: Call<List<Photo>>, t: Throwable) {
-
-                Log.d(TAG, t.message!!)
-                mSwipeRefreshLayout setRefresh false
-                loadMore = false
-                if (mPhotosList.isEmpty()) {
-                    Tools.visibleViews(lytNetworkError)
-                    Tools.inVisibleViews(mRecyclerView, lytHttpError, type = Tools.GONE)
-                } else snackBar = PopupUtils.showNetworkErrorSnackBar(mSwipeRefreshLayout) { loadPhotos(mRecyclerView.layoutManager?.itemCount!!) }
-
-            }
-        }
-
-        // Adapter listener
-        mOnItemClickListener = object : PhotoAdapter.OnItemClickListener {
-            override fun onItemClick(photo: Photo, view: View, pos: Int, imageView: ImageView) {
-                //onPhotoClick(photo, view, pos, imageView)
-                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity!!, imageView, ViewCompat.getTransitionName(imageView)!!)
-                val intent = Intent(activity, PhotoDetailActivity::class.java)
-                intent.putExtra(Preferences.PHOTO, Gson().toJson(photo))
-                startActivity(intent, options.toBundle())
-            }
-
-            override fun onItemLongClick(photo: Photo, view: View, pos: Int, imageView: ImageView) {
-                //onPhotoLongClick(photo, view, pos, imageView)
-                PopupUtils.showToast(context, "${pos.plus(1)}", Toast.LENGTH_SHORT)
-                Log.d(WallBox.TAG, "mOnItemClickListener: onItemLongClick")
-            }
-
-            override fun onUserProfileClick(photo: Photo, pos: Int, imgPhotoBy: CircularImageView) {
-                //onPhotoUserProfileClick(photo, pos, imgPhotoBy)
-                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity!!, imgPhotoBy, ViewCompat.getTransitionName(imgPhotoBy)!!)
-                val intent = Intent(activity, ProfileActivity::class.java)
-                intent.putExtra(Preferences.USER, Gson().toJson(photo.user))
-                startActivity(intent, options.toBundle())
-            }
-        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -142,7 +76,7 @@ abstract class BasePhotosFragment : Fragment() {
         mRecyclerView.setHasFixedSize(true)
         mRecyclerView.addItemDecoration(VerticalSpacingItemDecorator(22))
         mRecyclerView.setItemViewCacheSize(5)
-        mPhotoAdapter = PhotoAdapter(ArrayList(), "list", context, activity, mOnItemClickListener)
+        mPhotoAdapter = PhotoAdapter(ArrayList(), "list", context, activity, this)
         mRecyclerView.adapter = mPhotoAdapter
 
         mPage = 1
@@ -201,7 +135,7 @@ abstract class BasePhotosFragment : Fragment() {
             mPage = 1
             mPhotosList.clear()
             loadPhotos(mRecyclerView.layoutManager?.itemCount!!)
-            mPhotoAdapter = PhotoAdapter(ArrayList(), "list", context, activity, mOnItemClickListener)
+            mPhotoAdapter = PhotoAdapter(ArrayList(), "list", context, activity, this)
             mRecyclerView.adapter = mPhotoAdapter
         }
 
@@ -241,6 +175,65 @@ abstract class BasePhotosFragment : Fragment() {
         }
 
     }*/
+
+    override fun onRequestPhotosSuccess(call: Call<List<Photo>>, response: Response<List<Photo>>) {
+        Log.d(TAG, response.code().toString())
+        mSwipeRefreshLayout setRefresh false
+        if (!loadMore) PopupUtils.showToast(context, "Your photos :)", Toast.LENGTH_SHORT)
+        if (response.isSuccessful) {
+            if (response.body() != null) {
+                mPage++
+                loadMore = false
+                mPhotosList.clear()
+                mPhotosList.addAll(ArrayList(response.body()!!))
+                updateAdapter(mPhotosList)
+                mRecyclerView.smoothScrollToPosition(mPhotoAdapter.itemCount.minus(mPhotosList.size - 1))
+                Tools.visibleViews(mRecyclerView)
+                Tools.inVisibleViews(lytNetworkError, lytHttpError, type = Tools.GONE)
+            }
+        } else {
+            mSwipeRefreshLayout setRefresh false
+            loadMore = false
+            if (mPhotosList.isEmpty()) {
+                Tools.visibleViews(lytHttpError)
+                Tools.inVisibleViews(mRecyclerView, lytNetworkError, type = Tools.GONE)
+            } else snackBar = PopupUtils.showHttpErrorSnackBar(mSwipeRefreshLayout) { loadPhotos(mRecyclerView.layoutManager?.itemCount!!) }
+        }
+    }
+
+    override fun onRequestPhotosFailed(call: Call<List<Photo>>, t: Throwable) {
+        Log.d(TAG, t.message!!)
+        mSwipeRefreshLayout setRefresh false
+        loadMore = false
+        if (mPhotosList.isEmpty()) {
+            Tools.visibleViews(lytNetworkError)
+            Tools.inVisibleViews(mRecyclerView, lytHttpError, type = Tools.GONE)
+        } else snackBar = PopupUtils.showNetworkErrorSnackBar(mSwipeRefreshLayout) {
+            loadPhotos(mRecyclerView.layoutManager?.itemCount!!)
+        }
+    }
+
+    override fun onItemClick(photo: Photo, view: View, pos: Int, imageView: ImageView) {
+        //onPhotoClick(photo, view, pos, imageView)
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity!!, imageView, ViewCompat.getTransitionName(imageView)!!)
+        val intent = Intent(activity, PhotoDetailActivity::class.java)
+        intent.putExtra(Preferences.PHOTO, Gson().toJson(photo))
+        startActivity(intent, options.toBundle())
+    }
+
+    override fun onItemLongClick(photo: Photo, view: View, pos: Int, imageView: ImageView) {
+        //onPhotoLongClick(photo, view, pos, imageView)
+        PopupUtils.showToast(context, "${pos.plus(1)}", Toast.LENGTH_SHORT)
+        Log.d(WallBox.TAG, "mOnItemClickListener: onItemLongClick")
+    }
+
+    override fun onUserProfileClick(photo: Photo, pos: Int, imgPhotoBy: CircularImageView) {
+        //onPhotoUserProfileClick(photo, pos, imgPhotoBy)
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity!!, imgPhotoBy, ViewCompat.getTransitionName(imgPhotoBy)!!)
+        val intent = Intent(activity, ProfileActivity::class.java)
+        intent.putExtra(Preferences.USER, Gson().toJson(photo.user))
+        startActivity(intent, options.toBundle())
+    }
 
     /** Abstract methods */
     abstract fun loadPhotos(totalItem: Int)

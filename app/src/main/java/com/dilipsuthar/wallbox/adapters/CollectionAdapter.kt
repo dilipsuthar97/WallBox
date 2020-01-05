@@ -11,6 +11,7 @@ import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.data_source.model.Collection
 import com.dilipsuthar.wallbox.preferences.Preferences
 import com.dilipsuthar.wallbox.helpers.loadUrl
+import com.dilipsuthar.wallbox.viewholders.CollectionViewHolder
 
 /**
  * @adapter It bind the collection data to recycler view
@@ -26,11 +27,9 @@ class CollectionAdapter
         private val listener: OnCollectionClickListener?
     ): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val sharedPreferences = Preferences.getSharedPreferences(context)
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view: View? = LayoutInflater.from(parent.context).inflate(R.layout.item_collection, parent, false)
-        return CollectionViewHolder(view)
+        return CollectionViewHolder(view!!)
     }
 
     override fun getItemCount(): Int {
@@ -44,28 +43,11 @@ class CollectionAdapter
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val collection = mCollectionList?.get(position)
         if (holder is CollectionViewHolder) {
-            collection?.let {
-                holder.tvCollectionTitle.text = it.title
-                if (it.cover_photo != null) {
-                    holder.imageCollection.loadUrl(it.cover_photo.urls.regular)
-                }
-                holder.tvWallpaperCount.text = "${it.total_photos} ${context!!.resources.getString(R.string.wallpapers)}"
-
-                holder.imageCollection.setOnClickListener { view ->
-                    listener?.onCollectionClick(it, view, position)
-                }
-            }
+            holder.bind(collection, context, listener)
         }
     }
 
-    /** View holders */
-    class CollectionViewHolder(itemView: View?): RecyclerView.ViewHolder(itemView!!) {
-        val imageCollection: ImageView = itemView!!.findViewById(R.id.img_collection)
-        val tvCollectionTitle: TextView = itemView!!.findViewById(R.id.tv_collection_title)
-        val tvWallpaperCount: TextView = itemView!!.findViewById(R.id.tv_wallpaper_count)
-    }
-
-    /** @method update adapter and notify item change */
+    /** update adapter and notify item change */
     fun addAll(collections: ArrayList<Collection>) {
         mCollectionList?.addAll(collections)
         notifyItemInserted(mCollectionList?.size!!.minus(28))

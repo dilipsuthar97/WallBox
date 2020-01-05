@@ -12,7 +12,7 @@ import butterknife.ButterKnife
 import com.danimahardhika.android.helpers.core.FileHelper
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.WallBox
-import com.dilipsuthar.wallbox.adapters.SettingAdapter
+import com.dilipsuthar.wallbox.adapters.SettingsAdapter
 import com.dilipsuthar.wallbox.items.Setting
 import com.dilipsuthar.wallbox.preferences.Preferences
 import com.dilipsuthar.wallbox.utils.ThemeUtils
@@ -100,7 +100,7 @@ class SettingsActivity : BaseActivity() {
 
         mSettingList.add(Setting(Setting.Type.FOOTER))
 
-        mRecyclerView.adapter = SettingAdapter(mSettingList, this, this@SettingsActivity)
+        mRecyclerView.adapter = SettingsAdapter(mSettingList, this, this@SettingsActivity)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

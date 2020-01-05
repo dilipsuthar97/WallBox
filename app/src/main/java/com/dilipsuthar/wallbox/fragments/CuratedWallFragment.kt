@@ -35,6 +35,6 @@ class CuratedWallFragment : BasePhotosFragment() {
         mSwipeRefreshLayout setRefresh true
         loadMore = true
         if (snackBar != null) snackBar?.dismiss()
-        mService?.requestCuratedPhotos(mPage, WallBox.DEFAULT_PER_PAGE, mSort!!, mOnRequestPhotosListener)
+        mService?.requestCuratedPhotos(mPage, WallBox.DEFAULT_PER_PAGE, mSort!!, this)
     }
 }

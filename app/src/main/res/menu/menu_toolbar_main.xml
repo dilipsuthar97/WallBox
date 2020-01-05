@@ -22,12 +22,12 @@
                 <item android:id="@+id/menu_sort_recent_popular"
                       android:title="@string/menu_sort_popular"/>
 
-                <item android:id="@+id/menu_sort_curated_latest"
+                <!--<item android:id="@+id/menu_sort_curated_latest"
                       android:title="@string/menu_sort_latest"/>
                 <item android:id="@+id/menu_sort_curated_oldest"
                       android:title="@string/menu_sort_oldest"/>
                 <item android:id="@+id/menu_sort_curated_popular"
-                      android:title="@string/menu_sort_popular"/>
+                      android:title="@string/menu_sort_popular"/>-->
 
                 <item android:id="@+id/menu_sort_collection_all"
                       android:title="@string/menu_sort_all"/>

@@ -11,7 +11,7 @@ import com.dilipsuthar.wallbox.preferences.Preferences
  * Modified by DILIP SUTHAR on 30/08/19
  */
 class RecentWallFragment : BasePhotosFragment() {
-    private val TAG = "WallBox.RecentWallFrag"
+    private val TAG = RecentWallFragment::class.java.simpleName
 
     companion object {
         fun newInstance(sort: String): RecentWallFragment {
@@ -33,6 +33,6 @@ class RecentWallFragment : BasePhotosFragment() {
         mSwipeRefreshLayout setRefresh true
         loadMore = true
         if (snackBar != null) snackBar?.dismiss()
-        mService?.requestPhotos(mPage, WallBox.DEFAULT_PER_PAGE, mSort!!, mOnRequestPhotosListener)
+        mService?.requestPhotos(mPage, WallBox.DEFAULT_PER_PAGE, mSort!!, this)
     }
 }

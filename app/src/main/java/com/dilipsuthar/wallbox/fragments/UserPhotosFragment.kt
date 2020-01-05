@@ -15,7 +15,7 @@ import com.dilipsuthar.wallbox.utils.Tools
  * Created by DILIP SUTHAR on 30/08/19
  */
 class UserPhotosFragment : BasePhotosFragment() {
-    private val TAG = "WallBox.UserP_Frag"
+    private val TAG = UserPhotosFragment::class.java.simpleName
 
     companion object {
         fun newInstance(sort: String): UserPhotosFragment {
@@ -51,7 +51,7 @@ class UserPhotosFragment : BasePhotosFragment() {
                 mSwipeRefreshLayout setRefresh true
                 loadMore = true
                 if (snackBar != null) snackBar?.dismiss()
-                mService?.requestUserPhotos(mUser.username, mPage, WallBox.DEFAULT_PER_PAGE, mSort!!, mOnRequestPhotosListener)
+                mService?.requestUserPhotos(mUser.username, mPage, WallBox.DEFAULT_PER_PAGE, mSort!!, this)
             }
 
         } else {

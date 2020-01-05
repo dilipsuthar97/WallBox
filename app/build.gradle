@@ -66,10 +66,10 @@ dependencies {
     kapt "com.github.bumptech.glide:compiler:$glideVersion"
     implementation "com.squareup.retrofit2:retrofit:$retrofit2Version"          // Retrofit 2 - Http client
     implementation "com.squareup.retrofit2:converter-gson:$retrofit2Version"
-    implementation 'com.airbnb.android:lottie:3.0.1'                            // Lottie animation
+    implementation 'com.airbnb.android:lottie:3.3.1'                            // Lottie animation
     implementation 'com.github.chrisbanes:PhotoView:2.2.0'                      // PhotoView
     implementation 'com.github.danimahardhika.android-helpers:core:0.1.0'       // File helper
-    implementation 'com.afollestad.material-dialogs:core:3.1.0'                 // Material dialog
+    implementation 'com.afollestad.material-dialogs:core:3.1.1'                 // Material dialog
     implementation 'com.getkeepsafe.taptargetview:taptargetview:1.13.0'         // Tap target view
     //implementation 'com.github.sephiroth74:android-target-tooltip:2.0.4'        // Tooltip
 

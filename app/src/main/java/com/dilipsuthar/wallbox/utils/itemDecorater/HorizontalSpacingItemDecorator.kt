@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 class HorizontalSpacingItemDecorator(private var horizontalSpaceHeight: Int): RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-        outRect.left = horizontalSpaceHeight
+        /*outRect.left = horizontalSpaceHeight*/
+        if (parent.getChildAdapterPosition(view)/2 != 0)
+            outRect.right = horizontalSpaceHeight
     }
 
 }

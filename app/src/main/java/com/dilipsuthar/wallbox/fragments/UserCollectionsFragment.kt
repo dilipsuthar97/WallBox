@@ -84,7 +84,7 @@ class UserCollectionsFragment : Fragment() {
         mService = Services.getService()
         mOnRequestCollectionsListener = object : Services.OnRequestCollectionsListener {
             override fun onRequestCollectionsSuccess(call: Call<List<Collection>>, response: Response<List<Collection>>) {
-                Log.d(CollectionsFragment.TAG, response.code().toString())
+                Log.d(TAG, response.code().toString())
 
                 mSwipeRefreshLyt setRefresh false
                 if (!loadMore) PopupUtils.showToast(context, "Your collections :)", Toast.LENGTH_SHORT)
@@ -108,7 +108,7 @@ class UserCollectionsFragment : Fragment() {
             }
 
             override fun onRequestCollectionsFailed(call: Call<List<Collection>>, t: Throwable) {
-                Log.d(CollectionsFragment.TAG, t.message)
+                Log.d(TAG, t.message)
                 mSwipeRefreshLyt setRefresh false
                 loadMore = false
                 if (mCollectionList.isEmpty()) {
@@ -195,7 +195,7 @@ class UserCollectionsFragment : Fragment() {
 
     /** methods */
     private fun load() {
-        Log.d(CollectionsFragment.TAG, "load: called >>>>>>>>>>")
+        Log.d(TAG, "load: called >>>>>>>>>>")
         mSwipeRefreshLyt setRefresh true
         loadMore = true
         if (snackBar != null) snackBar?.dismiss()
@@ -218,7 +218,7 @@ class UserCollectionsFragment : Fragment() {
     }*/
 
     private fun updateAdapter(collections: ArrayList<Collection>) {
-        Log.d(CollectionsFragment.TAG, "updateAdapter: called >>>>>>>>>>")
+        Log.d(TAG, "updateAdapter: called >>>>>>>>>>")
 
         mAdapter?.addAll(collections)
     }

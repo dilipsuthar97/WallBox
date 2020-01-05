@@ -1,6 +1,7 @@
 package com.dilipsuthar.wallbox.activity
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.PorterDuff
 import android.net.Uri
 import android.os.Bundle
@@ -31,7 +32,7 @@ import java.util.*
 /**
  * Created by DILIP SUTHAR 05/06/19
  */
-class HomeActivity : BaseActivity() {
+class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     companion object {
         const val TAG: String = "debug_HomeActivity"
@@ -112,18 +113,9 @@ class HomeActivity : BaseActivity() {
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (currentLanguage != LocaleHelper.getLocale(this) && currentTheme != ThemeUtils.getTheme(this)) {
-            mDrawerLayout.closeDrawers()
-            recreate()
-        } else if (currentLanguage != LocaleHelper.getLocale(this)) {
-            mDrawerLayout.closeDrawers()
-            recreate()
-        } else if (currentTheme != ThemeUtils.getTheme(this)) {
-            mDrawerLayout.closeDrawers()
-            recreate()
-        }
+    override fun onStart() {
+        super.onStart()
+        Preferences.getSharedPreferences(this)?.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onBackPressed() {
@@ -141,7 +133,15 @@ class HomeActivity : BaseActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        //Services.getService().cancel()  // Cancel all request's call on Activity destroy
+        //Services.getService().cancel()  // Cancel all requests call on Activity destroy
+        Preferences.getSharedPreferences(this)?.unregisterOnSharedPreferenceChangeListener(this)
+    }
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        if (key == Preferences.THEME || key == Preferences.LANGUAGE) {
+            mDrawerLayout.closeDrawers()
+            recreate()
+        }
     }
 
     /** @method init toolbar settings */
@@ -161,7 +161,7 @@ class HomeActivity : BaseActivity() {
         mViewPagerAdapter = SectionPagerAdapter(supportFragmentManager)
         with(mViewPagerAdapter!!) {
             addFragment(RecentWallFragment.newInstance("latest"), resources.getString(R.string.tab_title_recent_wall_fragment))
-            addFragment(CuratedWallFragment.newInstance("latest"), resources.getString(R.string.tab_title_curated_wall_fragment))
+            //addFragment(CuratedWallFragment.newInstance("latest"), resources.getString(R.string.tab_title_curated_wall_fragment))
             addFragment(CollectionsFragment.newInstance("featured"), resources.getString(R.string.tab_title_collections_fragment))
             mViewPager.adapter = this
         }
@@ -170,17 +170,17 @@ class HomeActivity : BaseActivity() {
 
         /** Add icons to TabLayout */
         mTabLayout.getTabAt(0)?.setIcon(R.drawable.ic_tab_recent)
-        mTabLayout.getTabAt(1)?.setIcon(R.drawable.ic_tab_curated)
-        mTabLayout.getTabAt(2)?.setIcon(R.drawable.ic_tab_collection)
+        //mTabLayout.getTabAt(1)?.setIcon(R.drawable.ic_tab_curated)
+        mTabLayout.getTabAt(1)?.setIcon(R.drawable.ic_tab_collection)
 
         /** Set color to TabLayout icons */
         mTabLayout.getTabAt(0)?.icon?.setColorFilter(
             ThemeUtils.getThemeAttrColor(this, R.attr.tabSelectedColor),
             PorterDuff.Mode.SRC_IN)
-        mTabLayout.getTabAt(1)?.icon?.setColorFilter(
+        /*mTabLayout.getTabAt(1)?.icon?.setColorFilter(
             ThemeUtils.getThemeAttrColor(this, R.attr.tabUnselectedColor),
-            PorterDuff.Mode.SRC_IN)
-        mTabLayout.getTabAt(2)?.icon?.setColorFilter(
+            PorterDuff.Mode.SRC_IN)*/
+        mTabLayout.getTabAt(1)?.icon?.setColorFilter(
             ThemeUtils.getThemeAttrColor(this, R.attr.tabUnselectedColor),
             PorterDuff.Mode.SRC_IN)
 
@@ -264,9 +264,9 @@ class HomeActivity : BaseActivity() {
         mSortRecentLatest = menu.findItem(R.id.menu_sort_recent_latest)
         mSortRecentOldest = menu.findItem(R.id.menu_sort_recent_oldest)
         mSortRecentPopular = menu.findItem(R.id.menu_sort_recent_popular)
-        mSortCuratedLatest = menu.findItem(R.id.menu_sort_curated_latest)
+        /*mSortCuratedLatest = menu.findItem(R.id.menu_sort_curated_latest)
         mSortCuratedOldest = menu.findItem(R.id.menu_sort_curated_oldest)
-        mSortCuratedPopular = menu.findItem(R.id.menu_sort_curated_popular)
+        mSortCuratedPopular = menu.findItem(R.id.menu_sort_curated_popular)*/
         mSortCollectionAll = menu.findItem(R.id.menu_sort_collection_all)
         mSortCollectionFeatured = menu.findItem(R.id.menu_sort_collection_featured)
 
@@ -283,9 +283,9 @@ class HomeActivity : BaseActivity() {
             }
             R.id.action_sort -> {
                 when (mViewPager.currentItem) {
-                    0 -> handleSortMenuItems(true,true,true,false,false,false,false,false,false)
-                    1 -> handleSortMenuItems(false,false,false,true,true,true,false,false,false)
-                    2 -> handleSortMenuItems(false,false,false,false,false,false,true,true,true)
+                    0 -> handleSortMenuItems(true,true,true,false, false)
+                    1 -> handleSortMenuItems(false,false,false,true,true)
+                    /*2 -> handleSortMenuItems(false,false,false,false,false,false,true,true,true)*/
                 }
             }
             R.id.menu_sort_recent_latest -> {
@@ -300,7 +300,7 @@ class HomeActivity : BaseActivity() {
                 transaction.replace(R.id.recent_container, RecentWallFragment.newInstance("popular")).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
                 showSnackBar("Wallpaper sorted by Popular", Snackbar.LENGTH_SHORT)
             }
-            R.id.menu_sort_curated_latest -> {
+            /*R.id.menu_sort_curated_latest -> {
                 transaction.replace(R.id.curated_container, CuratedWallFragment.newInstance("latest")).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
                 showSnackBar("Wallpaper sorted by Latest", Snackbar.LENGTH_SHORT)
             }
@@ -311,7 +311,7 @@ class HomeActivity : BaseActivity() {
             R.id.menu_sort_curated_popular -> {
                 transaction.replace(R.id.curated_container, CuratedWallFragment.newInstance("popular")).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
                 showSnackBar("Wallpaper sorted by Popular", Snackbar.LENGTH_SHORT)
-            }
+            }*/
             R.id.menu_sort_collection_all -> {
                 transaction.replace(R.id.collections_container, CollectionsFragment.newInstance("all")).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
                 showSnackBar("Collections sorted by All", Snackbar.LENGTH_SHORT)
@@ -333,12 +333,11 @@ class HomeActivity : BaseActivity() {
                 0 -> mSortRecentLatest?.isVisible = v
                 1 -> mSortRecentOldest?.isVisible = v
                 2 -> mSortRecentPopular?.isVisible = v
-                3 -> mSortCuratedLatest?.isVisible = v
+                /*3 -> mSortCuratedLatest?.isVisible = v
                 4 -> mSortCuratedOldest?.isVisible = v
-                5 -> mSortCuratedPopular?.isVisible = v
-                6 -> mSortCollectionAll?.isVisible = v
-                7 -> mSortCollectionFeatured?.isVisible = v
-                8 -> mSortCollectionCurated?.isVisible = v
+                5 -> mSortCuratedPopular?.isVisible = v*/
+                3 -> mSortCollectionAll?.isVisible = v
+                4 -> mSortCollectionFeatured?.isVisible = v
             }
         }
     }

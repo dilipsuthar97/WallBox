@@ -10,7 +10,7 @@
     <ImageView
             android:id="@+id/image_photo"
             android:layout_width="match_parent"
-            android:layout_height="280dp"
+            android:layout_height="200dp"
             android:scaleType="centerCrop"
             android:transitionName="photo"
             app:layout_constraintEnd_toEndOf="parent"
@@ -19,23 +19,26 @@
             app:layout_constraintBottom_toBottomOf="parent"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/lyt_photo_by"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
+            android:foreground="?attr/selectableItemBackground"
             android:background="@drawable/gradient_overlay_dark"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
         <com.mikhaellopez.circularimageview.CircularImageView
-                android:id="@+id/image_user_profile"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                app:civ_border_width="0dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                android:id="@+id/img_photo_by"
+                style="@style/CircularImageViewTheme"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="8dp"
+                android:transitionName="profilePhoto"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:visibility="gone"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
                 android:id="@+id/text_photo_by"
@@ -43,9 +46,8 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
                 tools:text="By, beccatapert"
-                android:textSize="16sp"
                 android:layout_marginStart="8dp"
-                app:layout_constraintStart_toEndOf="@+id/image_user_profile"
+                app:layout_constraintStart_toEndOf="@+id/img_photo_by"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="8dp"
@@ -54,8 +56,8 @@
 
         <ImageButton
                 android:id="@+id/btn_download"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:tint="@color/white"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 app:layout_constraintEnd_toStartOf="@+id/imageView"
@@ -65,27 +67,28 @@
                 />
 
         <ImageView
+                android:id="@+id/imageView"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:tint="@color/red_500"
+                android:layout_marginEnd="4dp"
                 android:src="@drawable/ic_favorite"
-                android:id="@+id/imageView"
-                app:layout_constraintEnd_toStartOf="@+id/text_likes"
-                app:layout_constraintTop_toTopOf="parent"
+                android:tint="@color/red_500"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:visibility="gone"/>
+                app:layout_constraintEnd_toStartOf="@+id/text_likes"
+                app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+                android:id="@+id/text_likes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="250"
                 android:textColor="@color/red_500"
-                android:id="@+id/text_likes"
                 android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:visibility="gone"/>
+                tools:text="250" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

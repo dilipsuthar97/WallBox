@@ -51,7 +51,7 @@ class UserLikedFragment : BasePhotosFragment() {
                 mSwipeRefreshLayout setRefresh true
                 loadMore = true
                 if (snackBar != null) snackBar?.dismiss()
-                mService?.requestUserLikedPhotos(mUser.username, mPage, WallBox.DEFAULT_PER_PAGE, mSort!!, mOnRequestPhotosListener)
+                mService?.requestUserLikedPhotos(mUser.username, mPage, WallBox.DEFAULT_PER_PAGE, mSort!!, this)
             }
 
         } else {

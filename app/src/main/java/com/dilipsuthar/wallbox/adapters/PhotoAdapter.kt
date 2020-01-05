@@ -21,6 +21,8 @@ import com.dilipsuthar.wallbox.helpers.PermissionsHelper
 import com.dilipsuthar.wallbox.preferences.Preferences
 import com.dilipsuthar.wallbox.helpers.loadUrl
 import com.dilipsuthar.wallbox.utils.Dialog
+import com.dilipsuthar.wallbox.viewholders.LoadingViewHolder
+import com.dilipsuthar.wallbox.viewholders.PhotoViewHolder
 import com.mikhaellopez.circularimageview.CircularImageView
 
 /**
@@ -29,6 +31,7 @@ import com.mikhaellopez.circularimageview.CircularImageView
  * @param mPhotoList List of all photos
  * @param layoutType layout types list view & grid view
  * @param context Application context for shared preferences
+ * @param activity Activity object
  * @param listener On collection item click listener when user tap
  */
 class PhotoAdapter
@@ -46,10 +49,10 @@ class PhotoAdapter
         val view: View?
 
         return if (viewType == TYPE_PHOTO) {
-            view = if (layoutType == "list")
-                LayoutInflater.from(parent.context).inflate(R.layout.item_photo, parent, false)
-            else
-                LayoutInflater.from(parent.context).inflate(R.layout.item_photo_grid, parent, false)
+            view = when(layoutType) {
+                "list" -> LayoutInflater.from(parent.context).inflate(R.layout.item_photo, parent, false)
+                else -> LayoutInflater.from(parent.context).inflate(R.layout.item_photo_grid, parent, false)
+            }
             PhotoViewHolder(view)
         } else {
             view = LayoutInflater.from(parent.context).inflate(R.layout.item_loader, parent, false)
@@ -69,75 +72,9 @@ class PhotoAdapter
         val photo = mPhotoList?.get(position)
 
         if (holder is PhotoViewHolder) {
-
-            photo?.let {
-
-                val txtPhotoBy = photo.user.first_name
-                if (it.user.last_name != "") txtPhotoBy + " ${it.user.last_name}"
-
-                holder.rootView.setBackgroundColor(Color.parseColor(it.color))
-                holder.textPhotoBy.text = "By, $txtPhotoBy"
-                holder.textLikes.text = "${it.likes} Likes"
-                holder.btnDownload.setOnClickListener { _ ->
-                    if (PermissionsHelper.permissionGranted(context!!, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE))) {
-
-                        Dialog.showDownloadDialog(context, it)
-
-                    } else
-                        PermissionsHelper.requestPermission(
-                            activity!!,
-                            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        )
-                }
-
-                val url = when (sharedPreferences?.getString(Preferences.WALLPAPER_QUALITY, WallBox.DEFAULT_WALLPAPER_QUALITY)) {
-                    "Raw" -> it.urls.raw
-                    "Full" -> it.urls.full
-                    "Regular" -> it.urls.regular
-                    "Small" -> it.urls.small
-                    else -> it.urls.thumb
-                }
-                holder.imagePhoto.loadUrl(url)
-
-                holder.imgPhotoBy.loadUrl(
-                    it.user.profile_image.large,
-                    R.drawable.placeholder_profile,
-                    R.drawable.placeholder_profile)
-
-                // onClick listener
-                holder.imagePhoto.setOnLongClickListener { view ->
-                    listener?.onItemLongClick(it, view!!, position, holder.imagePhoto)
-                    true
-                }
-
-                holder.imagePhoto.setOnClickListener { view ->
-                    listener?.onItemClick(it, view, position, holder.imagePhoto)
-                }
-
-                holder.lytPhotoBy.setOnClickListener { _ ->
-                    listener?.onUserProfileClick(it, position, holder.imgPhotoBy)
-                }
-            }
-
+            holder.bind(photo, position, context, activity, listener, sharedPreferences)
         }
     }
-
-    /** view holders */
-    class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        init {
-            ButterKnife.bind(this, itemView)
-        }
-
-        @BindView(R.id.image_photo) lateinit var imagePhoto: ImageView
-        @BindView(R.id.img_photo_by) lateinit var imgPhotoBy: CircularImageView
-        @BindView(R.id.text_photo_by) lateinit var textPhotoBy: TextView
-        @BindView(R.id.text_likes) lateinit var textLikes: TextView
-        @BindView(R.id.root_view) lateinit var rootView: View
-        @BindView(R.id.btn_download) lateinit var btnDownload: ImageButton
-        @BindView(R.id.lyt_photo_by) lateinit var lytPhotoBy: LinearLayout
-    }
-
-    class LoadingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     /** methods */
     fun addAll(photos: ArrayList<Photo>) {

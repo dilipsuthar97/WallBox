@@ -12,6 +12,7 @@ import butterknife.ButterKnife
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.data_source.model.User
 import com.dilipsuthar.wallbox.helpers.loadUrl
+import com.dilipsuthar.wallbox.viewholders.UserViewHolder
 import com.mikhaellopez.circularimageview.CircularImageView
 
 class UserAdapter (
@@ -22,7 +23,7 @@ class UserAdapter (
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_user, parent, false)
-        return ViewHolder(view)
+        return UserViewHolder(view)
     }
 
     override fun getItemCount(): Int {
@@ -31,39 +32,9 @@ class UserAdapter (
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val user = mUserList?.get(position)
-        user?.let {
-            if (holder is ViewHolder) {
-                holder.imgUserProfile.loadUrl(
-                    it.profile_image.medium,
-                    R.drawable.placeholder_profile,
-                    R.drawable.placeholder_profile
-                )
-
-                holder.tvUsername.text = it.username
-
-                var name = it.first_name
-                name = if (it.last_name != "") "$name ${it.last_name}" else ""
-                holder.tvName.text = name
-
-                holder.rootView.setOnClickListener { view ->
-                    listener?.onUserClick(it, view, holder.imgUserProfile, position)
-                }
-            }
+        if (holder is UserViewHolder) {
+            holder.bind(user, listener, position)
         }
-    }
-
-
-    /** view holders */
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        init {
-            ButterKnife.bind(this, view)
-        }
-
-        @BindView(R.id.root_view) lateinit var rootView: ConstraintLayout
-        @BindView(R.id.img_user_profile) lateinit var imgUserProfile: CircularImageView
-        @BindView(R.id.tv_username) lateinit var tvUsername: TextView
-        @BindView(R.id.tv_name) lateinit var tvName: TextView
-
     }
 
     /** @method update adapter and notify item change */

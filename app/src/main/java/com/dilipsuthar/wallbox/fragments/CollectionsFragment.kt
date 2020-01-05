@@ -33,10 +33,10 @@ import retrofit2.Response
 /**
 * Created by DILIP SUTHAR on 28/07/19
 */
-class CollectionsFragment : Fragment() {
+class CollectionsFragment : Fragment(), Services.OnRequestCollectionsListener, CollectionAdapter.OnCollectionClickListener{
 
     companion object {
-        const val TAG = "WallBox.CollectionsFrag"
+        private val TAG = CollectionsFragment::class.java.simpleName
 
         fun newInstance(sort: String): CollectionsFragment {
             val fragment = CollectionsFragment()
@@ -50,12 +50,12 @@ class CollectionsFragment : Fragment() {
     }
 
     private var mService: Services? = null
-    private var mOnRequestCollectionsListener: Services.OnRequestCollectionsListener? = null
+    //private var mOnRequestCollectionsListener: Services.OnRequestCollectionsListener? = null
     private var mPage = 0
     private var mSort: String? = null
     private var mCollectionList: ArrayList<Collection> = ArrayList()
     private var mAdapter: CollectionAdapter? = null
-    private var mOnCollectionClickListener: CollectionAdapter.OnCollectionClickListener? = null
+    //private var mOnCollectionClickListener: CollectionAdapter.OnCollectionClickListener? = null
     private var loadMore = false
     private var snackBar: Snackbar? = null
 
@@ -71,7 +71,7 @@ class CollectionsFragment : Fragment() {
 
         /** SERVICES / API's */
         mService = Services.getService()
-        mOnRequestCollectionsListener = object : Services.OnRequestCollectionsListener {
+        /*mOnRequestCollectionsListener = object : Services.OnRequestCollectionsListener {
             override fun onRequestCollectionsSuccess(call: Call<List<Collection>>, response: Response<List<Collection>>) {
                 Log.d(TAG, response.code().toString())
 
@@ -105,16 +105,16 @@ class CollectionsFragment : Fragment() {
                     Tools.inVisibleViews(mRecyclerView, httpErrorLyt, type = Tools.GONE)
                 } else PopupUtils.showNetworkErrorSnackBar(mSwipeRefreshView) { load() }
             }
-        }
+        }*/
 
         /** ADAPTER LISTENER */
-        mOnCollectionClickListener = object : CollectionAdapter.OnCollectionClickListener {
+        /*mOnCollectionClickListener = object : CollectionAdapter.OnCollectionClickListener {
             override fun onCollectionClick(collection: Collection, view: View, pos: Int) {
                 val intent = Intent(activity!!, CollectionDetailActivity::class.java)
                 intent.putExtra(Preferences.COLLECTION, Gson().toJson(collection))
                 startActivity(intent)
             }
-        }
+        }*/
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -128,7 +128,7 @@ class CollectionsFragment : Fragment() {
         mRecyclerView.layoutManager = LinearLayoutManager(context)
         mRecyclerView.setHasFixedSize(true)
         mRecyclerView.setItemViewCacheSize(5)
-        mAdapter = CollectionAdapter(ArrayList(), context, mOnCollectionClickListener)
+        mAdapter = CollectionAdapter(ArrayList(), context, this)
         mRecyclerView.adapter = mAdapter
 
         mPage = 1
@@ -163,7 +163,7 @@ class CollectionsFragment : Fragment() {
             mPage = 1
             mCollectionList.clear()
             load()
-            mAdapter = CollectionAdapter(ArrayList(), context, mOnCollectionClickListener)
+            mAdapter = CollectionAdapter(ArrayList(), context, this)
             mRecyclerView.adapter = mAdapter
         }
 
@@ -187,17 +187,17 @@ class CollectionsFragment : Fragment() {
         loadMore = true
         if (snackBar != null) snackBar?.dismiss()
         when (mSort) {
-            "all" -> mService?.requestCollections(mPage++, WallBox.DEFAULT_PER_PAGE, mOnRequestCollectionsListener)
-            "featured" -> mService?.requestFeaturedCollections(mPage, WallBox.DEFAULT_PER_PAGE, mOnRequestCollectionsListener)
-            "curated" -> mService?.requestCuratedCollections(mPage, WallBox.DEFAULT_PER_PAGE, mOnRequestCollectionsListener)
+            "all" -> mService?.requestCollections(mPage++, WallBox.DEFAULT_PER_PAGE, this)
+            "featured" -> mService?.requestFeaturedCollections(mPage, WallBox.DEFAULT_PER_PAGE, this)
+            "curated" -> mService?.requestCuratedCollections(mPage, WallBox.DEFAULT_PER_PAGE, this)
         }
     }
 
     private fun loadMore() {
         when (mSort) {
-            "all" -> mService?.requestCollections(mPage++, WallBox.DEFAULT_PER_PAGE, mOnRequestCollectionsListener)
-            "featured" -> mService?.requestFeaturedCollections(mPage, WallBox.DEFAULT_PER_PAGE, mOnRequestCollectionsListener)
-            "curated" -> mService?.requestCuratedCollections(mPage, WallBox.DEFAULT_PER_PAGE, mOnRequestCollectionsListener)
+            "all" -> mService?.requestCollections(mPage++, WallBox.DEFAULT_PER_PAGE, this)
+            "featured" -> mService?.requestFeaturedCollections(mPage, WallBox.DEFAULT_PER_PAGE, this)
+            "curated" -> mService?.requestCuratedCollections(mPage, WallBox.DEFAULT_PER_PAGE, this)
         }
     }
 
@@ -205,6 +205,46 @@ class CollectionsFragment : Fragment() {
         Log.d(TAG, "updateAdapter: called >>>>>>>>>>")
 
         mAdapter?.addAll(collections)
+    }
+
+    override fun onRequestCollectionsSuccess(call: Call<List<Collection>>, response: Response<List<Collection>>) {
+        Log.d(TAG, response.code().toString())
+
+        mSwipeRefreshView setRefresh false
+        if (!loadMore) PopupUtils.showToast(context, "Your collections :)", Toast.LENGTH_SHORT)
+        if (response.isSuccessful) {
+            mPage++
+            loadMore = false
+            mCollectionList.clear()
+            mCollectionList.addAll(ArrayList(response.body()!!))
+            updateAdapter(mCollectionList)
+            mRecyclerView.smoothScrollToPosition(mAdapter!!.itemCount.minus(29))
+            Tools.visibleViews(mRecyclerView)
+            Tools.inVisibleViews(netWorkErrorLyt, httpErrorLyt, type = Tools.GONE)
+        } else {
+            mSwipeRefreshView setRefresh false
+            loadMore = false
+            if (mCollectionList.isEmpty()) {
+                Tools.visibleViews(httpErrorLyt)
+                Tools.inVisibleViews(mRecyclerView, netWorkErrorLyt, type = Tools.GONE)
+            } else PopupUtils.showHttpErrorSnackBar(mSwipeRefreshView) { load() }
+        }
+    }
+
+    override fun onRequestCollectionsFailed(call: Call<List<Collection>>, t: Throwable) {
+        Log.d(TAG, t.message)
+        mSwipeRefreshView setRefresh false
+        loadMore = false
+        if (mCollectionList.isEmpty()) {
+            Tools.visibleViews(netWorkErrorLyt)
+            Tools.inVisibleViews(mRecyclerView, httpErrorLyt, type = Tools.GONE)
+        } else PopupUtils.showNetworkErrorSnackBar(mSwipeRefreshView) { load() }
+    }
+
+    override fun onCollectionClick(collection: Collection, view: View, pos: Int) {
+        val intent = Intent(activity!!, CollectionDetailActivity::class.java)
+        intent.putExtra(Preferences.COLLECTION, Gson().toJson(collection))
+        startActivity(intent)
     }
 
 }
