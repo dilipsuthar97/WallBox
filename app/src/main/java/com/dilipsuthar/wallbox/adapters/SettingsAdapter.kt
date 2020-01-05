@@ -87,7 +87,7 @@ class SettingAdapter(
                     when (it.type) {
                         Setting.Type.LANGUAGE -> {
 
-                            val languageCode = context.resources.getStringArray(R.array.languages_code)
+                            val languageCodes = context.resources.getStringArray(R.array.languages_code)
 
                             MaterialDialog(context).show {
                                 title(R.string.title_language)
@@ -95,11 +95,11 @@ class SettingAdapter(
                                 listItems(R.array.languages_name) { _, index, text ->
                                     sharedPreferences?.let { sharedPref ->
                                         LocaleHelper.loadLocal(context)
-                                        sharedPref.edit().putString(Preferences.LANGUAGE, text).apply()
-                                        sharedPref.edit().putString(Preferences.LANGUAGE_CODE, languageCode[index]).apply()
+                                        sharedPref.edit().putString(Preferences.LANGUAGE, text.toString()).apply()
+                                        sharedPref.edit().putString(Preferences.LANGUAGE_CODE, languageCodes[index]).apply()
                                     }
 
-                                    it.subTitle = text
+                                    it.subTitle = text.toString()
                                     notifyItemChanged(position)
                                     activity.recreate()
                                 }
@@ -136,8 +136,8 @@ class SettingAdapter(
                                             message(R.string.desc_quality_warn_dialog)
                                             positiveButton(R.string.yes) { warnDialog ->
 
-                                                sharedPreferences!!.edit().putString(Preferences.WALLPAPER_QUALITY, text).apply()
-                                                setting.subTitle = text
+                                                sharedPreferences!!.edit().putString(Preferences.WALLPAPER_QUALITY, text.toString()).apply()
+                                                setting.subTitle = text.toString()
                                                 notifyItemChanged(position)
 
                                                 warnDialog.dismiss()
@@ -150,8 +150,8 @@ class SettingAdapter(
 
                                     } else {
 
-                                        sharedPreferences!!.edit().putString(Preferences.WALLPAPER_QUALITY, text).apply()
-                                        setting.subTitle = text
+                                        sharedPreferences!!.edit().putString(Preferences.WALLPAPER_QUALITY, text.toString()).apply()
+                                        setting.subTitle = text.toString()
                                         notifyItemChanged(position)
 
                                     }
