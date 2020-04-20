@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcuts 
+            android:enabled="true"
+            android:icon="@drawable/ic_github"
+            android:shortcutId="search"
+            android:shortcutLongLabel="@string/menu_search"
+            android:shortcutShortLabel="@string/menu_search">
+        <intent
+                android:action="android.intent.action.VIEW"
+                android:targetClass="com.dilipsuthar.wallbox.activity.HomeActivity"
+                android:targetPackage="com.dilipsuthar.wallbox"/>
+
+        <intent
+                android:action="android.intent.action.VIEW"
+                android:targetClass="com.dilipsuthar.wallbox.activity.SearchActivity"
+                android:targetPackage="com.dilipsuthar.wallbox"/>
+    </shortcuts>
+</shortcuts>

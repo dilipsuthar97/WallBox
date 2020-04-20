@@ -3,15 +3,13 @@ package com.dilipsuthar.wallbox.utils
 import android.app.Activity
 import android.app.ActivityManager
 import android.content.Context
-import android.content.SharedPreferences
 import android.graphics.BitmapFactory
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import com.dilipsuthar.wallbox.R
-import com.dilipsuthar.wallbox.preferences.Preferences
-import androidx.core.content.ContextCompat.startActivity
+import com.dilipsuthar.wallbox.preferences.Prefs
 import android.content.Intent
-
+import com.dilipsuthar.wallbox.preferences.SharedPref
 
 
 object ThemeUtils {
@@ -21,15 +19,14 @@ object ThemeUtils {
     const val DARK = "dark"
 
     fun getTheme(context: Context): String {
-        val sharedPreferences = Preferences.getSharedPreferences(context)
-        return sharedPreferences?.getString(Preferences.THEME, LIGHT)!!
+        return SharedPref.getInstance(context).getString(Prefs.THEME, LIGHT)!!
     }
 
     fun setTheme(context: Context?, theme: String) {
-        val sharedPreferences = Preferences.getSharedPreferences(context)
+        val sharedPref = SharedPref.getInstance(context!!)
         when (theme) {
-            LIGHT -> sharedPreferences?.edit()?.putString(Preferences.THEME, LIGHT)?.apply()
-            DARK -> sharedPreferences?.edit()?.putString(Preferences.THEME, DARK)?.apply()
+            LIGHT -> sharedPref.saveData(Prefs.THEME, LIGHT)
+            DARK -> sharedPref.saveData(Prefs.THEME, DARK)
         }
     }
 

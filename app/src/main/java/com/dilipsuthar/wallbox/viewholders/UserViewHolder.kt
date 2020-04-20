@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.dilipsuthar.wallbox.R
+import com.dilipsuthar.wallbox.WallBox
 import com.dilipsuthar.wallbox.adapters.UserAdapter
 import com.dilipsuthar.wallbox.data_source.model.User
 import com.dilipsuthar.wallbox.helpers.loadUrl
@@ -26,8 +27,8 @@ class UserViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         user?.let {
             imgUserProfile.loadUrl(
                 it.profile_image.medium,
-                R.drawable.placeholder_profile,
-                R.drawable.placeholder_profile
+                WallBox.getInstance().getDrawable(R.drawable.placeholder_profile),
+                WallBox.getInstance().getDrawable(R.drawable.placeholder_profile)
             )
 
             tvUsername.text = it.username

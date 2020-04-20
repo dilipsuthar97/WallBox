@@ -74,6 +74,7 @@
     <string name="toolbar_title_settings">設置</string>
     <string name="toolbar_title_support_us">支持我們</string>
     <string name="toolbar_title_open_source_licenses">Open-source 许可证</string>
+    <string name="toolbar_title_login">Login</string>
     <string name="total_cache">總緩存</string>
     <string name="unsplash">Unsplash</string>
     <string name="wallpaper_by">"by, "</string>

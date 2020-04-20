@@ -4,13 +4,9 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.data_source.model.Collection
-import com.dilipsuthar.wallbox.preferences.Preferences
-import com.dilipsuthar.wallbox.helpers.loadUrl
 import com.dilipsuthar.wallbox.viewholders.CollectionViewHolder
 
 /**

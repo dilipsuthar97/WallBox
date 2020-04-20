@@ -22,9 +22,9 @@ import com.dilipsuthar.wallbox.activity.CollectionDetailActivity
 import com.dilipsuthar.wallbox.adapters.CollectionAdapter
 import com.dilipsuthar.wallbox.data_source.model.Collection
 import com.dilipsuthar.wallbox.data_source.model.User
-import com.dilipsuthar.wallbox.data_source.Services
+import com.dilipsuthar.wallbox.data_source.service.Services
 import com.dilipsuthar.wallbox.helpers.setRefresh
-import com.dilipsuthar.wallbox.preferences.Preferences
+import com.dilipsuthar.wallbox.preferences.Prefs
 import com.dilipsuthar.wallbox.utils.PopupUtils
 import com.dilipsuthar.wallbox.utils.Tools
 import com.google.android.material.snackbar.Snackbar
@@ -43,7 +43,7 @@ class UserCollectionsFragment : Fragment() {
             val fragment =  UserCollectionsFragment()
 
             val args = Bundle()
-            args.putString(Preferences.SORT, sort)
+            args.putString(Prefs.SORT, sort)
             fragment.arguments = args
 
             return fragment
@@ -78,7 +78,7 @@ class UserCollectionsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mSort = arguments?.getString(Preferences.SORT, WallBox.DEFAULT_SORT_COLLECTIONS)
+        mSort = arguments?.getString(Prefs.SORT, WallBox.DEFAULT_SORT_COLLECTIONS)
 
         /** SERVICES / API's */
         mService = Services.getService()
@@ -122,7 +122,7 @@ class UserCollectionsFragment : Fragment() {
         mOnCollectionClickListener = object : CollectionAdapter.OnCollectionClickListener {
             override fun onCollectionClick(collection: Collection, view: View, pos: Int) {
                 val intent = Intent(activity!!, CollectionDetailActivity::class.java)
-                intent.putExtra(Preferences.COLLECTION, Gson().toJson(collection))
+                intent.putExtra(Prefs.COLLECTION, Gson().toJson(collection))
                 startActivity(intent)
             }
         }

@@ -21,8 +21,8 @@ import com.dilipsuthar.wallbox.WallBox
 import com.dilipsuthar.wallbox.activity.CollectionDetailActivity
 import com.dilipsuthar.wallbox.adapters.CollectionAdapter
 import com.dilipsuthar.wallbox.data_source.model.Collection
-import com.dilipsuthar.wallbox.data_source.Services
-import com.dilipsuthar.wallbox.preferences.Preferences
+import com.dilipsuthar.wallbox.data_source.service.Services
+import com.dilipsuthar.wallbox.preferences.Prefs
 import com.dilipsuthar.wallbox.utils.PopupUtils
 import com.dilipsuthar.wallbox.utils.Tools
 import com.dilipsuthar.wallbox.helpers.setRefresh
@@ -42,7 +42,7 @@ class CollectionsFragment : Fragment(), Services.OnRequestCollectionsListener, C
             val fragment = CollectionsFragment()
 
             val args = Bundle()
-            args.putString(Preferences.SORT, sort)
+            args.putString(Prefs.SORT, sort)
             fragment.arguments = args
 
             return fragment
@@ -50,12 +50,10 @@ class CollectionsFragment : Fragment(), Services.OnRequestCollectionsListener, C
     }
 
     private var mService: Services? = null
-    //private var mOnRequestCollectionsListener: Services.OnRequestCollectionsListener? = null
     private var mPage = 0
     private var mSort: String? = null
     private var mCollectionList: ArrayList<Collection> = ArrayList()
     private var mAdapter: CollectionAdapter? = null
-    //private var mOnCollectionClickListener: CollectionAdapter.OnCollectionClickListener? = null
     private var loadMore = false
     private var snackBar: Snackbar? = null
 
@@ -67,54 +65,10 @@ class CollectionsFragment : Fragment(), Services.OnRequestCollectionsListener, C
     /** Main method */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mSort = arguments?.getString(Preferences.SORT, WallBox.DEFAULT_SORT_COLLECTIONS)
+        mSort = arguments?.getString(Prefs.SORT, WallBox.DEFAULT_SORT_COLLECTIONS)
 
         /** SERVICES / API's */
         mService = Services.getService()
-        /*mOnRequestCollectionsListener = object : Services.OnRequestCollectionsListener {
-            override fun onRequestCollectionsSuccess(call: Call<List<Collection>>, response: Response<List<Collection>>) {
-                Log.d(TAG, response.code().toString())
-
-                mSwipeRefreshView setRefresh false
-                if (!loadMore) PopupUtils.showToast(context, "Your collections :)", Toast.LENGTH_SHORT)
-                if (response.isSuccessful) {
-                    mPage++
-                    loadMore = false
-                    mCollectionList.clear()
-                    mCollectionList.addAll(ArrayList(response.body()!!))
-                    updateAdapter(mCollectionList)
-                    mRecyclerView.smoothScrollToPosition(mAdapter!!.itemCount.minus(29))
-                    Tools.visibleViews(mRecyclerView)
-                    Tools.inVisibleViews(netWorkErrorLyt, httpErrorLyt, type = Tools.GONE)
-                } else {
-                    mSwipeRefreshView setRefresh false
-                    loadMore = false
-                    if (mCollectionList.isEmpty()) {
-                        Tools.visibleViews(httpErrorLyt)
-                        Tools.inVisibleViews(mRecyclerView, netWorkErrorLyt, type = Tools.GONE)
-                    } else PopupUtils.showHttpErrorSnackBar(mSwipeRefreshView) { load() }
-                }
-            }
-
-            override fun onRequestCollectionsFailed(call: Call<List<Collection>>, t: Throwable) {
-                Log.d(TAG, t.message)
-                mSwipeRefreshView setRefresh false
-                loadMore = false
-                if (mCollectionList.isEmpty()) {
-                    Tools.visibleViews(netWorkErrorLyt)
-                    Tools.inVisibleViews(mRecyclerView, httpErrorLyt, type = Tools.GONE)
-                } else PopupUtils.showNetworkErrorSnackBar(mSwipeRefreshView) { load() }
-            }
-        }*/
-
-        /** ADAPTER LISTENER */
-        /*mOnCollectionClickListener = object : CollectionAdapter.OnCollectionClickListener {
-            override fun onCollectionClick(collection: Collection, view: View, pos: Int) {
-                val intent = Intent(activity!!, CollectionDetailActivity::class.java)
-                intent.putExtra(Preferences.COLLECTION, Gson().toJson(collection))
-                startActivity(intent)
-            }
-        }*/
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -243,7 +197,7 @@ class CollectionsFragment : Fragment(), Services.OnRequestCollectionsListener, C
 
     override fun onCollectionClick(collection: Collection, view: View, pos: Int) {
         val intent = Intent(activity!!, CollectionDetailActivity::class.java)
-        intent.putExtra(Preferences.COLLECTION, Gson().toJson(collection))
+        intent.putExtra(Prefs.COLLECTION, Gson().toJson(collection))
         startActivity(intent)
     }
 

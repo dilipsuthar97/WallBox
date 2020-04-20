@@ -5,22 +5,31 @@ import android.content.SharedPreferences
 import android.graphics.PorterDuff
 import android.net.Uri
 import android.os.Bundle
+import android.text.TextUtils
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentTransaction
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import androidx.viewpager.widget.ViewPager
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.adapters.SectionPagerAdapter
+import com.dilipsuthar.wallbox.data_source.managers.AuthManager
 import com.dilipsuthar.wallbox.fragments.*
 import com.dilipsuthar.wallbox.helpers.LocaleHelper
-import com.dilipsuthar.wallbox.preferences.Preferences
+import com.dilipsuthar.wallbox.helpers.loadUrl
+import com.dilipsuthar.wallbox.preferences.Prefs
+import com.dilipsuthar.wallbox.preferences.SharedPref
 import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.dilipsuthar.wallbox.utils.Tools
 import com.getkeepsafe.taptargetview.TapTarget
@@ -28,17 +37,19 @@ import com.getkeepsafe.taptargetview.TapTargetSequence
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
+import com.mikhaellopez.circularimageview.CircularImageView
 import java.util.*
 /**
  * Created by DILIP SUTHAR 05/06/19
  */
-class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
+class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeListener,
+    AuthManager.OnAuthStateChangeListener{
+    private val TAG = HomeActivity::class.java.simpleName
 
     companion object {
-        const val TAG: String = "debug_HomeActivity"
-        fun get(): HomeActivity {
+        /*fun get(): HomeActivity {
             return HomeActivity()
-        }
+        }*/
     }
 
     @BindView(R.id.toolbar) lateinit var mToolbar: Toolbar
@@ -64,7 +75,10 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
     private var mSortCollectionFeatured: MenuItem? = null
     private var mSortCollectionCurated: MenuItem? = null
 
+    // vars
     private var actionSortMenu: MenuItem? = null
+    private var _isAccountMode = false
+    private lateinit var _menuNavigation: Menu
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,7 +129,16 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
     override fun onStart() {
         super.onStart()
-        Preferences.getSharedPreferences(this)?.registerOnSharedPreferenceChangeListener(this)
+        SharedPref.getInstance(this).getSharedPreferences().registerOnSharedPreferenceChangeListener(this)
+        AuthManager.getInstance().addOnAuthStateChangeListener(this)
+        if (AuthManager.getInstance().isAuthorized() && TextUtils.isEmpty(AuthManager.getInstance().getUsername())) {
+            AuthManager.getInstance().requestUserProfileData()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setDrawerHeader(mNavigationView.getHeaderView(0))
     }
 
     override fun onBackPressed() {
@@ -133,12 +156,13 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
 
     override fun onDestroy() {
         super.onDestroy()
-        //Services.getService().cancel()  // Cancel all requests call on Activity destroy
-        Preferences.getSharedPreferences(this)?.unregisterOnSharedPreferenceChangeListener(this)
+        SharedPref.getInstance(this).getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this)
+        AuthManager.getInstance().requestUserProfileData()
+        AuthManager.getInstance().cancelRequests()
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        if (key == Preferences.THEME || key == Preferences.LANGUAGE) {
+        if (key == Prefs.THEME || key == Prefs.LANGUAGE) {
             mDrawerLayout.closeDrawers()
             recreate()
         }
@@ -227,20 +251,25 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         mNavigationView.setNavigationItemSelectedListener {
             val url = "https://play.google.com/store/apps/details?id=${packageName}"
 
-            when (it.itemId) {
-                //R.id.nav_Favorites -> startActivity(Intent(applicationContext, FavoritesActivity::class.java))
-                R.id.nav_settings -> startActivity(Intent(applicationContext, SettingsActivity::class.java))
-                R.id.nav_about -> startActivity(Intent(applicationContext, AboutActivity::class.java))
-                R.id.nav_support_us -> startActivity(Intent(applicationContext, SupportUsActivity::class.java))
-                R.id.nav_share_app -> {
-                    val i = Intent(Intent.ACTION_SEND)
-                    i.type = "text/plain"
-                    i.putExtra(Intent.EXTRA_TEXT, "You should give a try to WallBox for Android, it's freaking cool!\n\n$url")
-                    startActivity(Intent.createChooser(i, "Share WallBox using"))
-                }
-                R.id.nav_rate_review -> {
-                    val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                    startActivity(i)
+            if (_isAccountMode) {
+                if (it.itemId == 1)
+                    startActivity(Intent(this, LoginActivity::class.java))
+            } else {
+                when (it.itemId) {
+                    //R.id.nav_Favorites -> startActivity(Intent(applicationContext, FavoritesActivity::class.java))
+                    R.id.nav_settings -> startActivity(Intent(applicationContext, SettingsActivity::class.java))
+                    R.id.nav_about -> startActivity(Intent(applicationContext, AboutActivity::class.java))
+                    R.id.nav_support_us -> startActivity(Intent(applicationContext, SupportUsActivity::class.java))
+                    R.id.nav_share_app -> {
+                        val i = Intent(Intent.ACTION_SEND)
+                        i.type = "text/plain"
+                        i.putExtra(Intent.EXTRA_TEXT, "You should give a try to WallBox for Android, it's freaking cool!\n\n$url")
+                        startActivity(Intent.createChooser(i, "Share WallBox using"))
+                    }
+                    R.id.nav_rate_review -> {
+                        val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                        startActivity(i)
+                    }
                 }
             }
 
@@ -248,9 +277,22 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             true
         }
 
-        // Set app version code to navigation header text
+        _menuNavigation = mNavigationView.menu
+
+        // navigation header
         val drawerHeader = mNavigationView.getHeaderView(0)
-        drawerHeader.findViewById<TextView>(R.id.tv_version_code).text = "v${Tools.getAppVersion(this)}"
+        setDrawerHeader(drawerHeader)
+
+        (drawerHeader.findViewById(R.id.btn_account) as LinearLayout).setOnClickListener {
+            val _isHide = Tools.toggleArrow(drawerHeader.findViewById(R.id.ic_arrow_drop) as ImageView)
+            _isAccountMode = _isHide
+            _menuNavigation.clear()
+            if (_isHide) {
+                _menuNavigation.add(1,1,100, "Add account").setIcon(R.drawable.ic_add)
+            } else {
+                mNavigationView.inflateMenu(R.menu.menu_navigation_drawer_main)
+            }
+        }
     }
 
     /** @method show snack bar */
@@ -342,7 +384,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         }
     }
 
-    private fun runTutorial() {
+    /*private fun runTutorial() {
         TapTargetSequence(this)
             .targets(
                 TapTarget.forView(actionSortMenu as View, "Sort Photos", "Tap here to sort photos")
@@ -353,9 +395,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             )
             .listener(object : TapTargetSequence.Listener {
                 override fun onSequenceFinish() {
-                    Preferences.getSharedPreferences(this@HomeActivity)!!
-                        .edit().putBoolean(Preferences.ACT_HOME_INTRO, false)
-                        .apply()
+                    SharedPref.getInstance(this@HomeActivity).saveData(Prefs.ACT_HOME_INTRO, false)
                 }
 
                 override fun onSequenceStep(lastTarget: TapTarget?, targetClicked: Boolean) {
@@ -367,6 +407,42 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                 }
             })
             .start()
+    }*/
+
+    private fun setDrawerHeader(drawerHeader: View) {
+        if (AuthManager.getInstance().isAuthorized() && !TextUtils.isEmpty(AuthManager.getInstance().getProfileUrl())) {
+            val fullName = AuthManager.getInstance().getFirstName() + " " + AuthManager.getInstance().getLastName()
+            (drawerHeader.findViewById(R.id.tv_full_name) as TextView).text = fullName
+            (drawerHeader.findViewById(R.id.tv_email) as TextView).text = AuthManager.getInstance().getEmail()
+
+            val circularProgressDrawable = CircularProgressDrawable(this)
+            circularProgressDrawable.strokeWidth = 5f
+            circularProgressDrawable.centerRadius = 20f
+            circularProgressDrawable.setColorSchemeColors(ThemeUtils.getThemeAttrColor(this, R.attr.colorAccent))
+            circularProgressDrawable.start()
+
+            (drawerHeader.findViewById(R.id.img_profile) as CircularImageView)
+                .loadUrl(AuthManager.getInstance().getProfileUrl(), circularProgressDrawable, getDrawable(R.drawable.placeholder_profile))
+        } else {
+            (drawerHeader.findViewById(R.id.tv_full_name) as TextView).text = getString(R.string.app_name)
+            (drawerHeader.findViewById(R.id.tv_email) as TextView).text = "Free HD Wallpapers"
+        }
+    }
+
+    override fun onSaveAccessToken() {
+
+    }
+
+    override fun onLogin() {
+
+    }
+
+    override fun onSaveProfileUrl() {
+        setDrawerHeader(mNavigationView.getHeaderView(0))
+    }
+
+    override fun onLogout() {
+        setDrawerHeader(mNavigationView.getHeaderView(0))
     }
 
 }

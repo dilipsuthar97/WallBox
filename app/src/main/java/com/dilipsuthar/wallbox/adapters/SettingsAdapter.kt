@@ -2,30 +2,12 @@ package com.dilipsuthar.wallbox.adapters
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.Switch
-import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import butterknife.BindView
-import butterknife.ButterKnife
-import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.list.listItems
-import com.danimahardhika.android.helpers.core.FileHelper
 import com.dilipsuthar.wallbox.R
-import com.dilipsuthar.wallbox.helpers.LocaleHelper
 import com.dilipsuthar.wallbox.items.Setting
-import com.dilipsuthar.wallbox.preferences.Preferences
-import com.dilipsuthar.wallbox.utils.PopupUtils
-import com.dilipsuthar.wallbox.utils.ThemeUtils
-import com.dilipsuthar.wallbox.utils.Tools
 import com.dilipsuthar.wallbox.viewholders.SettingsViewHolder
-import java.text.DecimalFormat
 
 /**
  * @adapter SettingActivity adapter to bind setting menu items

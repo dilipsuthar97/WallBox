@@ -23,9 +23,9 @@ import com.dilipsuthar.wallbox.activity.CollectionDetailActivity
 import com.dilipsuthar.wallbox.adapters.CollectionAdapter
 import com.dilipsuthar.wallbox.data_source.model.Collection
 import com.dilipsuthar.wallbox.data_source.model.SearchCollections
-import com.dilipsuthar.wallbox.data_source.Services
+import com.dilipsuthar.wallbox.data_source.service.Services
 import com.dilipsuthar.wallbox.helpers.setRefresh
-import com.dilipsuthar.wallbox.preferences.Preferences
+import com.dilipsuthar.wallbox.preferences.Prefs
 import com.dilipsuthar.wallbox.utils.PopupUtils
 import com.dilipsuthar.wallbox.utils.Tools
 import com.google.android.material.snackbar.Snackbar
@@ -45,7 +45,7 @@ class SearchCollectionFragment : Fragment() {
             val fragment = SearchCollectionFragment()
 
             val args = Bundle()
-            args.putString(Preferences.SEARCH_QUERY, query)
+            args.putString(Prefs.SEARCH_QUERY, query)
             fragment.arguments = args
 
             return fragment
@@ -70,7 +70,7 @@ class SearchCollectionFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mQuery = arguments!!.getString(Preferences.SEARCH_QUERY, "")
+        mQuery = arguments!!.getString(Prefs.SEARCH_QUERY, "")
 
         /** SERVICES / API */
         mService = Services.getService()
@@ -124,7 +124,7 @@ class SearchCollectionFragment : Fragment() {
         mOnCollectionClickListener = object : CollectionAdapter.OnCollectionClickListener {
             override fun onCollectionClick(collection: Collection, view: View, pos: Int) {
                 val intent = Intent(activity!!, CollectionDetailActivity::class.java)
-                intent.putExtra(Preferences.COLLECTION, Gson().toJson(collection))
+                intent.putExtra(Prefs.COLLECTION, Gson().toJson(collection))
                 startActivity(intent)
             }
         }

@@ -24,6 +24,7 @@ import com.google.android.material.tabs.TabLayout
 import java.util.*
 
 class SearchActivity : BaseActivity() {
+    private var TAG = SearchActivity::class.java.simpleName
 
     /**
      * Static
@@ -110,7 +111,7 @@ class SearchActivity : BaseActivity() {
     private fun searchQuery() {
         val query = etSearch.text.toString()
         if (query.isNotEmpty()) {
-            Log.d(HomeActivity.TAG, query)
+            Log.d(TAG, query)
             supportFragmentManager.beginTransaction().replace(R.id.search_photo_fragment, SearchPhotoFragment.newInstance(query))
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
 

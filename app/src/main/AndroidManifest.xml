@@ -17,25 +17,59 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/WallBox.Primary.Base.Light">
-        <activity android:name=".activity.OpenSourceLicensesActivity"></activity>
-        <activity android:name=".activity.SearchActivity" />
-        <activity android:name=".activity.ProfileActivity" />
-        <activity android:name=".activity.CollectionDetailActivity" />
-        <activity android:name=".activity.PhotoDetailActivity" />
-        <activity android:name=".activity.SupportUsActivity" />
-        <activity android:name=".activity.AboutActivity" />
-        <activity android:name=".activity.SettingsActivity" />
-        <activity android:name=".activity.FavoritesActivity" />
-        <activity
-                android:name=".activity.HomeActivity"
-                android:screenOrientation="portrait" />
         <activity
                 android:name=".activity.MainActivity"
+                android:configChanges="keyboardHidden|orientation|screenSize"
+                android:label="@string/app_name"
                 android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- for shortcut menu when long press on app -->
+            <meta-data
+                    android:name="android.app.shortcuts"
+                    android:resource="@xml/shortcuts" />
+        </activity>
+        <activity
+                android:name=".activity.HomeActivity"
+                android:configChanges="keyboardHidden|orientation|screenSize"
+                android:label="@string/app_name"
+                android:screenOrientation="portrait">
+            <intent-filter>
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:host="unsplash.com"
+                        android:path="/"
+                        android:scheme="https" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.FavoritesActivity" android:parentActivityName=".activity.HomeActivity"/>
+        <activity android:name=".activity.SettingsActivity" android:parentActivityName=".activity.HomeActivity"/>
+        <activity android:name=".activity.AboutActivity" android:parentActivityName=".activity.HomeActivity"/>
+        <activity android:name=".activity.SupportUsActivity" android:parentActivityName=".activity.HomeActivity"/>
+        <activity android:name=".activity.PhotoDetailActivity" />
+        <activity android:name=".activity.CollectionDetailActivity" />
+        <activity android:name=".activity.ProfileActivity" />
+        <activity android:name=".activity.SearchActivity" android:parentActivityName=".activity.HomeActivity"/>
+        <activity android:name=".activity.OpenSourceLicensesActivity" />
+        <activity android:name=".activity.LoginActivity" android:launchMode="singleTask">
+            <!-- schema and callback url config for oauth calling -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                        android:host="unsplash_auth"
+                        android:scheme="wallbox" />
             </intent-filter>
         </activity>
 

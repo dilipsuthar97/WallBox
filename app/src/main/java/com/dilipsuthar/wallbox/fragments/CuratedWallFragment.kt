@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.WallBox
 import com.dilipsuthar.wallbox.helpers.setRefresh
-import com.dilipsuthar.wallbox.preferences.Preferences
+import com.dilipsuthar.wallbox.preferences.Prefs
 /**
  * Created by DILIP SUTHAR on 28/07/19
  */
@@ -20,7 +20,7 @@ class CuratedWallFragment : BasePhotosFragment() {
             val fragment = CuratedWallFragment()
 
             val args = Bundle()
-            args.putString(Preferences.SORT, sort)
+            args.putString(Prefs.SORT, sort)
             fragment.arguments = args
 
             return fragment

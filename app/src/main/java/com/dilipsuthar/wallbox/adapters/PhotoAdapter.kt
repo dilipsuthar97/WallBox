@@ -1,26 +1,14 @@
 package com.dilipsuthar.wallbox.adapters
 
-import android.Manifest
 import android.app.Activity
 import android.content.Context
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.dilipsuthar.wallbox.R
-import com.dilipsuthar.wallbox.WallBox
 import com.dilipsuthar.wallbox.data_source.model.Photo
-import com.dilipsuthar.wallbox.helpers.PermissionsHelper
-import com.dilipsuthar.wallbox.preferences.Preferences
-import com.dilipsuthar.wallbox.helpers.loadUrl
-import com.dilipsuthar.wallbox.utils.Dialog
 import com.dilipsuthar.wallbox.viewholders.LoadingViewHolder
 import com.dilipsuthar.wallbox.viewholders.PhotoViewHolder
 import com.mikhaellopez.circularimageview.CircularImageView
@@ -42,8 +30,6 @@ class PhotoAdapter
         private val activity: Activity?,
         private val listener: OnItemClickListener?
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    private val sharedPreferences = Preferences.getSharedPreferences(context)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view: View?
@@ -72,7 +58,7 @@ class PhotoAdapter
         val photo = mPhotoList?.get(position)
 
         if (holder is PhotoViewHolder) {
-            holder.bind(photo, position, context, activity, listener, sharedPreferences)
+            holder.bind(photo, position, context, activity, listener)
         }
     }
 

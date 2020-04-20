@@ -8,7 +8,6 @@ import android.graphics.Color
 import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
@@ -19,7 +18,8 @@ import com.dilipsuthar.wallbox.adapters.PhotoAdapter
 import com.dilipsuthar.wallbox.data_source.model.Photo
 import com.dilipsuthar.wallbox.helpers.PermissionsHelper
 import com.dilipsuthar.wallbox.helpers.loadUrl
-import com.dilipsuthar.wallbox.preferences.Preferences
+import com.dilipsuthar.wallbox.preferences.Prefs
+import com.dilipsuthar.wallbox.preferences.SharedPref
 import com.dilipsuthar.wallbox.utils.Dialog
 import com.mikhaellopez.circularimageview.CircularImageView
 
@@ -41,15 +41,14 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         position: Int,
         ctx: Context?,
         act: Activity?,
-        listener: PhotoAdapter.OnItemClickListener?,
-        sharedPref: SharedPreferences?
+        listener: PhotoAdapter.OnItemClickListener?
     ) {
         photo?.let {
             val txtPhotoBy = photo.user.first_name
             if (it.user.last_name != "") txtPhotoBy + " ${it.user.last_name}"
 
             rootView.setBackgroundColor(Color.parseColor(it.color))
-            textPhotoBy.text = "By, $txtPhotoBy"
+            textPhotoBy.text = "By $txtPhotoBy"
             textLikes.text = "${it.likes} Likes"
             btnDownload.setOnClickListener { _ ->
                 if (PermissionsHelper.permissionGranted(ctx!!, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE))) {
@@ -63,7 +62,7 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                     )
             }
 
-            val url = when (sharedPref?.getString(Preferences.WALLPAPER_QUALITY, WallBox.DEFAULT_WALLPAPER_QUALITY)) {
+            val url = when (SharedPref.getInstance(ctx!!).getString(Prefs.WALLPAPER_QUALITY, WallBox.DEFAULT_WALLPAPER_QUALITY)) {
                 "Raw" -> it.urls.raw
                 "Full" -> it.urls.full
                 "Regular" -> it.urls.regular
@@ -74,8 +73,8 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
             imgPhotoBy.loadUrl(
                 it.user.profile_image.large,
-                R.drawable.placeholder_profile,
-                R.drawable.placeholder_profile)
+                ctx.getDrawable(R.drawable.placeholder_profile),
+                ctx.getDrawable(R.drawable.placeholder_profile))
 
             // onClick listener
             imagePhoto.setOnLongClickListener { view ->

@@ -15,47 +15,39 @@ interface PhotoApi {
 
     /** Main API's */
     @GET("photos")
-    fun getPhotos(@Query("client_id") client_id: String,
-                  @Query("page") page: Int,
+    fun getPhotos(@Query("page") page: Int,
                   @Query("per_page") per_page: Int,
                   @Query("order_by") order_by: String): Call<List<Photo>>
 
     @GET("photos/curated")
-    fun getCuratedPhotos(@Query("client_id") client_id: String,
-                         @Query("page") page: Int,
+    fun getCuratedPhotos(@Query("page") page: Int,
                          @Query("per_page") per_page: Int,
                          @Query("order_by") order_by: String): Call<List<Photo>>
 
     @GET("photos/{id}")
-    fun getPhoto(@Path("id") id: String,
-                 @Query("client_id") client_id: String): Call<Photo>
+    fun getPhoto(@Path("id") id: String): Call<Photo>
 
     @GET("photos/{id}/statistics")
-    fun getPhotoStatistics(@Path("id") id: String,
-                           @Query("client_id") client_id: String): Call<PhotoStatistics>
+    fun getPhotoStatistics(@Path("id") id: String): Call<PhotoStatistics>
 
     @GET("collections/{id}/photos")
     fun getCollectionPhotos(@Path("id") id: String,
-                            @Query("client_id") client_id: String,
                             @Query("page") page: Int,
                             @Query("per_page") per_page: Int): Call<List<Photo>>
 
     @GET("collections/curated/{id}/photos")
     fun getCuratedCollectionPhotos(@Path("id") id: String,
-                                   @Query("client_id") client_id: String,
                                    @Query("page") page: Int,
                                    @Query("per_page") per_page: Int): Call<List<Photo>>
 
     @GET("users/{username}/photos")
     fun getUserPhotos(@Path("username") username: String,
-                      @Query("client_id") client_id: String,
                       @Query("page") page: Int,
                       @Query("per_page") per_page: Int,
                       @Query("order_by") order_by: String): Call<List<Photo>>
 
     @GET("users/{username}/likes")
     fun getUserLikedPhotos(@Path("username") username: String,
-                           @Query("client_id") client_id: String,
                            @Query("page") page: Int,
                            @Query("per_page") per_page: Int,
                            @Query("order_by") order_by: String): Call<List<Photo>>

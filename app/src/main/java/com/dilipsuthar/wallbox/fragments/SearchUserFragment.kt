@@ -25,9 +25,9 @@ import com.dilipsuthar.wallbox.activity.ProfileActivity
 import com.dilipsuthar.wallbox.adapters.UserAdapter
 import com.dilipsuthar.wallbox.data_source.model.SearchUsers
 import com.dilipsuthar.wallbox.data_source.model.User
-import com.dilipsuthar.wallbox.data_source.Services
+import com.dilipsuthar.wallbox.data_source.service.Services
 import com.dilipsuthar.wallbox.helpers.setRefresh
-import com.dilipsuthar.wallbox.preferences.Preferences
+import com.dilipsuthar.wallbox.preferences.Prefs
 import com.dilipsuthar.wallbox.utils.PopupUtils
 import com.dilipsuthar.wallbox.utils.Tools
 import com.google.android.material.snackbar.Snackbar
@@ -46,7 +46,7 @@ class SearchUserFragment : Fragment() {
             val fragment = SearchUserFragment()
 
             val args = Bundle()
-            args.putString(Preferences.SEARCH_QUERY, query)
+            args.putString(Prefs.SEARCH_QUERY, query)
             fragment.arguments = args
 
             return fragment
@@ -71,7 +71,7 @@ class SearchUserFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mQuery = arguments!!.getString(Preferences.SEARCH_QUERY, "")
+        mQuery = arguments!!.getString(Prefs.SEARCH_QUERY, "")
 
         /** SERVICES / API */
         mService = Services.getService()
@@ -124,7 +124,7 @@ class SearchUserFragment : Fragment() {
             override fun onUserClick(user: User, view: View, imgUserProfile: View, pos: Int) {
                 val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity!!, imgUserProfile, ViewCompat.getTransitionName(imgUserProfile)!!)
                 val intent = Intent(activity, ProfileActivity::class.java)
-                intent.putExtra(Preferences.USER, Gson().toJson(user))
+                intent.putExtra(Prefs.USER, Gson().toJson(user))
                 startActivity(intent, options.toBundle())
             }
         }

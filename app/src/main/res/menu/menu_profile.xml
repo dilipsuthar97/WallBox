@@ -3,6 +3,12 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+            android:id="@+id/action_unsplash_profile"
+            android:icon="@drawable/ic_public"
+            android:title="Unsplash Profile"
+            app:showAsAction="ifRoom"/>
+
+    <item
             android:id="@+id/action_share"
             android:icon="@drawable/ic_nav_share"
             android:title="Share"

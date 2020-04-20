@@ -257,7 +257,7 @@
                 app:tabIndicator="@drawable/indicator_tab_layout"
                 app:tabTextAppearance="@style/TextAppearance.AppCompat.Small"
                 app:tabIndicatorHeight="3dp"
-                app:tabMode="scrollable"/>
+                app:tabMode="fixed"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 

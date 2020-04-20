@@ -2,7 +2,6 @@ package com.dilipsuthar.wallbox.activity
 
 import android.Manifest
 import android.content.Intent
-import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -32,9 +31,10 @@ import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.WallBox
 import com.dilipsuthar.wallbox.data_source.model.Photo
 import com.dilipsuthar.wallbox.data_source.model.PhotoStatistics
-import com.dilipsuthar.wallbox.data_source.Services
+import com.dilipsuthar.wallbox.data_source.service.Services
 import com.dilipsuthar.wallbox.helpers.*
-import com.dilipsuthar.wallbox.preferences.Preferences
+import com.dilipsuthar.wallbox.preferences.Prefs
+import com.dilipsuthar.wallbox.preferences.SharedPref
 import com.dilipsuthar.wallbox.utils.*
 import com.github.chrisbanes.photoview.PhotoView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -56,8 +56,6 @@ class PhotoDetailActivity : BaseActivity() {
     private var mOnRequestPhotoStatistics: Services.OnRequestPhotoStatistics? = null
     private lateinit var mPhoto: Photo
     private lateinit var mPhotoStatistics: PhotoStatistics
-
-    private var sharedPreferences: SharedPreferences? = null
 
     @BindView(R.id.img_photo) lateinit var imgPhoto: PhotoView
     @BindView(R.id.toolbar) lateinit var mToolbar: Toolbar
@@ -82,12 +80,11 @@ class PhotoDetailActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_photo_detail)
         ButterKnife.bind(this)
-        sharedPreferences = Preferences.getSharedPreferences(this)
-        mPhoto = Gson().fromJson(intent.getStringExtra(Preferences.PHOTO), Photo::class.java)
+        mPhoto = Gson().fromJson(intent.getStringExtra(Prefs.PHOTO), Photo::class.java)
 
         /** Set mPhoto data */
         imgPhoto.setBackgroundColor(Color.parseColor("#000000"))
-        val url = when (sharedPreferences?.getString(Preferences.WALLPAPER_QUALITY, WallBox.DEFAULT_WALLPAPER_QUALITY)) {
+        val url = when (SharedPref.getInstance(this).getString(Prefs.WALLPAPER_QUALITY, WallBox.DEFAULT_WALLPAPER_QUALITY)) {
             "Raw" -> mPhoto.urls.raw
             "Full" -> mPhoto.urls.full
             "Regular" -> mPhoto.urls.regular
@@ -97,8 +94,8 @@ class PhotoDetailActivity : BaseActivity() {
         imgPhoto.loadUrl(url)
         imgUser.loadUrl(
             mPhoto.user.profile_image.large,
-            R.drawable.placeholder_profile,
-            R.drawable.placeholder_profile)
+            getDrawable(R.drawable.placeholder_profile),
+            getDrawable(R.drawable.placeholder_profile))
 
         if (mPhoto.user.first_name != "" && mPhoto.user.last_name != "")
             tvPhotoBy.text = mPhoto.user.first_name + " " + mPhoto.user.last_name
@@ -224,7 +221,7 @@ class PhotoDetailActivity : BaseActivity() {
         (findViewById<View>(R.id.btn_profile)).setOnClickListener {
             val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, imgUser, ViewCompat.getTransitionName(imgUser)!!)
             val intent = Intent(this@PhotoDetailActivity, ProfileActivity::class.java)
-            intent.putExtra(Preferences.USER, Gson().toJson(mPhoto.user))
+            intent.putExtra(Prefs.USER, Gson().toJson(mPhoto.user))
             startActivity(intent, options.toBundle())
         }
 

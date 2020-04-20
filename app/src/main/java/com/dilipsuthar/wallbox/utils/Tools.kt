@@ -127,6 +127,7 @@ object Tools {
         return isConnected
     }
 
+    // Lambda function
     /*val hasActiveNetwork: (Context) -> Boolean? = { ctx ->
         var isConnected: Boolean? = false
         val connectivityManager = ctx.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -160,6 +161,16 @@ object Tools {
             abs(number / 1000000) > 1 -> (number / 1000000).toString() + "M"
             abs(number / 1000) > 1 -> (number / 1000).toString() + "K"
             else -> number.toString()   // deal with easy case
+        }
+    }
+
+    fun toggleArrow(view: View): Boolean {
+        return if (view.rotation.equals(0F)) {
+            view.animate().setDuration(200).rotation(180F)
+            true
+        } else {
+            view.animate().setDuration(200).rotation(0F)
+            false
         }
     }
 }

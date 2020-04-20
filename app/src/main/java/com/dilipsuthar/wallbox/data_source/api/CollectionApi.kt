@@ -16,23 +16,19 @@ interface CollectionApi {
      * @param per_page default count of collection on every request
      */
     @GET("collections")
-    fun getCollections(@Query("client_id") client_id: String,
-                       @Query("page") page: Int,
+    fun getCollections(@Query("page") page: Int,
                        @Query("per_page") per_page: Int): Call<List<Collection>>
 
     @GET("collections/featured")
-    fun getFeaturedCollections(@Query("client_id") client_id: String,
-                       @Query("page") page: Int,
+    fun getFeaturedCollections(@Query("page") page: Int,
                        @Query("per_page") per_page: Int): Call<List<Collection>>
 
     @GET("collections/curated")
-    fun getCuratedCollections(@Query("client_id") client_id: String,
-                       @Query("page") page: Int,
+    fun getCuratedCollections(@Query("page") page: Int,
                        @Query("per_page") per_page: Int): Call<List<Collection>>
 
     @GET("users/{username}/collections")
     fun getUserCollections(@Path("username") username: String,
-                           @Query("client_id") client_id: String,
                            @Query("page") page: Int,
                            @Query("per_page") per_page: Int): Call<List<Collection>>
 
@@ -43,7 +39,6 @@ interface CollectionApi {
      * @param client_id Unsplash access key
      */
     @GET("collections/{id}")
-    fun getCollection(@Path("id") id: String,
-                      @Query("client_id") client_id: String): Call<Collection>
+    fun getCollection(@Path("id") id: String): Call<Collection>
 
 }

@@ -6,7 +6,7 @@ import android.view.*
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.WallBox
 import com.dilipsuthar.wallbox.helpers.setRefresh
-import com.dilipsuthar.wallbox.preferences.Preferences
+import com.dilipsuthar.wallbox.preferences.Prefs
 /**
  * Modified by DILIP SUTHAR on 30/08/19
  */
@@ -18,7 +18,7 @@ class RecentWallFragment : BasePhotosFragment() {
             val fragment = RecentWallFragment()
 
             val args = Bundle()
-            args.putString(Preferences.SORT, sort)
+            args.putString(Prefs.SORT, sort)
             fragment.arguments = args
 
             return fragment

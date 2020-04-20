@@ -4,13 +4,15 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.dilipsuthar.wallbox.R
+import com.dilipsuthar.wallbox.WallBox
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.toast_layout.view.*
 
 object PopupUtils {
 
-    fun showToast(context: Context?, msg: String?, duration: Int) {
+    fun showToast(context: Context?, msg: String?, duration: Int = Toast.LENGTH_SHORT) {
         val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.toast_layout, null)
         view.text_msg.text = msg
@@ -21,16 +23,25 @@ object PopupUtils {
     }
 
     fun showHttpErrorSnackBar(view: View, action: () -> Unit? = {}): Snackbar {
-        val snackBar = Snackbar.make(view, R.string.desc_http_error, Snackbar.LENGTH_LONG)
-        //Tools.setSnackBarDrawable(snackBar, ContextCompat.getDrawable(context!!, R.drawable.container_snackbar_error))
-        snackBar.setAction(R.string.retry) { action() }.show()
-        return snackBar
+        val snackbar = Snackbar.make(view, R.string.desc_http_error, Snackbar.LENGTH_LONG)
+        Tools.setSnackBarDrawable(snackbar, ContextCompat.getDrawable(WallBox.getInstance(), R.drawable.container_snackbar))
+        snackbar.setAction(R.string.retry) { action() }.show()
+        return snackbar
     }
 
     fun showNetworkErrorSnackBar(view: View, action: () -> Unit? = {}): Snackbar {
-        val snackBar = Snackbar.make(view, R.string.desc_network_error, Snackbar.LENGTH_LONG)
-        snackBar.setAction(R.string.retry) { action() }.show()
-        return snackBar
+        val snackbar = Snackbar.make(view, R.string.desc_network_error, Snackbar.LENGTH_LONG)
+        Tools.setSnackBarDrawable(snackbar, ContextCompat.getDrawable(WallBox.getInstance(), R.drawable.container_snackbar))
+        snackbar.setAction(R.string.retry) { action() }.show()
+        return snackbar
+    }
+
+    fun showSnackbar(view: View, message: String, duration: Int = Snackbar.LENGTH_SHORT, action: (() -> Unit?)? = null, actionText: String? = null): Snackbar {
+        val snackbar = Snackbar.make(view, message, duration)
+        Tools.setSnackBarDrawable(snackbar, ContextCompat.getDrawable(WallBox.getInstance(), R.drawable.container_snackbar))
+        if (action != null) snackbar.setAction(actionText) { action() }
+        snackbar.show()
+        return snackbar
     }
 
 }

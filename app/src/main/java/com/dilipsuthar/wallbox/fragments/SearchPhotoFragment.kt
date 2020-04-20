@@ -27,9 +27,9 @@ import com.dilipsuthar.wallbox.activity.ProfileActivity
 import com.dilipsuthar.wallbox.adapters.PhotoAdapter
 import com.dilipsuthar.wallbox.data_source.model.Photo
 import com.dilipsuthar.wallbox.data_source.model.SearchPhotos
-import com.dilipsuthar.wallbox.data_source.Services
+import com.dilipsuthar.wallbox.data_source.service.Services
 import com.dilipsuthar.wallbox.helpers.setRefresh
-import com.dilipsuthar.wallbox.preferences.Preferences
+import com.dilipsuthar.wallbox.preferences.Prefs
 import com.dilipsuthar.wallbox.utils.PopupUtils
 import com.dilipsuthar.wallbox.utils.Tools
 import com.dilipsuthar.wallbox.utils.itemDecorater.VerticalSpacingItemDecorator
@@ -49,7 +49,7 @@ class SearchPhotoFragment : Fragment() {
             val fragment = SearchPhotoFragment()
 
             val args = Bundle()
-            args.putString(Preferences.SEARCH_QUERY, query)
+            args.putString(Prefs.SEARCH_QUERY, query)
             fragment.arguments = args
 
             return fragment
@@ -74,7 +74,7 @@ class SearchPhotoFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mQuery = arguments!!.getString(Preferences.SEARCH_QUERY, "")
+        mQuery = arguments!!.getString(Prefs.SEARCH_QUERY, "")
 
         /** SERVICES / API */
         mService = Services.getService()
@@ -130,7 +130,7 @@ class SearchPhotoFragment : Fragment() {
                 //onPhotoClick(photo, view, pos, imageView)
                 val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity!!, imageView, ViewCompat.getTransitionName(imageView)!!)
                 val intent = Intent(activity, PhotoDetailActivity::class.java)
-                intent.putExtra(Preferences.PHOTO, Gson().toJson(photo))
+                intent.putExtra(Prefs.PHOTO, Gson().toJson(photo))
                 startActivity(intent, options.toBundle())
             }
 
@@ -144,7 +144,7 @@ class SearchPhotoFragment : Fragment() {
                 //onPhotoUserProfileClick(photo, pos, imgPhotoBy)
                 val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity!!, imgPhotoBy, ViewCompat.getTransitionName(imgPhotoBy)!!)
                 val intent = Intent(activity, ProfileActivity::class.java)
-                intent.putExtra(Preferences.USER, Gson().toJson(photo.user))
+                intent.putExtra(Prefs.USER, Gson().toJson(photo.user))
                 startActivity(intent, options.toBundle())
             }
         }

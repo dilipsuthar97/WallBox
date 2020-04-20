@@ -1,35 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:background="?attr/backgroundColor"
-        android:layout_height="wrap_content">
+        android:layout_height="160dp">
     <!-- default height is: 160dp -->
 
+    <LinearLayout
+            android:id="@+id/btn_account"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:foreground="?attr/selectableItemBackground"
+            android:background="@android:color/transparent"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical">
+            <com.mikhaellopez.circularimageview.CircularImageView
+                    android:id="@+id/img_profile"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginLeft="16dp"
+                    tools:srcCompat="@drawable/placeholder_profile"
+                    android:layout_marginTop="16dp"/>
 
-    <TextView
-            android:text="@string/app_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tv_app_name"
-            android:textColor="?attr/colorAccent"
-            android:textSize="32sp"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/tv_version_code"
-            android:layout_marginTop="32dp"
-            app:layout_constraintTop_toTopOf="parent"/>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal">
+            <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="16dp"
+                    android:orientation="vertical">
+                <TextView
+                        android:id="@+id/tv_full_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="?attr/primaryTextColor"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        tools:text="FirstName LastName"/>
+                <TextView
+                        android:id="@+id/tv_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="?attr/secondaryTextColor"
+                        tools:text="abc123@gmail.com"/>
+            </LinearLayout>
+            <ImageView
+                    android:id="@+id/ic_arrow_drop"
+                    android:layout_width="56dp"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_arrow_drop_down"/>
+        </LinearLayout>
 
-    <TextView
-            tools:text="v1.0.0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/secondaryTextColor"
-            android:id="@+id/tv_version_code"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="16dp"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <View
+                android:id="@+id/divider4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider" />
+
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

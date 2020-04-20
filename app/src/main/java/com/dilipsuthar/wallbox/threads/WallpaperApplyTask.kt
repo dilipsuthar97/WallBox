@@ -92,11 +92,17 @@ class WallpaperApplyTask(
 
                         override fun onLoadFailed(errorDrawable: Drawable?) {
                             pDialog?.dismiss()
-                            Snackbar.make(view, context.resources.getString(R.string.msg_wallpaper_set_failed), Snackbar.LENGTH_SHORT)
+                            /*Snackbar.make(view, context.resources.getString(R.string.msg_wallpaper_set_failed), Snackbar.LENGTH_SHORT)
                                 .setAction("DOWNLOAD") {
                                     Dialog.showDownloadDialog(context, photo)
                                 }
-                                .show()
+                                .show()*/
+                            PopupUtils.showSnackbar(
+                                view,
+                                context.resources.getString(R.string.msg_wallpaper_set_failed),
+                                action = { Dialog.showDownloadDialog(context, photo) },
+                                actionText = "Download"
+                            )
                         }
                     })
 

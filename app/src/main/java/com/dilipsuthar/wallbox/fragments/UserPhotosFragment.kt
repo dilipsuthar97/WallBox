@@ -9,7 +9,7 @@ import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.WallBox
 import com.dilipsuthar.wallbox.data_source.model.User
 import com.dilipsuthar.wallbox.helpers.setRefresh
-import com.dilipsuthar.wallbox.preferences.Preferences
+import com.dilipsuthar.wallbox.preferences.Prefs
 import com.dilipsuthar.wallbox.utils.Tools
 /**
  * Created by DILIP SUTHAR on 30/08/19
@@ -22,7 +22,7 @@ class UserPhotosFragment : BasePhotosFragment() {
             val fragment = UserPhotosFragment()
 
             val args = Bundle()
-            args.putString(Preferences.SORT, sort)
+            args.putString(Prefs.SORT, sort)
             fragment.arguments = args
 
             return fragment

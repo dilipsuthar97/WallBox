@@ -23,10 +23,10 @@ import com.dilipsuthar.wallbox.WallBox
 import com.dilipsuthar.wallbox.adapters.PhotoAdapter
 import com.dilipsuthar.wallbox.data_source.model.Collection
 import com.dilipsuthar.wallbox.data_source.model.Photo
-import com.dilipsuthar.wallbox.data_source.Services
+import com.dilipsuthar.wallbox.data_source.service.Services
 import com.dilipsuthar.wallbox.helpers.loadUrl
 import com.dilipsuthar.wallbox.helpers.setRefresh
-import com.dilipsuthar.wallbox.preferences.Preferences
+import com.dilipsuthar.wallbox.preferences.Prefs
 import com.dilipsuthar.wallbox.utils.*
 import com.dilipsuthar.wallbox.utils.itemDecorater.VerticalSpacingItemDecorator
 import com.google.android.material.snackbar.Snackbar
@@ -38,7 +38,7 @@ import retrofit2.Response
  * Created by DILIP SUTHAR 05/06/19
  */
 class CollectionDetailActivity : BaseActivity() {
-    private val TAG = "WallBox.CollectionDetailAct"
+    private val TAG = CollectionDetailActivity::class.java.simpleName
 
     private var mPage = 0
     private var mCollection: Collection? = null
@@ -69,12 +69,12 @@ class CollectionDetailActivity : BaseActivity() {
         mServices = Services.getService()
 
         /** Set Collection data on Toolbar */
-        mCollection = Gson().fromJson(intent.getStringExtra(Preferences.COLLECTION), Collection::class.java)
+        mCollection = Gson().fromJson(intent.getStringExtra(Prefs.COLLECTION), Collection::class.java)
         mCollection?.let {
             imgUserProfile.loadUrl(
                 it.user.profile_image.medium,
-                R.drawable.placeholder_profile,
-                R.drawable.placeholder_profile)
+                getDrawable(R.drawable.placeholder_profile),
+                getDrawable(R.drawable.placeholder_profile))
             tvPhotoBy.text = "${resources.getString(R.string.wallpaper_by)} ${it.user.first_name} ${it.user.last_name}"
         }
 
@@ -120,7 +120,7 @@ class CollectionDetailActivity : BaseActivity() {
             override fun onItemClick(photo: Photo, view: View, pos: Int, imageView: ImageView) {
                 val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this@CollectionDetailActivity, imageView, ViewCompat.getTransitionName(imageView)!!)
                 val intent = Intent(this@CollectionDetailActivity, PhotoDetailActivity::class.java)
-                intent.putExtra(Preferences.PHOTO, Gson().toJson(photo))
+                intent.putExtra(Prefs.PHOTO, Gson().toJson(photo))
                 startActivity(intent, options.toBundle())
             }
 
@@ -131,7 +131,7 @@ class CollectionDetailActivity : BaseActivity() {
             override fun onUserProfileClick(photo: Photo, pos: Int, imgPhotoBy: CircularImageView) {
                 val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this@CollectionDetailActivity, imgPhotoBy, ViewCompat.getTransitionName(imgPhotoBy)!!)
                 val intent = Intent(this@CollectionDetailActivity, ProfileActivity::class.java)
-                intent.putExtra(Preferences.USER, Gson().toJson(photo.user))
+                intent.putExtra(Prefs.USER, Gson().toJson(photo.user))
                 startActivity(intent, options.toBundle())
             }
         }
@@ -179,7 +179,7 @@ class CollectionDetailActivity : BaseActivity() {
         btnProfile.setOnClickListener {
             val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, imgUserProfile, ViewCompat.getTransitionName(imgUserProfile)!!)
             val intent = Intent(this, ProfileActivity::class.java)
-            intent.putExtra(Preferences.USER, Gson().toJson(mCollection?.user))
+            intent.putExtra(Prefs.USER, Gson().toJson(mCollection?.user))
             startActivity(intent, options.toBundle())
         }
 

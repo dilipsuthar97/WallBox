@@ -14,12 +14,13 @@ import butterknife.ButterKnife
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.adapters.SectionPagerAdapter
 import com.dilipsuthar.wallbox.data_source.model.User
-import com.dilipsuthar.wallbox.data_source.Services
+import com.dilipsuthar.wallbox.data_source.service.Services
 import com.dilipsuthar.wallbox.fragments.UserCollectionsFragment
 import com.dilipsuthar.wallbox.fragments.UserLikedFragment
 import com.dilipsuthar.wallbox.fragments.UserPhotosFragment
 import com.dilipsuthar.wallbox.helpers.loadUrl
-import com.dilipsuthar.wallbox.preferences.Preferences
+import com.dilipsuthar.wallbox.helpers.openWebView
+import com.dilipsuthar.wallbox.preferences.Prefs
 import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.dilipsuthar.wallbox.utils.Tools
 import com.google.android.material.tabs.TabLayout
@@ -56,14 +57,14 @@ class ProfileActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
         ButterKnife.bind(this)
-        mUser = Gson().fromJson(intent.getStringExtra(Preferences.USER), User::class.java)
+        mUser = Gson().fromJson(intent.getStringExtra(Prefs.USER), User::class.java)
 
         /** Set user data info */
         mUser?.let {
             imgUserProfile.loadUrl(
                 it.profile_image.large,
-                R.drawable.placeholder_profile,
-                R.drawable.placeholder_profile)
+                getDrawable(R.drawable.placeholder_profile),
+                getDrawable(R.drawable.placeholder_profile))
 
             tvUsername.text = it?.first_name + " ${it?.last_name}"
 
@@ -133,10 +134,15 @@ class ProfileActivity : BaseActivity() {
             android.R.id.home -> onBackPressed()
             R.id.action_share -> {
                 ShareCompat.IntentBuilder.from(this)
-                    .setText(mUser?.links?.self ?: "no link")
+                    .setText(mUser?.links?.html ?: "no link")
                     .setChooserTitle("Share profile link")
                     .setType("*.*")
                     .startChooser()
+            }
+            R.id.action_unsplash_profile -> {
+                if (mUser?.links?.html != null) {
+                    openWebView(mUser?.links?.html!!)
+                }
             }
         }
         return true

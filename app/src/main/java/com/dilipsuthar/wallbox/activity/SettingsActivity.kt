@@ -14,7 +14,8 @@ import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.WallBox
 import com.dilipsuthar.wallbox.adapters.SettingsAdapter
 import com.dilipsuthar.wallbox.items.Setting
-import com.dilipsuthar.wallbox.preferences.Preferences
+import com.dilipsuthar.wallbox.preferences.Prefs
+import com.dilipsuthar.wallbox.preferences.SharedPref
 import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.dilipsuthar.wallbox.utils.Tools
 import java.text.DecimalFormat
@@ -23,15 +24,18 @@ import java.text.DecimalFormat
  */
 class SettingsActivity : BaseActivity() {
 
-    private var mSettingList: ArrayList<Setting> = ArrayList()
-
     @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
     @BindView(R.id.recycler_view_setting) lateinit var mRecyclerView: RecyclerView
+
+    private var mSettingList: ArrayList<Setting> = ArrayList()
+    private lateinit var mSharedPref: SharedPref
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
         ButterKnife.bind(this)
+
+        mSharedPref = SharedPref.getInstance(this)
 
         initToolbar()
         initSettings()
@@ -57,7 +61,7 @@ class SettingsActivity : BaseActivity() {
         mSettingList.add(Setting(
             Setting.Type.LANGUAGE,
                 resources.getString(R.string.title_language),
-                Preferences.getSharedPreferences(this)?.getString(Preferences.LANGUAGE, "English")!!
+                mSharedPref.getString(Prefs.LANGUAGE, "English")!!
             ))
 
         mSettingList.add(Setting(
@@ -77,7 +81,7 @@ class SettingsActivity : BaseActivity() {
         mSettingList.add(Setting(
             type = Setting.Type.WALLPAPER_PREVIEW_QUALITY,
             title = resources.getString(R.string.title_wallpaper_preview_quality),
-            subTitle = Preferences.getSharedPreferences(this)?.getString(Preferences.WALLPAPER_QUALITY, WallBox.DEFAULT_WALLPAPER_QUALITY)!!
+            subTitle = mSharedPref.getString(Prefs.WALLPAPER_QUALITY, WallBox.DEFAULT_WALLPAPER_QUALITY)!!
         ))
 
         mSettingList.add(Setting(

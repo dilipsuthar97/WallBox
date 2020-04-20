@@ -13,7 +13,6 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -25,12 +24,11 @@ import com.dilipsuthar.wallbox.activity.PhotoDetailActivity
 import com.dilipsuthar.wallbox.activity.ProfileActivity
 import com.dilipsuthar.wallbox.adapters.PhotoAdapter
 import com.dilipsuthar.wallbox.data_source.model.Photo
-import com.dilipsuthar.wallbox.data_source.Services
+import com.dilipsuthar.wallbox.data_source.service.Services
 import com.dilipsuthar.wallbox.helpers.setRefresh
-import com.dilipsuthar.wallbox.preferences.Preferences
+import com.dilipsuthar.wallbox.preferences.Prefs
 import com.dilipsuthar.wallbox.utils.PopupUtils
 import com.dilipsuthar.wallbox.utils.Tools
-import com.dilipsuthar.wallbox.utils.itemDecorater.HorizontalSpacingItemDecorator
 import com.dilipsuthar.wallbox.utils.itemDecorater.VerticalSpacingItemDecorator
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
@@ -60,7 +58,7 @@ abstract class BasePhotosFragment : Fragment(), Services.OnRequestPhotosListener
         setHasOptionsMenu(true)
         super.onCreate(savedInstanceState)
 
-        mSort = arguments?.getString(Preferences.SORT, WallBox.DEFAULT_SORT_PHOTOS)
+        mSort = arguments?.getString(Prefs.SORT, WallBox.DEFAULT_SORT_PHOTOS)
 
         /** SERVICES / API */
         mService = Services.getService()
@@ -217,7 +215,7 @@ abstract class BasePhotosFragment : Fragment(), Services.OnRequestPhotosListener
         //onPhotoClick(photo, view, pos, imageView)
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity!!, imageView, ViewCompat.getTransitionName(imageView)!!)
         val intent = Intent(activity, PhotoDetailActivity::class.java)
-        intent.putExtra(Preferences.PHOTO, Gson().toJson(photo))
+        intent.putExtra(Prefs.PHOTO, Gson().toJson(photo))
         startActivity(intent, options.toBundle())
     }
 
@@ -231,7 +229,7 @@ abstract class BasePhotosFragment : Fragment(), Services.OnRequestPhotosListener
         //onPhotoUserProfileClick(photo, pos, imgPhotoBy)
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity!!, imgPhotoBy, ViewCompat.getTransitionName(imgPhotoBy)!!)
         val intent = Intent(activity, ProfileActivity::class.java)
-        intent.putExtra(Preferences.USER, Gson().toJson(photo.user))
+        intent.putExtra(Prefs.USER, Gson().toJson(photo.user))
         startActivity(intent, options.toBundle())
     }
 

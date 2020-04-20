@@ -80,8 +80,8 @@ class AboutActivity : BaseActivity(), View.OnClickListener {
     /** @method init all components */
     private fun initComponent() {
         imgMe.loadUrl("https://avatars1.githubusercontent.com/u/35637341?s=460&v=4",
-            R.drawable.placeholder_profile,
-            R.drawable.placeholder_profile)
+            getDrawable(R.drawable.placeholder_profile),
+            getDrawable(R.drawable.placeholder_profile))
 
         tvAppVersion.text = "v${Tools.getAppVersion(this)}"
 
