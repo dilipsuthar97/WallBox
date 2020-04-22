@@ -21,13 +21,13 @@ class AuthManager : Services.OnRequestMeProfileListener, Services.OnRequestUserP
     private var user: User? = null
     private lateinit var mService: Services
 
-    private lateinit var _accessToken: String
-    private lateinit var _id: String
-    private lateinit var _username: String
-    private lateinit var _firstName: String
-    private lateinit var _lastName: String
-    private lateinit var _email: String
-    private lateinit var _profileUrl: String
+    private var _accessToken: String? = null
+    private var _id: String = ""
+    private var _username: String = ""
+    private var _firstName: String = ""
+    private var _lastName: String = ""
+    private var _email: String = ""
+    private var _profileUrl: String = ""
     private var _authorized: Boolean = false
 
     private var mListener: OnAuthStateChangeListener? = null
@@ -83,7 +83,7 @@ class AuthManager : Services.OnRequestMeProfileListener, Services.OnRequestUserP
     // getter
     fun getMe(): Me? = me
     fun getUser(): User? = user
-    fun getAccessToken(): String = _accessToken
+    fun getAccessToken(): String? = _accessToken
     fun getId(): String = _id
     fun getUsername(): String = _username
     fun getFirstName(): String = _firstName
@@ -124,10 +124,10 @@ class AuthManager : Services.OnRequestMeProfileListener, Services.OnRequestUserP
 
     private fun saveUserInfo(user: User?) {
         user?.let {
-            mSharedPref.saveData(Prefs.AUTH_ID, user.id)
-            mSharedPref.saveData(Prefs.AUTH_USERNAME, user.username)
-            mSharedPref.saveData(Prefs.AUTH_FIRST_NAME, user.first_name)
-            mSharedPref.saveData(Prefs.AUTH_LAST_NAME, user.last_name)
+            mSharedPref.saveData(Prefs.AUTH_ID, user.id!!)
+            mSharedPref.saveData(Prefs.AUTH_USERNAME, user.username!!)
+            mSharedPref.saveData(Prefs.AUTH_FIRST_NAME, user.first_name!!)
+            mSharedPref.saveData(Prefs.AUTH_LAST_NAME, user.last_name!!)
             mSharedPref.saveData(Prefs.AUTH_PROFILE_URL, user.profile_image.large)
 
             this.user = user
@@ -139,6 +139,25 @@ class AuthManager : Services.OnRequestMeProfileListener, Services.OnRequestUserP
 
     fun logout() {
         mService.cancel(Services.CallType.USER)
+
+        mSharedPref.saveData(Prefs.AUTH_TOKEN, "")
+        mSharedPref.saveData(Prefs.AUTH_ID, "")
+        mSharedPref.saveData(Prefs.AUTH_USERNAME, "")
+        mSharedPref.saveData(Prefs.AUTH_FIRST_NAME, "")
+        mSharedPref.saveData(Prefs.AUTH_LAST_NAME, "")
+        mSharedPref.saveData(Prefs.AUTH_EMAIL, "")
+        mSharedPref.saveData(Prefs.AUTH_PROFILE_URL, "")
+
+        this.me = null
+        this.user= null
+        this._accessToken = null
+        this._id = ""
+        this._username = ""
+        this._firstName = ""
+        this._lastName = ""
+        this._email = ""
+        this._profileUrl = ""
+        this._authorized = false
 
         mListener?.onLogout()
     }
@@ -165,13 +184,13 @@ class AuthManager : Services.OnRequestMeProfileListener, Services.OnRequestUserP
         if (response.isSuccessful && response.body() != null && isAuthorized()) {
             saveUserInfo(response.body())
         } else if (isAuthorized()) {
-            mService.requestUserProfile(getUsername(), this)
+            mService.requestUserProfile(getUsername()!!, this)
         }
     }
 
     override fun onRequestUserProfileFailed(call: Call<User>, t: Throwable) {
         if (isAuthorized()) {
-            mService.requestUserProfile(getUsername(), this)
+            mService.requestUserProfile(getUsername()!!, this)
         }
     }
 

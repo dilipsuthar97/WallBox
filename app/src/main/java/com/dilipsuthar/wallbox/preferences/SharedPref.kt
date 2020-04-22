@@ -66,6 +66,7 @@ class SharedPref constructor(context: Context){
             is Boolean -> sharedPreferences.edit().putBoolean(key, value).apply()
             is String -> sharedPreferences.edit().putString(key, value).apply()
             is Int -> sharedPreferences.edit().putInt(key, value).apply()
+            is Float -> sharedPreferences.edit().putFloat(key, value).apply()
         }
     }
 }

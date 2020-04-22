@@ -3,6 +3,7 @@ package com.dilipsuthar.wallbox.utils
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.dilipsuthar.wallbox.R
@@ -38,6 +39,9 @@ object PopupUtils {
 
     fun showSnackbar(view: View, message: String, duration: Int = Snackbar.LENGTH_SHORT, action: (() -> Unit?)? = null, actionText: String? = null): Snackbar {
         val snackbar = Snackbar.make(view, message, duration)
+        val snackView = snackbar.view
+        val tv: TextView = snackView.findViewById(com.google.android.material.R.id.snackbar_text)   // change snackbar text color
+        tv.setTextColor(ThemeUtils.getThemeAttrColor(WallBox.getInstance(), R.attr.colorPrimary))
         Tools.setSnackBarDrawable(snackbar, ContextCompat.getDrawable(WallBox.getInstance(), R.drawable.container_snackbar))
         if (action != null) snackbar.setAction(actionText) { action() }
         snackbar.show()

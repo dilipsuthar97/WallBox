@@ -15,13 +15,16 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.GravityCompat
+import androidx.core.view.ViewCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentTransaction
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import androidx.viewpager.widget.ViewPager
 import butterknife.BindView
 import butterknife.ButterKnife
+import com.afollestad.materialdialogs.MaterialDialog
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.adapters.SectionPagerAdapter
 import com.dilipsuthar.wallbox.data_source.managers.AuthManager
@@ -30,6 +33,7 @@ import com.dilipsuthar.wallbox.helpers.LocaleHelper
 import com.dilipsuthar.wallbox.helpers.loadUrl
 import com.dilipsuthar.wallbox.preferences.Prefs
 import com.dilipsuthar.wallbox.preferences.SharedPref
+import com.dilipsuthar.wallbox.utils.PopupUtils
 import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.dilipsuthar.wallbox.utils.Tools
 import com.getkeepsafe.taptargetview.TapTarget
@@ -37,20 +41,15 @@ import com.getkeepsafe.taptargetview.TapTargetSequence
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
+import com.google.gson.Gson
 import com.mikhaellopez.circularimageview.CircularImageView
 import java.util.*
 /**
  * Created by DILIP SUTHAR 05/06/19
  */
 class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeListener,
-    AuthManager.OnAuthStateChangeListener{
+    AuthManager.OnAuthStateChangeListener {
     private val TAG = HomeActivity::class.java.simpleName
-
-    companion object {
-        /*fun get(): HomeActivity {
-            return HomeActivity()
-        }*/
-    }
 
     @BindView(R.id.toolbar) lateinit var mToolbar: Toolbar
     @BindView(R.id.tab_layout) lateinit var mTabLayout: TabLayout
@@ -157,7 +156,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
     override fun onDestroy() {
         super.onDestroy()
         SharedPref.getInstance(this).getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this)
-        AuthManager.getInstance().requestUserProfileData()
+        AuthManager.getInstance().removeOnAuthStateChangeListener()
         AuthManager.getInstance().cancelRequests()
     }
 
@@ -252,8 +251,15 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             val url = "https://play.google.com/store/apps/details?id=${packageName}"
 
             if (_isAccountMode) {
-                if (it.itemId == 1)
-                    startActivity(Intent(this, LoginActivity::class.java))
+                if (AuthManager.getInstance().isAuthorized()) {
+                    when (it.itemId) {
+                        1002 -> startActivity(Intent(this, ProfileActivity::class.java))
+                        1004 -> showLogoutAlertDialog()
+                    }
+                } else {
+                    if (it.itemId == 1001)
+                        startActivity(Intent(this, LoginActivity::class.java))
+                }
             } else {
                 when (it.itemId) {
                     //R.id.nav_Favorites -> startActivity(Intent(applicationContext, FavoritesActivity::class.java))
@@ -288,7 +294,13 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             _isAccountMode = _isHide
             _menuNavigation.clear()
             if (_isHide) {
-                _menuNavigation.add(1,1,100, "Add account").setIcon(R.drawable.ic_add)
+                if (AuthManager.getInstance().isAuthorized()) {
+                    _menuNavigation.add(1, 1002, 100, AuthManager.getInstance().getEmail()).setIcon(R.drawable.ic_account_circle)
+                    _menuNavigation.add(1, 1003, 100, "Manage Account").setIcon(R.drawable.ic_nav_settings)
+                    _menuNavigation.add(1, 1004, 100, "Logout").setIcon(R.drawable.ic_logout)
+                } else {
+                    _menuNavigation.add(1,1001,100, "Add account").setIcon(R.drawable.ic_add)
+                }
             } else {
                 mNavigationView.inflateMenu(R.menu.menu_navigation_drawer_main)
             }
@@ -422,10 +434,26 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             circularProgressDrawable.start()
 
             (drawerHeader.findViewById(R.id.img_profile) as CircularImageView)
-                .loadUrl(AuthManager.getInstance().getProfileUrl(), circularProgressDrawable, getDrawable(R.drawable.placeholder_profile))
+                .loadUrl(AuthManager.getInstance().getProfileUrl()!!, circularProgressDrawable, getDrawable(R.drawable.placeholder_profile))
+
         } else {
             (drawerHeader.findViewById(R.id.tv_full_name) as TextView).text = getString(R.string.app_name)
             (drawerHeader.findViewById(R.id.tv_email) as TextView).text = "Free HD Wallpapers"
+        }
+    }
+
+    private fun showLogoutAlertDialog() {
+        MaterialDialog(this).show {
+            cornerRadius(16f)
+            title(text = "Alert")
+            message(text = "Are you sure you want to logout?")
+            positiveButton(R.string.yes) {
+                AuthManager.getInstance().logout()
+                it.dismiss()
+            }
+            negativeButton(R.string.no) {
+                it.dismiss()
+            }
         }
     }
 
@@ -434,15 +462,24 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
     }
 
     override fun onLogin() {
-
+        PopupUtils.showSnackbar(mDrawerLayout, "Login success :)")
     }
 
     override fun onSaveProfileUrl() {
         setDrawerHeader(mNavigationView.getHeaderView(0))
+
+        _menuNavigation.clear()
+        _menuNavigation.add(1, 1002, 100, AuthManager.getInstance().getEmail()).setIcon(R.drawable.ic_account_circle)
+        _menuNavigation.add(1, 1003, 100, "Manage Account").setIcon(R.drawable.ic_nav_settings)
+        _menuNavigation.add(1, 1004, 100, "Logout").setIcon(R.drawable.ic_logout)
     }
 
     override fun onLogout() {
+        PopupUtils.showSnackbar(mDrawerLayout, "Logout success!")
         setDrawerHeader(mNavigationView.getHeaderView(0))
+
+        _menuNavigation.clear()
+        _menuNavigation.add(1,1001,100, "Add account").setIcon(R.drawable.ic_add)
     }
 
 }

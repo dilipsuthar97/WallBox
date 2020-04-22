@@ -73,7 +73,7 @@ fun Int.isDark(): Boolean = ColorUtils.calculateLuminance(this) < 0.5
 infix fun Boolean.eq(value: Boolean): Boolean = this == value
 
 /**
- * it will format the long number into short using postfix
+ * it will format the number
  */
 fun Int.getFormattedNumber(): String {
     return NumberFormat.getNumberInstance(Locale.US).format(this)

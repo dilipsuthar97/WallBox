@@ -22,7 +22,7 @@
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_marginLeft="16dp"
-                    tools:srcCompat="@drawable/placeholder_profile"
+                    app:srcCompat="@drawable/placeholder_profile"
                     android:layout_marginTop="16dp"/>
 
         <LinearLayout

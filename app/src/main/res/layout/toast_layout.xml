@@ -10,7 +10,10 @@
         app:cardCornerRadius="10dp"
         app:cardElevation="3dp"
         app:cardBackgroundColor="?attr/toastSnackBarColor"
-        app:contentPadding="16dp">
+        app:contentPaddingLeft="16dp"
+        app:contentPaddingRight="16dp"
+        app:contentPaddingTop="8dp"
+        app:contentPaddingBottom="8dp">
 
     <TextView
             android:id="@+id/text_msg"

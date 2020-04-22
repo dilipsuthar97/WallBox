@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
@@ -73,8 +74,8 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
             imgPhotoBy.loadUrl(
                 it.user.profile_image.large,
-                ctx.getDrawable(R.drawable.placeholder_profile),
-                ctx.getDrawable(R.drawable.placeholder_profile))
+                ContextCompat.getDrawable(ctx, R.drawable.placeholder_profile),
+                ContextCompat.getDrawable(ctx, R.drawable.placeholder_profile))
 
             // onClick listener
             imagePhoto.setOnLongClickListener { view ->

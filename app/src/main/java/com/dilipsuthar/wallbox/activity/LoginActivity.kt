@@ -97,7 +97,7 @@ class LoginActivity : BaseActivity(), AuthorizationService.OnRequestAccessTokenL
 
             AuthManager.getInstance().saveAccessToken(response.body())
             AuthManager.getInstance().requestUserProfileData()
-            onBackPressed()
+            finish()
         } else {
             Log.d(TAG, response.message() + " " + response.errorBody() + " " + response.code())
             PopupUtils.showSnackbar(rootView, "Request token failed")

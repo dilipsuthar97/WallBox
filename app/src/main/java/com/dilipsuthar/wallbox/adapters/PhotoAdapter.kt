@@ -2,6 +2,7 @@ package com.dilipsuthar.wallbox.adapters
 
 import android.app.Activity
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +31,7 @@ class PhotoAdapter
         private val activity: Activity?,
         private val listener: OnItemClickListener?
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val TAG = PhotoAdapter::class.java.simpleName
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view: View?
@@ -65,7 +67,9 @@ class PhotoAdapter
     /** methods */
     fun addAll(photos: ArrayList<Photo>) {
         mPhotoList?.addAll(photos)
-        notifyItemInserted(mPhotoList?.size!!.minus(28))
+        if (mPhotoList?.size!! >= 30) {
+            notifyItemInserted(mPhotoList?.size!!.minus(28))
+        }
     }
 
     fun addFooter() {

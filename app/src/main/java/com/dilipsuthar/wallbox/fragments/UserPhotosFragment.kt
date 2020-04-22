@@ -29,7 +29,7 @@ class UserPhotosFragment : BasePhotosFragment() {
         }
     }
 
-    private lateinit var mUser: User
+    private var mUser: User? = null
 
     /**
      * it assign user from the parent activity, --must be call
@@ -47,11 +47,11 @@ class UserPhotosFragment : BasePhotosFragment() {
     override fun loadPhotos(totalItem: Int) {
 
         if (mUser != null) {
-            if (totalItem != mUser.total_photos) {
+            if (totalItem != mUser?.total_photos) {
                 mSwipeRefreshLayout setRefresh true
                 loadMore = true
                 if (snackBar != null) snackBar?.dismiss()
-                mService?.requestUserPhotos(mUser.username, mPage, WallBox.DEFAULT_PER_PAGE, mSort!!, this)
+                mService?.requestUserPhotos(mUser?.username!!, mPage, WallBox.DEFAULT_PER_PAGE, mSort!!, this)
             }
 
         } else {

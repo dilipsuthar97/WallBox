@@ -1,6 +1,7 @@
 package com.dilipsuthar.wallbox.activity
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -13,6 +14,7 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import com.dilipsuthar.wallbox.R
 import com.dilipsuthar.wallbox.adapters.SectionPagerAdapter
+import com.dilipsuthar.wallbox.data_source.managers.AuthManager
 import com.dilipsuthar.wallbox.data_source.model.User
 import com.dilipsuthar.wallbox.data_source.service.Services
 import com.dilipsuthar.wallbox.fragments.UserCollectionsFragment
@@ -21,6 +23,7 @@ import com.dilipsuthar.wallbox.fragments.UserPhotosFragment
 import com.dilipsuthar.wallbox.helpers.loadUrl
 import com.dilipsuthar.wallbox.helpers.openWebView
 import com.dilipsuthar.wallbox.preferences.Prefs
+import com.dilipsuthar.wallbox.utils.PopupUtils
 import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.dilipsuthar.wallbox.utils.Tools
 import com.google.android.material.tabs.TabLayout
@@ -31,8 +34,8 @@ import retrofit2.Response
 /**
  * Created by DILIP SUTHAR 27/08/19
  */
-class ProfileActivity : BaseActivity() {
-    private val TAG = "WallBox.UserAct"
+class ProfileActivity : BaseActivity(), Services.OnRequestUserProfileListener {
+    private val TAG = ProfileActivity::class.java.simpleName
 
     @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
     @BindView(R.id.img_user_profile) lateinit var imgUserProfile: CircularImageView
@@ -49,7 +52,6 @@ class ProfileActivity : BaseActivity() {
 
     private var mUser: User? = null
     private var mService: Services? = null
-    private lateinit var mOnRequestUserProfileListener: Services.OnRequestUserProfileListener
 
     private lateinit var mViewPagerAdapter: SectionPagerAdapter
 
@@ -57,70 +59,27 @@ class ProfileActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
         ButterKnife.bind(this)
-        mUser = Gson().fromJson(intent.getStringExtra(Prefs.USER), User::class.java)
 
-        /** Set user data info */
-        mUser?.let {
-            imgUserProfile.loadUrl(
-                it.profile_image.large,
-                getDrawable(R.drawable.placeholder_profile),
-                getDrawable(R.drawable.placeholder_profile))
+        if (intent.extras != null && intent.getStringExtra(Prefs.USER) != null) {
+            Log.d(TAG, "User: !null")
+            mUser = Gson().fromJson(intent.getStringExtra(Prefs.USER), User::class.java)
 
-            tvUsername.text = it?.first_name + " ${it?.last_name}"
-
-            tvUserLocation.text = if (it.location != "") it.location else "--"
-            tvUserWebsite.text = if (it.portfolio_url != "") it.portfolio_url else "--"
-
-            if (it.bio != "")
-                tvProfileBio.text = it.bio
-            else Tools.inVisibleViews(tvProfileBio, type = Tools.GONE)
+            /** Set user data info */
+            setData()
+        } else {
+            Log.d(TAG, "User: null")
+            mUser = User()
+            mUser?.username = AuthManager.getInstance().getUsername()
         }
 
         /** Service / API request */
         // Request user's public profile
         mService = Services.getService()
-        mOnRequestUserProfileListener = object : Services.OnRequestUserProfileListener {
-            override fun onRequestUserProfileSuccess(call: Call<User>, response: Response<User>) {
-                if (response.isSuccessful) {
-                    mUser = response.body()
-                    Log.d(TAG, mUser.toString())
-
-                    mUser?.let { user ->
-
-                        // Set interest chips
-                        /*if (user.tags.custom.isNotEmpty()) {
-                            for (tag in user.tags.custom) {
-                                val chip = Chip(this@UserActivity)
-                                chip.text = tag.title
-                                chip.isClickable = true
-                                chip.setOnClickListener {
-                                    val intent = Intent(this@UserActivity, SearchActivity::class.java)
-                                    intent.putExtra("keyword", chip.text.toString())
-                                    startActivity(intent)
-                                }
-                                chip.chipBackgroundColor = ColorStateList.valueOf(ThemeUtils.getThemeAttrColor(this@UserActivity, R.attr.primaryTextColor))
-                                chip.setTextColor(ThemeUtils.getThemeAttrColor(this@UserActivity, R.attr.colorPrimary))
-                                chipGrpInterest.addView(chip)
-                            }
-                        } else Tools.inVisibleViews(lytInterestChips, type = Tools.GONE)*/
-
-                        // Set followers & following counts
-                        tvFollowersCount.text = Tools.formatLongNumbers(mUser?.followers_count?.toLong()!!) ?: "-"
-                        tvFollowingCount.text = Tools.formatLongNumbers(mUser?.following_count?.toLong()!!) ?: "-"
-
-                    }
-                }
-            }
-
-            override fun onRequestUserProfileFailed(call: Call<User>, t: Throwable) {
-                Log.d(TAG, t.message!!)
-            }
-        }
-        mService?.requestUserProfile(mUser!!.username, mOnRequestUserProfileListener)
+        mService?.requestUserProfile(mUser?.username!!, this)
 
         initToolbar()
         initComponent()
-        initTabLayout()
+        //initTabLayout()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -163,6 +122,28 @@ class ProfileActivity : BaseActivity() {
     private fun initComponent() {
     }
 
+    private fun setData() {
+        mUser?.let {
+            imgUserProfile.loadUrl(
+                it.profile_image.large,
+                ContextCompat.getDrawable(this@ProfileActivity, R.drawable.placeholder_profile),
+                ContextCompat.getDrawable(this@ProfileActivity, R.drawable.placeholder_profile))
+
+            tvUsername.text = it.first_name ?: "" + " " + it.last_name ?: ""
+
+            tvUserLocation.text = it.location ?: "-"
+            tvUserWebsite.text = it.portfolio_url ?: "-"
+
+            if (!TextUtils.isEmpty(it.bio))
+                tvProfileBio.text = it.bio
+            else Tools.inVisibleViews(tvProfileBio, type = Tools.GONE)
+
+            // Set followers & following counts
+            tvFollowersCount.text = Tools.formatLongNumbers(it.followers_count?.toLong() ?: 0)
+            tvFollowingCount.text = Tools.formatLongNumbers(it.following_count?.toLong() ?: 0)
+        }
+    }
+
     /** @method init tab layout settings */
     private fun initTabLayout() {
         /** Set mViewPager and link it with TabLayout */
@@ -178,12 +159,50 @@ class ProfileActivity : BaseActivity() {
         userCollectionsFragment.setUser(mUser)
 
         with(mViewPagerAdapter) {
-            addFragment(userPhotoFragment, "${mUser?.total_photos} ${resources.getString(R.string.tab_title_user_photos_fragment)}")
-            addFragment(userLikedFragment, "${mUser?.total_likes} ${resources.getString(R.string.tab_title_user_liked_fragment)}")
-            addFragment(userCollectionsFragment, "${mUser?.total_collections} ${resources.getString(R.string.tab_title_user_collections_fragment)}")
+            addFragment(userPhotoFragment, "${mUser?.total_photos ?: 0} ${resources.getString(R.string.tab_title_user_photos_fragment)}")
+            addFragment(userLikedFragment, "${mUser?.total_likes ?: 0} ${resources.getString(R.string.tab_title_user_liked_fragment)}")
+            addFragment(userCollectionsFragment, "${mUser?.total_collections ?: 0} ${resources.getString(R.string.tab_title_user_collections_fragment)}")
             mViewpager.adapter = this
         }
         mViewpager.offscreenPageLimit = 2
         mTabLayout.setupWithViewPager(mViewpager)
+    }
+
+    override fun onRequestUserProfileSuccess(call: Call<User>, response: Response<User>) {
+        if (response.isSuccessful) {
+            mUser = response.body()
+            Log.d(TAG, mUser.toString())
+
+            mUser?.let { user ->
+
+                // Set interest chips
+                /*if (user.tags.custom.isNotEmpty()) {
+                    for (tag in user.tags.custom) {
+                        val chip = Chip(this@UserActivity)
+                        chip.text = tag.title
+                        chip.isClickable = true
+                        chip.setOnClickListener {
+                            val intent = Intent(this@UserActivity, SearchActivity::class.java)
+                            intent.putExtra("keyword", chip.text.toString())
+                            startActivity(intent)
+                        }
+                        chip.chipBackgroundColor = ColorStateList.valueOf(ThemeUtils.getThemeAttrColor(this@UserActivity, R.attr.primaryTextColor))
+                        chip.setTextColor(ThemeUtils.getThemeAttrColor(this@UserActivity, R.attr.colorPrimary))
+                        chipGrpInterest.addView(chip)
+                    }
+                } else Tools.inVisibleViews(lytInterestChips, type = Tools.GONE)*/
+
+                setData()
+                initTabLayout()
+            }
+        } else if (response.code() == 403) {
+            PopupUtils.showToast(this, "Unable to make request!")
+        }
+    }
+
+    override fun onRequestUserProfileFailed(call: Call<User>, t: Throwable) {
+        Log.e(TAG, t.message!!)
+        PopupUtils.showToast(this, "Failed to load profile!")
+        onBackPressed()
     }
 }
