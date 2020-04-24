@@ -31,6 +31,7 @@ import com.dilipsuthar.wallbox.data_source.service.Services
 import com.dilipsuthar.wallbox.helpers.setRefresh
 import com.dilipsuthar.wallbox.preferences.Prefs
 import com.dilipsuthar.wallbox.utils.PopupUtils
+import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.dilipsuthar.wallbox.utils.Tools
 import com.dilipsuthar.wallbox.utils.itemDecorater.VerticalSpacingItemDecorator
 import com.google.android.material.snackbar.Snackbar
@@ -213,7 +214,7 @@ class SearchPhotoFragment : Fragment() {
         })
 
         // Swipe refresh listener
-        mSwipeRefreshLayout.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(context!!, R.color.colorAccent))
+        mSwipeRefreshLayout.setProgressBackgroundColorSchemeColor(ThemeUtils.getThemeAttrColor(context!!, R.attr.colorPrimary))
         mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(context!!, R.color.white))
         mSwipeRefreshLayout.setOnRefreshListener {
             mPage = 1

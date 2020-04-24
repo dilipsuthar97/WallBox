@@ -11,7 +11,7 @@
     <ImageView
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:tint="@color/colorAccent"
+            android:tint="?attr/colorPrimary"
             android:src="@drawable/ic_cloud_off"/>
 
     <TextView

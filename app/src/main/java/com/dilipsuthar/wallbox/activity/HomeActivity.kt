@@ -6,18 +6,14 @@ import android.graphics.PorterDuff
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
-import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.GravityCompat
-import androidx.core.view.ViewCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentTransaction
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
@@ -36,12 +32,9 @@ import com.dilipsuthar.wallbox.preferences.SharedPref
 import com.dilipsuthar.wallbox.utils.PopupUtils
 import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.dilipsuthar.wallbox.utils.Tools
-import com.getkeepsafe.taptargetview.TapTarget
-import com.getkeepsafe.taptargetview.TapTargetSequence
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
-import com.google.gson.Gson
 import com.mikhaellopez.circularimageview.CircularImageView
 import java.util.*
 /**
@@ -258,7 +251,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
                     }
                 } else {
                     if (it.itemId == 1001)
-                        startActivity(Intent(this, LoginActivity::class.java))
+                        startActivity(Intent(this, MeProfileActivity::class.java))
                 }
             } else {
                 when (it.itemId) {
@@ -295,7 +288,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             _menuNavigation.clear()
             if (_isHide) {
                 if (AuthManager.getInstance().isAuthorized()) {
-                    _menuNavigation.add(1, 1002, 100, AuthManager.getInstance().getEmail()).setIcon(R.drawable.ic_account_circle)
+                    _menuNavigation.add(1, 1002, 100, AuthManager.getInstance().getUsername()).setIcon(R.drawable.ic_account_circle)
                     _menuNavigation.add(1, 1003, 100, "Manage Account").setIcon(R.drawable.ic_nav_settings)
                     _menuNavigation.add(1, 1004, 100, "Logout").setIcon(R.drawable.ic_logout)
                 } else {
@@ -434,7 +427,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
             circularProgressDrawable.start()
 
             (drawerHeader.findViewById(R.id.img_profile) as CircularImageView)
-                .loadUrl(AuthManager.getInstance().getProfileUrl()!!, circularProgressDrawable, getDrawable(R.drawable.placeholder_profile))
+                .loadUrl(AuthManager.getInstance().getProfileUrl(), circularProgressDrawable, getDrawable(R.drawable.placeholder_profile))
 
         } else {
             (drawerHeader.findViewById(R.id.tv_full_name) as TextView).text = getString(R.string.app_name)
@@ -469,7 +462,7 @@ class HomeActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeL
         setDrawerHeader(mNavigationView.getHeaderView(0))
 
         _menuNavigation.clear()
-        _menuNavigation.add(1, 1002, 100, AuthManager.getInstance().getEmail()).setIcon(R.drawable.ic_account_circle)
+        _menuNavigation.add(1, 1002, 100, AuthManager.getInstance().getUsername()).setIcon(R.drawable.ic_account_circle)
         _menuNavigation.add(1, 1003, 100, "Manage Account").setIcon(R.drawable.ic_nav_settings)
         _menuNavigation.add(1, 1004, 100, "Logout").setIcon(R.drawable.ic_logout)
     }

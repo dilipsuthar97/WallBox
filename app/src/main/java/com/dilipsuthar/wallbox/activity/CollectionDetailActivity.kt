@@ -137,7 +137,7 @@ class CollectionDetailActivity : BaseActivity() {
         }
 
         // Swipe refresh listener
-        mSwipeRefreshView.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(this, R.color.colorAccent))
+        mSwipeRefreshView.setProgressBackgroundColorSchemeColor(ThemeUtils.getThemeAttrColor(this, R.attr.colorPrimary))
         mSwipeRefreshView.setColorSchemeColors(ContextCompat.getColor(this, R.color.white))
         mSwipeRefreshView.setOnRefreshListener {
             mPage = 1
@@ -200,7 +200,7 @@ class CollectionDetailActivity : BaseActivity() {
         supportActionBar?.subtitle = "${mCollection?.total_photos} ${resources.getString(R.string.wallpapers)}"
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        Tools.changeNavigationIconColor(toolbar, ContextCompat.getColor(applicationContext, R.color.colorAccent))
+        Tools.changeNavigationIconColor(toolbar, ThemeUtils.getThemeAttrColor(this, R.attr.colorPrimary))
     }
 
     private fun initComponent() {

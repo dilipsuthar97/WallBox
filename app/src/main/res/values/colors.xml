@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-->>>>>>>>>>>>>>> Light base colors <<<<<<<<<<<<<<<-->
-    <color name="colorPrimary">#FFFFFF</color>
-    <color name="colorPrimaryDark">#F3F4F6</color>
-    <color name="colorAccent">#6DB432</color>
+    <color name="colorPrimary">#6DB432</color>
+    <!--<color name="colorPrimaryDark">#F3F4F6</color>
+    <color name="colorAccent">#6DB432</color>-->
+    <color name="colorSecondary">#FFFFFF</color>
+    <color name="colorSecondaryDark">#F3F4F6</color>
     <color name="primaryTextColor">#000000</color>
     <color name="secondaryTextColor">#424343</color>
     <color name="windowColor">#FFFFFF</color>
@@ -17,9 +19,11 @@
     <color name="toastSnackBarColor">#212121</color>
 
     <!-->>>>>>>>>>>>>>> Dark base colors <<<<<<<<<<<<<<<-->
-    <color name="colorPrimary_night">#000000</color> <!-- #121212 -->
-    <color name="colorPrimaryDark_night">#212121</color> <!-- #1F1F1F -->
-    <color name="colorAccent_night">#6DB432</color>
+    <color name="colorPrimary_night">#6DB432</color> <!-- #121212 -->
+    <!--<color name="colorPrimaryDark_night">#212121</color> &lt;!&ndash; #1F1F1F &ndash;&gt;
+    <color name="colorAccent_night">#6DB432</color>-->
+    <color name="colorSecondary_night">#000000</color>
+    <color name="colorSecondaryDark_night">#212121</color>
     <color name="primaryTextColor_night">#FFFFFF</color>
     <color name="secondaryTextColor_night">#B3FFFFFF</color>
     <color name="windowColor_night">#1F1F1F</color>

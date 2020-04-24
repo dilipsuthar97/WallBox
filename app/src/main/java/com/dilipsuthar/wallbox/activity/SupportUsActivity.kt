@@ -31,7 +31,7 @@ class SupportUsActivity : BaseActivity() {
         actionBar?.title = resources.getString(R.string.toolbar_title_support_us)
         actionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
         actionBar?.setDisplayHomeAsUpEnabled(true)
-        Tools.changeNavigationIconColor(toolbar, ThemeUtils.getThemeAttrColor(this, R.attr.colorAccent))
+        Tools.changeNavigationIconColor(toolbar, ThemeUtils.getThemeAttrColor(this, R.attr.colorPrimary))
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

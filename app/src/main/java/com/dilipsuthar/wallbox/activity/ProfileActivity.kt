@@ -79,7 +79,6 @@ class ProfileActivity : BaseActivity(), Services.OnRequestUserProfileListener {
 
         initToolbar()
         initComponent()
-        //initTabLayout()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -116,7 +115,7 @@ class ProfileActivity : BaseActivity(), Services.OnRequestUserProfileListener {
             it.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
             it.setDisplayHomeAsUpEnabled(true)
         }
-        Tools.changeNavigationIconColor(toolbar, ContextCompat.getColor(this, R.color.colorAccent))
+        Tools.changeNavigationIconColor(toolbar, ThemeUtils.getThemeAttrColor(this, R.attr.colorPrimary))
     }
 
     private fun initComponent() {

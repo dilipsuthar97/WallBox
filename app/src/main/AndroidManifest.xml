@@ -59,7 +59,7 @@
         <activity android:name=".activity.ProfileActivity" />
         <activity android:name=".activity.SearchActivity" android:parentActivityName=".activity.HomeActivity"/>
         <activity android:name=".activity.OpenSourceLicensesActivity" />
-        <activity android:name=".activity.LoginActivity" android:launchMode="singleTask">
+        <activity android:name=".activity.MeProfileActivity" android:launchMode="singleTask">
             <!-- schema and callback url config for oauth calling -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

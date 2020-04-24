@@ -26,6 +26,7 @@ import com.dilipsuthar.wallbox.preferences.Prefs
 import com.dilipsuthar.wallbox.utils.PopupUtils
 import com.dilipsuthar.wallbox.utils.Tools
 import com.dilipsuthar.wallbox.helpers.setRefresh
+import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import retrofit2.Call
@@ -111,7 +112,7 @@ class CollectionsFragment : Fragment(), Services.OnRequestCollectionsListener, C
         })
 
         // Swipe listener
-        mSwipeRefreshView.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(context!!, R.color.colorAccent))
+        mSwipeRefreshView.setProgressBackgroundColorSchemeColor(ThemeUtils.getThemeAttrColor(context!!, R.attr.colorPrimary))
         mSwipeRefreshView.setColorSchemeColors(ContextCompat.getColor(context!!, R.color.white))
         mSwipeRefreshView.setOnRefreshListener {
             mPage = 1

@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.dilipsuthar.wallbox.R
@@ -17,25 +19,30 @@ import com.dilipsuthar.wallbox.helpers.openWebView
 import com.dilipsuthar.wallbox.utils.PopupUtils
 import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.dilipsuthar.wallbox.utils.Tools
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import retrofit2.Call
 import retrofit2.Response
 
-class LoginActivity : BaseActivity(), AuthorizationService.OnRequestAccessTokenListener {
-    private val TAG = LoginActivity::class.java.simpleName
+class MeProfileActivity : BaseActivity(), AuthorizationService.OnRequestAccessTokenListener, AppBarLayout.OnOffsetChangedListener {
+    private val TAG = MeProfileActivity::class.java.simpleName
 
     // View
     @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
+    @BindView(R.id.app_bar_layout) lateinit var appBarLayout: AppBarLayout
     @BindView(R.id.btn_login) lateinit var btnLogin: MaterialButton
     @BindView(R.id.btn_join) lateinit var btnJoin: MaterialButton
     @BindView(R.id.activity_login) lateinit var rootView: View
+    @BindView(R.id.fab_edit_profile) lateinit var fabEditProfile: ExtendedFloatingActionButton
 
     // vars
     private var mService: AuthorizationService? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        setContentView(R.layout.activity_me_profile)
         ButterKnife.bind(this)
 
         mService = AuthorizationService.getService()
@@ -44,18 +51,33 @@ class LoginActivity : BaseActivity(), AuthorizationService.OnRequestAccessTokenL
         initComponent()
     }
 
-    /** @mthod init toolbar settings */
+    /** @method init toolbar settings */
     private fun initToolbar() {
         setSupportActionBar(toolbar)
         val actionBar = supportActionBar
-        actionBar?.title = resources.getString(R.string.toolbar_title_login)
+        actionBar?.title = resources.getString(R.string.toolbar_title_me_profile)
         actionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
         actionBar?.setDisplayHomeAsUpEnabled(true)
-        Tools.changeNavigationIconColor(toolbar, ThemeUtils.getThemeAttrColor(this, R.attr.colorAccent))
+        Tools.changeNavigationIconColor(toolbar, ThemeUtils.getThemeAttrColor(this, R.attr.colorPrimary))
+        Tools.setSystemBarColor(this, ContextCompat.getColor(this, android.R.color.transparent))
+    }
+
+    override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
+        if (verticalOffset == 0) {
+            // Fully expanded
+            Tools.setSystemBarColor(this, ContextCompat.getColor(this, android.R.color.transparent))
+        } else {
+            // Not fully expanded or collapsed
+            Tools.setSystemBarColor(this, ThemeUtils.getThemeAttrColor(this, R.attr.statusBarColor))
+        }
     }
 
     /** @method init all components */
     private fun initComponent() {
+        if (!AuthManager.getInstance().isAuthorized()) {
+            fabEditProfile.hide()
+        }
+
         btnLogin.setOnClickListener {
             val url = WallBox.getLoginUrl(this)
             openWebView(url)
@@ -65,6 +87,8 @@ class LoginActivity : BaseActivity(), AuthorizationService.OnRequestAccessTokenL
             val url = WallBox.UNSPLASH_JOIN_URL
             openWebView(url)
         }
+
+        appBarLayout.addOnOffsetChangedListener(this)
     }
 
     override fun onNewIntent(intent: Intent?) {

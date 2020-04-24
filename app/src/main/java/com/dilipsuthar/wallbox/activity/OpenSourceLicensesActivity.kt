@@ -48,7 +48,7 @@ class OpenSourceLicensesActivity : BaseActivity() {
         actionBar?.title = resources.getString(R.string.toolbar_title_open_source_licenses)
         actionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
         actionBar?.setDisplayHomeAsUpEnabled(true)
-        Tools.changeNavigationIconColor(toolbar, ThemeUtils.getThemeAttrColor(this, R.attr.colorAccent))
+        Tools.changeNavigationIconColor(toolbar, ThemeUtils.getThemeAttrColor(this, R.attr.colorPrimary))
     }
 
     /** @method init all components */

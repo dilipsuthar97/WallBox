@@ -44,7 +44,7 @@
                     android:id="@+id/tv_content"
                     android:textSize="18sp"
                     android:layout_marginTop="@dimen/spacing_xmedium"
-                    android:textColor="?attr/colorAccent"
+                    android:textColor="?attr/colorPrimary"
                     tools:text="CACHE SIZE: 10.25 MB"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

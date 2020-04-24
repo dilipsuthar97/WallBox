@@ -2,7 +2,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Item checked -->
-    <item android:color="?attr/colorAccent" android:state_checked="true" />
+    <item android:color="?attr/colorPrimary" android:state_checked="true" />
     <!-- Item pressed -->
     <item android:color="?attr/navTabPressed" android:state_pressed="true" />
     <!-- Item default -->

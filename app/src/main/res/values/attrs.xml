@@ -2,8 +2,10 @@
 <resources>
     <declare-styleable name="WallBoxAppTheme">
         <attr name="colorPrimary" format="color"/>
-        <attr name="colorPrimaryDark" format="color"/>
-        <attr name="colorAccent" format="color"/>
+        <!--<attr name="colorPrimaryDark" format="color"/>
+        <attr name="colorAccent" format="color"/>-->
+        <attr name="colorSecondary" format="color"/>
+        <attr name="colorSecondaryDark" format="color"/>
         <attr name="primaryTextColor" format="color"/>
         <attr name="secondaryTextColor" format="color"/>
         <attr name="tabSelectedColor" format="color"/>

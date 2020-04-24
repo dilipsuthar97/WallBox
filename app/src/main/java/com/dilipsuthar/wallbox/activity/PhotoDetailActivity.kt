@@ -104,6 +104,8 @@ class PhotoDetailActivity : BaseActivity() {
         else if (mPhoto.user.username != "")
             tvPhotoBy.text = mPhoto.user.first_name
 
+        tvPhotoBy.text = mPhoto.user.first_name ?: "" + " " + mPhoto.user.last_name ?: ""
+
         when {
             mPhoto.description != "" -> tvDescription.text = mPhoto.description
             mPhoto.alt_description != "" -> tvDescription.text = mPhoto.alt_description

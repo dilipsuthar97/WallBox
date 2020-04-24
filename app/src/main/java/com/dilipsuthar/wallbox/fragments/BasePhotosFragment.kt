@@ -28,6 +28,7 @@ import com.dilipsuthar.wallbox.data_source.service.Services
 import com.dilipsuthar.wallbox.helpers.setRefresh
 import com.dilipsuthar.wallbox.preferences.Prefs
 import com.dilipsuthar.wallbox.utils.PopupUtils
+import com.dilipsuthar.wallbox.utils.ThemeUtils
 import com.dilipsuthar.wallbox.utils.Tools
 import com.dilipsuthar.wallbox.utils.itemDecorater.VerticalSpacingItemDecorator
 import com.google.android.material.snackbar.Snackbar
@@ -127,7 +128,7 @@ abstract class BasePhotosFragment : Fragment(), Services.OnRequestPhotosListener
         })
 
         // Swipe refresh listener
-        mSwipeRefreshLayout.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(context!!, R.color.colorAccent))
+        mSwipeRefreshLayout.setProgressBackgroundColorSchemeColor(ThemeUtils.getThemeAttrColor(context!!, R.attr.colorPrimary))
         mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(context!!, R.color.white))
         mSwipeRefreshLayout.setOnRefreshListener {
             mPage = 1
@@ -212,7 +213,7 @@ abstract class BasePhotosFragment : Fragment(), Services.OnRequestPhotosListener
     }
 
     override fun onItemClick(photo: Photo, view: View, pos: Int, imageView: ImageView) {
-        //onPhotoClick(photo, view, pos, imageView)
+        //onPhotoClick(photo, view, pos, imageView) // call abstract method
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity!!, imageView, ViewCompat.getTransitionName(imageView)!!)
         val intent = Intent(activity, PhotoDetailActivity::class.java)
         intent.putExtra(Prefs.PHOTO, Gson().toJson(photo))
@@ -220,13 +221,13 @@ abstract class BasePhotosFragment : Fragment(), Services.OnRequestPhotosListener
     }
 
     override fun onItemLongClick(photo: Photo, view: View, pos: Int, imageView: ImageView) {
-        //onPhotoLongClick(photo, view, pos, imageView)
+        //onPhotoLongClick(photo, view, pos, imageView) // call abstract method
         PopupUtils.showToast(context, "${pos.plus(1)}", Toast.LENGTH_SHORT)
         Log.d(WallBox.TAG, "mOnItemClickListener: onItemLongClick")
     }
 
     override fun onUserProfileClick(photo: Photo, pos: Int, imgPhotoBy: CircularImageView) {
-        //onPhotoUserProfileClick(photo, pos, imgPhotoBy)
+        //onPhotoUserProfileClick(photo, pos, imgPhotoBy) // call abstract method
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity!!, imgPhotoBy, ViewCompat.getTransitionName(imgPhotoBy)!!)
         val intent = Intent(activity, ProfileActivity::class.java)
         intent.putExtra(Prefs.USER, Gson().toJson(photo.user))

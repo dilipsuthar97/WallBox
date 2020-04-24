@@ -23,7 +23,7 @@
     <string name="toolbar_title_about">ऐप के बारे में</string>
     <string name="toolbar_title_support_us">हमें सहयोग दीजिये</string>
     <string name="toolbar_title_open_source_licenses">ओपन-सोर्स लाइसेंस</string>
-    <string name="toolbar_title_login">Login</string>
+    <string name="toolbar_title_me_profile">प्रोफ़ाइल</string>
     <string name="tab_title_recent_wall_fragment">ताज़ा</string>
     <string name="tab_title_curated_wall_fragment">क्यूरेटेड</string>
     <string name="tab_title_collections_fragment">कलेक्शन</string>
@@ -103,7 +103,7 @@
 
     <!-- Extras -->
     <string name="wallpapers">वॉलपेपर्स</string>
-    <string name="wallpaper_by">by, </string>
+    <string name="wallpaper_by">by </string>
     <string name="total_cache">कुल कैश: </string>
 
     <!-- lorem ipsum -->
